@@ -26,7 +26,7 @@ function callAjax(op) {
             if ( result['result'] == "signIn" ) {
                 alert( result['squat']+","+result['deadlift']+","+result['benchpress'] );
             }else if ( result['result'] == "signUp" ) {
-
+                alert( "가입해주세요!" );
             }
             
         } //function끝

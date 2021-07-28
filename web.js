@@ -18,6 +18,7 @@ app.use('/script',express.static(__dirname + "/script"));
 app.use('/views',express.static(__dirname + "/views"));
 
 const { MongoClient } = require("mongodb");
+const { response } = require('express');
 //#endregion
 
 //#region DB연결 및 라우팅
@@ -75,7 +76,8 @@ app.post('/ajax', function(req, res, next) {
   else if(req.body.op=="login")
   searchData(req.body.op,req.body.col,req.body.userID).then((msg) => {
                         console.log(msg);
-                        res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3]});
+                        if(msg=="signUp") res.send({result:msg});
+                        else res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3]});
   });
 
 });
@@ -89,22 +91,25 @@ async function searchData(op,col,userID){
     var list = [];
 
     if(col=="3record" && op=="I") {
-      response = await collection.find({ nickName: {$regex:""} }).toArray();
-      response.forEach(element => { list.push(element.nickName); });
+      res = await collection.find({ nickName: {$regex:""} }).toArray();
+      res.forEach(element => { list.push(element.nickName); });
     }
     else if(col=="3record" && op=="R") {
-      response = await collection.findOne({ nickName: {$regex:userID} });
-      list[0] = response.squat;
-      list[1] = response.deadlift;
-      list[2] = response.benchpress;
-      list[3] = response.instaID;
+      res = await collection.findOne({ nickName: userID });
+      list[0] = res.squat;
+      list[1] = res.deadlift;
+      list[2] = res.benchpress;
+      list[3] = res.instaID;
     }
     else if(col=="3record" && op=="login") {
-      response = await collection.findOne({ instaID: {$regex:userID} });
-      list[0] = response.squat;
-      list[1] = response.deadlift;
-      list[2] = response.benchpress;
-      list[3] = response.instaID;
+      res = await collection.findOne({ instaID: userID });
+      if(res == null ) return "signUp";
+      else{
+        list[0] = res.squat;
+        list[1] = res.deadlift;
+        list[2] = res.benchpress;
+        list[3] = res.instaID;
+      }
     }
 
     
