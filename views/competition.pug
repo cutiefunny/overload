@@ -1,0 +1,20 @@
+html 
+    head 
+        title=title 
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    body
+        select(id="sbx_userID" style="overflow:hidden;width:100px" onclick="search()" ondblclick="selectUserList()")
+        input(type="hidden" value="" id="hib_selectedUserID" style="width:100px")
+        br
+        | squat : 
+        input(type="text" value="" id="ib_squat" style="width:46px")
+        br
+        | deadlift : 
+        input(type="text" value="" id="ib_deadlift" style="width:46px")
+        br
+        | benchpress : 
+        input(type="text" value="" id="ib_benchpress" style="width:46px")
+        
+        script(src="/script/competition.js")
+        script(src="//code.jquery.com/jquery-1.11.0.min.js")

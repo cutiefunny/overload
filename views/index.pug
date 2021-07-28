@@ -1,0 +1,17 @@
+html 
+    head 
+        title=title 
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    body
+        h1 점진적 과부하 개발 중
+        p 
+        | 인스타그램 아이디를 입력하세요.
+        br
+        input(type="text" id="ib_instaID")
+        button(value="확인" id="btn_confirm" onclick="confirm()") 확인
+        P
+        button(id="btn_competition" onclick="gotoCompetition()") competition→
+        
+        script(src="/script/index.js")
+        script(src="//code.jquery.com/jquery-1.11.0.min.js")
