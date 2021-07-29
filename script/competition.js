@@ -1,3 +1,4 @@
+//#region 초반 선언부
 var sbx_userID = document.getElementById('sbx_userID');
 var hib_selectedUserID = document.getElementById('hib_selectedUserID');
 var ib_squat = document.getElementById('ib_squat');
@@ -7,8 +8,9 @@ var ib_benchpress = document.getElementById('ib_benchpress');
 window.onload = function(){
     callAjax("I");
 };
+//#endregion
 
-//리스트 더블 클릭
+//리스트 더블 클릭 시 인스타그램 팝업 발생
 function selectUserList(){ window.open("http://instagram.com/"+hib_selectedUserID.value); }
 
 //CRUD

@@ -16,6 +16,7 @@ app.set('views', __dirname + '/views');
 
 app.use('/script',express.static(__dirname + "/script"));
 app.use('/views',express.static(__dirname + "/views"));
+app.use('/images',express.static(__dirname + "/images"));
 
 const { MongoClient } = require("mongodb");
 const { response } = require('express');
@@ -77,7 +78,7 @@ app.post('/ajax', function(req, res, next) {
   searchData(req.body.op,req.body.col,req.body.userID).then((msg) => {
                         console.log(msg);
                         if(msg=="signUp") res.send({result:msg});
-                        else res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3]});
+                        else res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3], nickName:msg[4]});
   });
 
 });
@@ -109,6 +110,7 @@ async function searchData(op,col,userID){
         list[1] = res.deadlift;
         list[2] = res.benchpress;
         list[3] = res.instaID;
+        list[4] = res.nickName;
       }
     }
 

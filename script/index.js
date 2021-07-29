@@ -1,12 +1,26 @@
+//#region 초반 선언부
 var btn_competition = document.getElementById('btn_competition');
 var ib_instaID = document.getElementById('ib_instaID');
 var btn_confirm = document.getElementById('btn_confirm');
+var div_signup = document.getElementById('div_signup');
+var div_signin = document.getElementById('div_signin');
+var ib_squat = document.getElementById('ib_squat');
+var ib_benchpress = document.getElementById('ib_benchpress');
+var ib_deadlift = document.getElementById('ib_deadlift');
+var span_name = document.getElementById('span_name');
+var img_profile = document.getElementById('img_profile');
+//#endregion
 
-//버튼 클릭
+//비교 페이지로 이동
 function gotoCompetition(){ location.href="/competition"; }
 
+//로그인 버튼 클릭
 function confirm(){
     callAjax( "login" );
+}
+
+function confirm1(){
+    callAjax( "test" );
 }
 
 //Ajax 함수
@@ -24,15 +38,28 @@ function callAjax(op) {
         success: function(result) {
 
             if ( result['result'] == "signIn" ) {
-                alert( result['squat']+","+result['deadlift']+","+result['benchpress'] );
+                div_signin.setAttribute("style","display:block"); 
+                div_signup.setAttribute("style","display:none"); 
+                ib_squat.value=result['squat'];
+                ib_benchpress.value=result['benchpress'];
+                ib_deadlift.value=result['deadlift'];
+                span_name.innerText=result['nickName'];
+                img_profile.setAttribute("src","/images/profile/"+ib_instaID.value+".jpg");
+                //alert( result['squat']+","+result['deadlift']+","+result['benchpress'] );
             }else if ( result['result'] == "signUp" ) {
-                alert( "가입해주세요!" );
+                div_signin.setAttribute("style","display:none"); 
+                div_signup.setAttribute("style","display:block"); 
+                ib_squat.value="";
+                ib_benchpress.value="";
+                ib_deadlift.value="";
+            }else if ( result['result'] == "test" ) {
+                alert(result["msg"]);
             }
             
         } //function끝
     }).done(function(response) {
         //alert("success");
     }).fail(function(response, txt, e) {
-        alert("fail");
+        //alert("fail");
     }); // ------      ajax 끝-----------------
 }

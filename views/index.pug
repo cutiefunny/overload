@@ -8,8 +8,31 @@ html
         p 
         | 인스타그램 아이디를 입력하세요.
         br
-        input(type="text" id="ib_instaID")
-        button(value="확인" id="btn_confirm" onclick="confirm()") 확인
+        input(type="text" id="ib_instaID" onKeypress="javascript:if(event.keyCode==13) {confirm1()}")
+        button(value="확인" id="btn_confirm" onclick="confirm1()") 확인
+        P 
+        #div_signup(style="display:none")
+            | 첫 방문을 환영합니다!
+            br
+            | 본인의 3대 중량을 입력하세요.
+            p
+        #div_signin(style="display:none")
+            br
+            img#img_profile(src="")
+            br
+            span#span_name
+            | 님 안녕하세요!
+            br
+            | 3대 중량에 변동사항이 있나요?
+            p
+        | 스쿼트 
+        input(type="text" id="ib_squat" style="width:82;text-align:right")
+        br
+        | 벤치프레스 
+        input(type="text" id="ib_benchpress" style="width:50;text-align:right")
+        br
+        | 데드리프트 
+        input(type="text" id="ib_deadlift" style="width:50;text-align:right")
         P
         button(id="btn_competition" onclick="gotoCompetition()") competition→
         
