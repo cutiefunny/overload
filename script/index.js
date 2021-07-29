@@ -9,19 +9,17 @@ var ib_benchpress = document.getElementById('ib_benchpress');
 var ib_deadlift = document.getElementById('ib_deadlift');
 var span_name = document.getElementById('span_name');
 var img_profile = document.getElementById('img_profile');
+var btn_save = document.getElementById('btn_save');
 //#endregion
 
 //비교 페이지로 이동
 function gotoCompetition(){ location.href="/competition"; }
 
 //로그인 버튼 클릭
-function confirm(){
-    callAjax( "login" );
-}
+function confirm(){ callAjax( "login" ); }
 
-function confirm1(){
-    callAjax( "test" );
-}
+//저장 버튼 클릭
+function save(){ callAjax( "save" ); }
 
 //Ajax 함수
 function callAjax(op) {
@@ -34,6 +32,9 @@ function callAjax(op) {
             , op : op
             , col : "3record"
             , userID : ib_instaID.value
+            , squat : ib_squat.value
+            , benchpress : ib_benchpress.value
+            , deadlift : ib_deadlift.value
         },
         success: function(result) {
 
@@ -54,6 +55,8 @@ function callAjax(op) {
                 ib_deadlift.value="";
             }else if ( result['result'] == "test" ) {
                 alert(result["msg"]);
+            }else if ( result['result'] == "save" ) {
+                alert("저장되었습니다.");
             }
             
         } //function끝

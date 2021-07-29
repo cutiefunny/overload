@@ -80,6 +80,12 @@ app.post('/ajax', function(req, res, next) {
                         if(msg=="signUp") res.send({result:msg});
                         else res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3], nickName:msg[4]});
   });
+  else if(req.body.op=="save")
+  var record = [req.body.squat,req.body.benchpress,req.body.deadlift];
+  insertData(req.body.op,req.body.col,req.body.userID,record).then((msg) => {
+                        console.log(msg);
+                        if(msg=="save") res.send({result:msg});
+  });
 
 });
 
@@ -118,15 +124,16 @@ async function searchData(op,col,userID){
     return list;
 }
 
-async function insertData(req,col,userID){
+async function insertData(op,col,userID,record){
 
   var database = client.db("overload");
   var userList = database.collection(col);
   var filter;
   var doc;
-  if(col=="whiteList"){
-    filter = {name:req};
-    doc = { $set: { name : req, lastDate : "20210727" } };
+  console.log(record);
+  if(op=="save"){
+    filter = { instaID : userID, time : getDate() };
+    doc = { $set: { instaID : userID, time : getDate() } };
   }else if(col=="userList"){
     filter = {user:req};
     doc = { $set: { user : req } };
@@ -142,7 +149,7 @@ async function insertData(req,col,userID){
   userList.updateOne(filter,doc,{upsert:true});
   //userList.insertOne(doc);
 
-  return req;
+  return op;
 }
 
 async function delData(req,col,userID){
@@ -160,3 +167,16 @@ async function delData(req,col,userID){
 }
 
 /* CRUD 함수 끝 */ 
+
+//#region 편의성 함수
+
+//YYMMDD 가져오기
+function getDate(){
+  var date = new Date();
+  var month;
+  if(date.getMonth()+1 < 10) month="0"+(date.getMonth()+1).toString();
+  else month=(date.getMonth()+1).toString();
+  return date.getFullYear().toString() + month + date.getDate().toString();
+}
+
+//#endregion
