@@ -70,7 +70,7 @@ app.post('/ajax', function(req, res, next) {
                         res.send({result:"D", msg:msg});
   });
   else if(req.body.op=="I")
-  searchData(req.body.op,"3record").then((msg) => {
+  searchData(req.body.op,req.body.col).then((msg) => {
                         console.log(msg);
                         res.send({result:"I", msg:msg});
   });
@@ -78,15 +78,17 @@ app.post('/ajax', function(req, res, next) {
   searchData(req.body.op,req.body.col,req.body.userID).then((msg) => {
                         console.log(msg);
                         if(msg=="signUp") res.send({result:msg});
-                        else res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3], nickName:msg[4]});
+                        //else res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3], nickName:msg[4]});
+                        else res.send({result:"signIn", testArray : msg });
   });
-  else if(req.body.op=="save")
-  var record = [req.body.squat,req.body.benchpress,req.body.deadlift];
-  insertData(req.body.op,req.body.col,req.body.userID,record).then((msg) => {
-                        console.log(msg);
-                        if(msg=="save") res.send({result:msg});
-  });
-
+  else if(req.body.op=="save"){
+    var record = [req.body.squat,req.body.benchpress,req.body.deadlift,req.body.nickName];
+    insertData(req.body.op,req.body.col,req.body.userID,record).then((msg) => {
+                          console.log(msg);
+                          if(msg=="save") res.send({result:msg});
+    
+    });
+  }
 });
 
 /* CRUD 함수 시작 */
@@ -97,26 +99,28 @@ async function searchData(op,col,userID){
     var collection = database.collection(col);
     var list = [];
 
-    if(col=="3record" && op=="I") {
+    if(op=="I") {
       res = await collection.find({ nickName: {$regex:""} }).toArray();
       res.forEach(element => { list.push(element.nickName); });
     }
-    else if(col=="3record" && op=="R") {
+    else if(op=="R") {
       res = await collection.findOne({ nickName: userID });
       list[0] = res.squat;
       list[1] = res.deadlift;
       list[2] = res.benchpress;
       list[3] = res.instaID;
     }
-    else if(col=="3record" && op=="login") {
-      res = await collection.findOne({ instaID: userID });
-      if(res == null ) return "signUp";
+    else if(op=="login") {
+      res = await collection.find({ instaID: userID }).toArray();
+      if(res == null || res == "" ) return "signUp";
       else{
-        list[0] = res.squat;
-        list[1] = res.deadlift;
-        list[2] = res.benchpress;
-        list[3] = res.instaID;
-        list[4] = res.nickName;
+        console.log(res);
+        // list[0] = res.squat;
+        // list[1] = res.deadlift;
+        // list[2] = res.benchpress;
+        // list[3] = res.instaID;
+        // list[4] = res.nickName;
+        list=res;
       }
     }
 
@@ -125,7 +129,6 @@ async function searchData(op,col,userID){
 }
 
 async function insertData(op,col,userID,record){
-
   var database = client.db("overload");
   var userList = database.collection(col);
   var filter;
@@ -133,7 +136,7 @@ async function insertData(op,col,userID,record){
   console.log(record);
   if(op=="save"){
     filter = { instaID : userID, time : getDate() };
-    doc = { $set: { instaID : userID, time : getDate() } };
+    doc = { $set: { instaID : userID, time : getDate(), squat : parseInt(record[0]), benchpress : parseInt(record[1]), deadlift : parseInt(record[2]), nickName : record[3] } };
   }else if(col=="userList"){
     filter = {user:req};
     doc = { $set: { user : req } };

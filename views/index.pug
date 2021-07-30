@@ -9,13 +9,24 @@ html
         | 인스타그램 아이디를 입력하세요.
         br
         input(type="text" id="ib_instaID" onKeypress="javascript:if(event.keyCode==13) {confirm()}")
-        button(value="확인" id="btn_confirm" onclick="confirm()") 확인
+        button(id="btn_confirm" onclick="confirm()") 확인
         P 
+        #div_signupYN(style="display:none")
+            | 등록되지 않은 아이디입니다.
+            br
+            | 이 아이디로 등록하시겠어요?
+            p
+            button(onclick="signupY()") 네
+            button(onclick="signupN()") 아니오
+            P
         #div_signup(style="display:none")
             | 첫 방문을 환영합니다!
             br
-            | 본인의 3대 중량을 입력하세요.
+            | 본인의 닉네임과 3대 중량을 입력하세요.
             p
+            | 닉네임 
+            input(type="text" id="ib_nickname" style="width:82;text-align:right")
+            P
         #div_signin(style="display:none")
             br
             img#img_profile(src="")

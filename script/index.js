@@ -2,8 +2,10 @@
 var btn_competition = document.getElementById('btn_competition');
 var ib_instaID = document.getElementById('ib_instaID');
 var btn_confirm = document.getElementById('btn_confirm');
+var div_signupYN = document.getElementById('div_signupYN');
 var div_signup = document.getElementById('div_signup');
 var div_signin = document.getElementById('div_signin');
+var ib_nickname = document.getElementById('ib_nickname');
 var ib_squat = document.getElementById('ib_squat');
 var ib_benchpress = document.getElementById('ib_benchpress');
 var ib_deadlift = document.getElementById('ib_deadlift');
@@ -21,6 +23,18 @@ function confirm(){ callAjax( "login" ); }
 //저장 버튼 클릭
 function save(){ callAjax( "save" ); }
 
+//등록하시겠습니까? 예/아니오
+function signupY(){
+    div_signin.setAttribute("style","display:none"); 
+    div_signupYN.setAttribute("style","display:none"); 
+    div_signup.setAttribute("style","display:block"); 
+}
+function signupN(){
+    div_signin.setAttribute("style","display:none"); 
+    div_signupYN.setAttribute("style","display:none"); 
+    div_signup.setAttribute("style","display:none"); 
+}
+
 //Ajax 함수
 function callAjax(op) {
 
@@ -32,6 +46,7 @@ function callAjax(op) {
             , op : op
             , col : "3record"
             , userID : ib_instaID.value
+            , nickName : ib_nickname.value
             , squat : ib_squat.value
             , benchpress : ib_benchpress.value
             , deadlift : ib_deadlift.value
@@ -41,15 +56,18 @@ function callAjax(op) {
             if ( result['result'] == "signIn" ) {
                 div_signin.setAttribute("style","display:block"); 
                 div_signup.setAttribute("style","display:none"); 
-                ib_squat.value=result['squat'];
-                ib_benchpress.value=result['benchpress'];
-                ib_deadlift.value=result['deadlift'];
-                span_name.innerText=result['nickName'];
-                img_profile.setAttribute("src","/images/profile/"+ib_instaID.value+".jpg");
+                alert( result['testArray'][0].squat ); //JSON으로 넘어옴을 확인
+                // ib_squat.value=result['squat'];
+                // ib_benchpress.value=result['benchpress'];
+                // ib_deadlift.value=result['deadlift'];
+                // span_name.innerText=result['nickName'];
+                // ib_nickname.value=result['nickName'];
+                // img_profile.setAttribute("src","/images/profile/"+ib_instaID.value+".jpg");
                 //alert( result['squat']+","+result['deadlift']+","+result['benchpress'] );
             }else if ( result['result'] == "signUp" ) {
                 div_signin.setAttribute("style","display:none"); 
-                div_signup.setAttribute("style","display:block"); 
+                div_signupYN.setAttribute("style","display:block"); 
+                ib_nickname.value=""
                 ib_squat.value="";
                 ib_benchpress.value="";
                 ib_deadlift.value="";
