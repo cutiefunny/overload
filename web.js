@@ -35,21 +35,19 @@ console.log("server started");
 
 app.get('/competition', function (req, res) {
     res.render('competition', { title: 'progressive overload'
-                        , message: 'Hello there!'
-                        , message2: 'test'
+                        //, list : [1,2,3,4,5]
                     });
   });
 
   app.get('/', function (req, res) {
     res.render('index', { title: 'progressive overload'
-                        , message: 'Hello there!'
-                        , message2: 'test'
+                        , list : [1]
                     });
   });
 //#endregion
 
 //ajax 인터페이스
-app.get('/getajax', function(req, res, next) { res.render("/ajax"); });
+//app.get('/getajax', function(req, res, next) { res.render("/ajax", { list : [1,2,3] } ); });
 
 //ajax 컨트롤러
 app.post('/ajax', function(req, res, next) {
@@ -78,8 +76,7 @@ app.post('/ajax', function(req, res, next) {
   searchData(req.body.op,req.body.col,req.body.userID).then((msg) => {
                         console.log(msg);
                         if(msg=="signUp") res.send({result:msg});
-                        //else res.send({result:"signIn", squat:msg[0], deadlift:msg[1], benchpress:msg[2], instaID:msg[3], nickName:msg[4]});
-                        else res.send({result:"signIn", testArray : msg });
+                        else res.send({result:"signIn", personalData : msg });
   });
   else if(req.body.op=="save"){
     var record = [req.body.squat,req.body.benchpress,req.body.deadlift,req.body.nickName];
@@ -111,15 +108,10 @@ async function searchData(op,col,userID){
       list[3] = res.instaID;
     }
     else if(op=="login") {
-      res = await collection.find({ instaID: userID }).toArray();
+      res = await collection.find({ instaID: userID }).sort({ time : -1 }).toArray();
       if(res == null || res == "" ) return "signUp";
       else{
         console.log(res);
-        // list[0] = res.squat;
-        // list[1] = res.deadlift;
-        // list[2] = res.benchpress;
-        // list[3] = res.instaID;
-        // list[4] = res.nickName;
         list=res;
       }
     }
@@ -177,9 +169,11 @@ async function delData(req,col,userID){
 function getDate(){
   var date = new Date();
   var month;
+  var day;
   if(date.getMonth()+1 < 10) month="0"+(date.getMonth()+1).toString();
+  if(date.getDate() < 10 ) day="0"+date.getDate().toString();
   else month=(date.getMonth()+1).toString();
-  return date.getFullYear().toString() + month + date.getDate().toString();
+  return date.getFullYear().toString() + month + day;
 }
 
 //#endregion

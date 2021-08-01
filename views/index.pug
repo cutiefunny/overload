@@ -3,8 +3,9 @@ html
         title=title 
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel='stylesheet', href='/views/style.css')
     body
-        h1 점진적 과부하 개발 중
+        h2 점진적 과부하 개발 중
         p 
         | 인스타그램 아이디를 입력하세요.
         br
@@ -36,17 +37,21 @@ html
             br
             | 3대 중량에 변동사항이 있나요?
             p
-        | 스쿼트 
-        input(type="text" id="ib_squat" style="width:82;text-align:right")
-        br
-        | 벤치프레스 
-        input(type="text" id="ib_benchpress" style="width:50;text-align:right")
-        br
-        | 데드리프트 
-        input(type="text" id="ib_deadlift" style="width:50;text-align:right")
-        P
-        button(id="btn_save" onclick="save()") 저장
-        button(id="btn_competition" onclick="gotoCompetition()") competition→
+        #div_inputRecord(style="display:none")
+            | 스쿼트 
+            input(type="text" id="ib_squat" style="width:82;text-align:right")
+            br
+            | 벤치프레스 
+            input(type="text" id="ib_benchpress" style="width:50;text-align:right")
+            br
+            | 데드리프트 
+            input(type="text" id="ib_deadlift" style="width:50;text-align:right")
+            P 
+            button(id="btn_save" onclick="save()") 저장
+            P
+        table#tb_record
+        //- P
+        //- button(id="btn_competition" onclick="gotoCompetition()") competition→
 
         script(src="/script/index.js")
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
