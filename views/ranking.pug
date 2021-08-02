@@ -1,0 +1,32 @@
+html 
+    head 
+        title=title 
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel='stylesheet', href='/views/style.css')
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
+    body
+        table#tb_rank
+            tr 
+                th
+                th 인스타ID
+                th 닉네임
+                th S
+                th B
+                th D
+                th Total
+            ul
+                each user in rankData 
+                    tr
+                        td(style="padding:0px;") 
+                            img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
+                        td= user.instaID
+                        td= user.nickName
+                        td= user.squat
+                        td= user.benchpress
+                        td= user.deadlift
+                        td= user.total
+
+        script(src="/script/ranking.js")
+        script(src="//code.jquery.com/jquery-1.11.0.min.js")
+        script(src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js")

@@ -39,15 +39,22 @@ app.get('/competition', function (req, res) {
                     });
   });
 
+app.get('/ranking', function (req, res) {
+  searchData("getRank","ranking").then((msg) => {
+    console.log(msg);
+    res.render('ranking', { title: 'ranking'
+                        , rankData : msg
+                    });
+  })
+    
+  });
+
   app.get('/', function (req, res) {
     res.render('index', { title: 'progressive overload'
                         , list : [1]
                     });
   });
 //#endregion
-
-//ajax 인터페이스
-//app.get('/getajax', function(req, res, next) { res.render("/ajax", { list : [1,2,3] } ); });
 
 //ajax 컨트롤러
 app.post('/ajax', function(req, res, next) {
@@ -86,6 +93,16 @@ app.post('/ajax', function(req, res, next) {
     
     });
   }
+  else if(req.body.op=="getAllData")
+  searchData("getAllData","3record").then((msg) => {
+                          console.log(msg);
+                          res.send({result:"getAllData", allData:msg});
+    });
+  else if(req.body.op=="getRank")
+  searchData("getRank","ranking").then((msg) => {
+                          console.log(msg);
+                          res.send({result:"getRank", rankData:msg});
+    });
 });
 
 /* CRUD 함수 시작 */
@@ -101,6 +118,7 @@ async function searchData(op,col,userID){
       res.forEach(element => { list.push(element.nickName); });
     }
     else if(op=="R") {
+      console.log(userID);
       res = await collection.findOne({ nickName: userID });
       list[0] = res.squat;
       list[1] = res.deadlift;
@@ -115,33 +133,38 @@ async function searchData(op,col,userID){
         list=res;
       }
     }
+    else if(op=="getUserList") {
+      userList = await collection.distinct("instaID");
+      list=userList;
+    }
+    else if(op=="getAllData") {
+      list = await collection.find({ instaID: {$regex:""} }).toArray()
+    }
+    else if(op=="getRank") {
+      list = await collection.find({ instaID: {$regex:""} }).sort({ total : -1 }) .toArray();
+    }
 
-    
     return list;
 }
 
 async function insertData(op,col,userID,record){
   var database = client.db("overload");
   var userList = database.collection(col);
+  var rank = database.collection("ranking");
   var filter;
   var doc;
+  var squat = parseInt(record[0]);
+  var benchpress = parseInt(record[1]);
+  var deadlift = parseInt(record[2]);
+  var total = squat+benchpress+deadlift;
   console.log(record);
   if(op=="save"){
     filter = { instaID : userID, time : getDate() };
-    doc = { $set: { instaID : userID, time : getDate(), squat : parseInt(record[0]), benchpress : parseInt(record[1]), deadlift : parseInt(record[2]), nickName : record[3] } };
-  }else if(col=="userList"){
-    filter = {user:req};
-    doc = { $set: { user : req } };
-  }else if(col=="tags"){
-    var seq = await userList.find({ tag: {$regex:""}, user : userID}).sort({seq:-1}).toArray();
-    console.log(seq[0].seq);
-    filter = { tag : req, user : userID };
-    doc = { $set: { seq : seq[0].seq+1, tag : req, user : userID } };
-  }else if(col=="filterWord"){
-    filter = {filterWord:req};
-    doc = { $set: { filterWord : req } };
+    filter_rank = { instaID : userID };
+    doc = { $set: { instaID : userID, time : getDate(), squat : squat, benchpress : benchpress, deadlift : deadlift, nickName : record[3], total : total } };
   }
   userList.updateOne(filter,doc,{upsert:true});
+  rank.updateOne(filter_rank,doc,{upsert:true});
   //userList.insertOne(doc);
 
   return op;

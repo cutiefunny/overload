@@ -5,6 +5,12 @@ table {
     border: 1px solid #444444;
     border-collapse: collapse;
   }
-  th, td {
+  th{
     border: 1px solid #444444;
+    background-color: #d2d2d3;
+  }
+  td {
+    border: 1px solid #444444;
+    text-align: center;
+    padding: 5px;
   }

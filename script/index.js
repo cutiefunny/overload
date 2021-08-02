@@ -30,6 +30,9 @@ function confirm(){ callAjax( "login" ); }
 //저장 버튼 클릭
 function save(){ callAjax( "save" ); }
 
+//get Rank 버튼 클릭
+function getRank(){ location.href="/ranking"; }
+
 //등록하시겠습니까? 예/아니오
 function signupY(){
     div_signin.setAttribute("style","display:none"); 
@@ -72,8 +75,7 @@ function callAjax(op) {
                 ib_squat.value = result['personalData'][0].squat;
                 ib_benchpress.value = result['personalData'][0].benchpress;
                 ib_deadlift.value = result['personalData'][0].deadlift;
-                var data;
-                data += "<thead><tr><th>날짜</th><th>S</th><th>B</th><th>D</th><th>Total</th></tr></thead><tbody>";
+                var data = "<thead><tr><th>날짜</th><th>S</th><th>B</th><th>D</th><th>Total</th></tr></thead><tbody>";
                 var cnt=0;
                 var diff_s=0;
                 var diff_b=0;
@@ -115,6 +117,8 @@ function callAjax(op) {
                 span_name.innerText=result['personalData'][0].nickName;
                 ib_nickname.value=result['personalData'][0].nickName;
                 img_profile.setAttribute("src","/images/profile/"+ib_instaID.value+".jpg");
+                img_profile.setAttribute("width","150px");
+                img_profile.setAttribute("height","150px");
                 //alert( result['squat']+","+result['deadlift']+","+result['benchpress'] );
             }else if ( result['result'] == "signUp" ) { //첫 방문자일 경우
                 div_signin.setAttribute("style","display:none"); 
@@ -128,6 +132,8 @@ function callAjax(op) {
             }else if ( result['result'] == "save" ) {  //기록 저장
                 alert("저장되었습니다.");
                 callAjax( "login" );
+            }else if ( result['result'] == "getAllData" ) {  //모든 데이터 획득
+                alert(result['allData']);
             }
             
         } //function끝
@@ -142,8 +148,8 @@ function callAjax(op) {
 
 function getFontColor(value){ //+-에 따른 폰트 색 지정
     var color;
-    if(value<0) color = "red";
-    else if(value>0) color = "blue";
+    if(value<0) color = "blue";
+    else if(value>0) color = "red";
     else if(value==0) color = "black";
     return color;
 }

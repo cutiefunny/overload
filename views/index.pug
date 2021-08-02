@@ -40,9 +40,9 @@ html
             | 3대 중량에 변동사항이 있나요?
             p
             p
-        #div_inputRecord(style="display:none")
+        #div_inputRecord(style="display:none;")
             | 스쿼트 
-            input(type="text" id="ib_squat" style="width:82;text-align:right")
+            input(type="text" id="ib_squat" style="width:50;text-align:right")
             br
             | 벤치프레스 
             input(type="text" id="ib_benchpress" style="width:50;text-align:right")
@@ -52,9 +52,13 @@ html
             P 
             button(id="btn_save" onclick="save()") 저장
             P
-        table#tb_record(class="ui celled table")
+            P
+        table#tb_record
         //- P
         //- button(id="btn_competition" onclick="gotoCompetition()") competition→
+        P
+        P 
+        button(id="btn_getRank" onclick="getRank()") rank
 
         script(src="/script/index.js")
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
