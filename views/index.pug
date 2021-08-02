@@ -11,7 +11,7 @@ html
         | 인스타그램 아이디를 입력하세요.
         br
         input(type="text" id="ib_instaID" onKeypress="javascript:if(event.keyCode==13) {confirm()}")
-        button(id="btn_confirm" onclick="confirm()") 확인
+        button#btn_confirm(class="ui button" onclick="confirm()") 확인
         P 
         #div_signupYN(style="display:none")
             | 등록되지 않은 아이디입니다.
