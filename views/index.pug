@@ -50,7 +50,7 @@ html
             | 데드리프트 
             input(type="text" id="ib_deadlift" style="width:50;text-align:right")
             P 
-            button(id="btn_save" onclick="save()") 저장
+            button(id="btn_save" onclick="save()" class="ui primary button") 저장
             P
             P
         table#tb_record
@@ -58,7 +58,10 @@ html
         //- button(id="btn_competition" onclick="gotoCompetition()") competition→
         P
         P 
-        button(id="btn_getRank" onclick="getRank()") rank
+        div(id="btn_getRank" onclick="getRank()" class="ui animated button")
+            div(class="visible content") rank
+            div(class="hidden content")
+                i(class="right arrow icon")
 
         script(src="/script/index.js")
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
