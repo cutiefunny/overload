@@ -7,8 +7,12 @@ html
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
     body
       center
+        - var cnt=1
+        h3 MEN
+        P
         table#tb_rank_male(width="430px")
             tr 
+                th 
                 th
                 th 인스타ID
                 th 닉네임
@@ -20,9 +24,10 @@ html
                 each user in rankData 
                   if user.sex==="male"
                     tr
+                        td= cnt++
                         td(style="padding:0px;" width="50px") 
                             img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                        td(width="150px") 
+                        td(width="130px") 
                             a(href="http://www.instagram.com/"+user.instaID)
                                 =user.instaID
                         td= user.nickName
@@ -31,9 +36,12 @@ html
                         td= user.deadlift
                         td= user.total
         P
+        h3 WOMEN
         P
+        - cnt=1
         table#tb_rank_female(width="430px")
-            tr 
+            tr
+                th  
                 th
                 th 인스타ID
                 th 닉네임
@@ -45,9 +53,10 @@ html
                 each user in rankData 
                   if user.sex==="female"
                     tr
+                        td= cnt++
                         td(style="padding:0px;" width="50px") 
                             img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                        td(width="150px") 
+                        td(width="130px") 
                             a(href="http://www.instagram.com/"+user.instaID)
                                 =user.instaID
                         td= user.nickName
