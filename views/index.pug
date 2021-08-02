@@ -39,6 +39,7 @@ html
             br
             | 3대 중량에 변동사항이 있나요?
             p
+            p
         #div_inputRecord(style="display:none")
             | 스쿼트 
             input(type="text" id="ib_squat" style="width:82;text-align:right")
@@ -51,7 +52,7 @@ html
             P 
             button(id="btn_save" onclick="save()") 저장
             P
-        table#tb_record
+        table#tb_record(class="ui celled table")
         //- P
         //- button(id="btn_competition" onclick="gotoCompetition()") competition→
 

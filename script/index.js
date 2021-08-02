@@ -73,7 +73,7 @@ function callAjax(op) {
                 ib_benchpress.value = result['personalData'][0].benchpress;
                 ib_deadlift.value = result['personalData'][0].deadlift;
                 var data;
-                data += "<tr><th>날짜</th><th>S</th><th>B</th><th>D</th><th>Total</th></tr>";
+                data += "<thead><tr><th>날짜</th><th>S</th><th>B</th><th>D</th><th>Total</th></tr></thead><tbody>";
                 var cnt=0;
                 var diff_s=0;
                 var diff_b=0;
@@ -102,14 +102,15 @@ function callAjax(op) {
                         fontColor_total = "black";
                     }
                     data += "<tr>"
-                    + "<td>"+item.time+"</td>"
-                    + "<td>"+item.squat+"<font size=1 color="+fontColor_s+">("+ diff_s +")</font>"+"</td>"
-                    + "<td>"+item.benchpress+"<font size=1 color="+fontColor_b+">("+ diff_b +")</font>"+"</td>"
-                    + "<td>"+item.deadlift+"<font size=1 color="+fontColor_d+">("+ diff_d +")</font>"+"</td>"
-                    + "<td>"+(item.squat+item.benchpress+item.deadlift)+"<font size=1 color="+fontColor_total+">("+ (diff_s+diff_b+diff_d) +")</font>"+"</td>"
+                    + "<td data-label=\"날짜\">"+item.time+"</td>"
+                    + "<td data-label=\"S\">"+item.squat+"<font size=1 color="+fontColor_s+">("+ diff_s +")</font>"+"</td>"
+                    + "<td data-label=\"B\">"+item.benchpress+"<font size=1 color="+fontColor_b+">("+ diff_b +")</font>"+"</td>"
+                    + "<td data-label=\"D\">"+item.deadlift+"<font size=1 color="+fontColor_d+">("+ diff_d +")</font>"+"</td>"
+                    + "<td data-label=\"Total\">"+(item.squat+item.benchpress+item.deadlift)+"<font size=1 color="+fontColor_total+">("+ (diff_s+diff_b+diff_d) +")</font>"+"</td>"
                     + "</tr>";
                     cnt++;
                 });
+                data += "</tbody>";
                 tb_record.innerHTML = data;
                 span_name.innerText=result['personalData'][0].nickName;
                 ib_nickname.value=result['personalData'][0].nickName;
