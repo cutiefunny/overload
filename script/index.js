@@ -53,6 +53,8 @@ function signupN(){
 //Ajax 함수
 function callAjax(op) {
 
+    if(!validation()) op="fail";
+
     $.ajax({
         url: '/ajax',
         dataType: 'json',
@@ -148,6 +150,7 @@ function callAjax(op) {
     }).fail(function(response, txt, e) {
         //alert("fail");
     }); // ------      ajax 끝-----------------
+    
 }
 
 //편의성 함수
@@ -167,3 +170,11 @@ function getGender() { //라디오버튼에서 성별 선택
     });
     return gender;
   }
+
+function validation() {
+    if(ib_instaID.value.length < 2 ) {
+        alert("인스타 아이디를 두 글자 이상 입력하세요.");
+        return false;
+    }
+    return true;
+}

@@ -13,8 +13,9 @@ html
         p 
         h3 인스타그램 아이디를 입력하세요.
         p
-        input(type="text" id="ib_instaID" style="height:35px;" onKeypress="javascript:if(event.keyCode==13) {confirm()}")
-        button#btn_confirm(class="ui button" onclick="confirm()") 확인
+        #field
+            input(type="text" id="ib_instaID" name="instaID" style="height:35px;" onKeypress="javascript:if(event.keyCode==13) {confirm()}")
+            button#btn_confirm(class="ui button" onclick="confirm()") 확인
         P 
         #div_signupYN(style="display:none")
             | 등록되지 않은 아이디입니다.
@@ -50,13 +51,13 @@ html
             p
         #div_inputRecord(style="display:none; text-align:right")
             | 스쿼트 
-            input(type="text" id="ib_squat" style="width:50;text-align:right")
+            input(type="number" id="ib_squat" style="width:50;text-align:right")
             br
             | 벤치프레스 
-            input(type="text" id="ib_benchpress" style="width:50;text-align:right")
+            input(type="number" id="ib_benchpress" style="width:50;text-align:right")
             br
             | 데드리프트 
-            input(type="text" id="ib_deadlift" style="width:50;text-align:right")
+            input(type="number" id="ib_deadlift" style="width:50;text-align:right")
             P 
             button(id="btn_save" onclick="save()" class="ui primary button") 저장
             P
@@ -67,6 +68,11 @@ html
         P 
         div(id="btn_getRank" onclick="getRank()" class="ui animated button")
             div(class="visible content") rank
+            div(class="hidden content")
+                i(class="right arrow icon")
+        |
+        div(id="btn_getRecord" onclick="getRecord()" class="ui animated button")
+            div(class="visible content") personal record
             div(class="hidden content")
                 i(class="right arrow icon")
 
