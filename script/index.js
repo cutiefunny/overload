@@ -16,10 +16,12 @@ var img_profile = document.getElementById('img_profile');
 var btn_save = document.getElementById('btn_save');
 var tb_record = document.getElementById('tb_record');
 var rb_sex = document.getElementsByName('radioButton');
+var btn_getRecord = document.getElementById('btn_getRecord'); 
 //#endregion
 
 //페이지 시작 시 수행되는 함수
 window.onload = function(){
+    btn_getRecord.hidden();
 };
 
 //비교 페이지로 이동
@@ -76,6 +78,7 @@ function callAjax(op) {
                 div_signup.setAttribute("style","display:none"); 
                 div_inputRecord.setAttribute("style","display:block"); 
                 div_table.setAttribute("style","display:block"); 
+                btn_getRecord.setAttribute("style","visibility:show"); 
                 //최근값을 인풋박스에
                 ib_squat.value = result['personalData'][0].squat;
                 ib_benchpress.value = result['personalData'][0].benchpress;
