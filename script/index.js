@@ -6,6 +6,7 @@ var div_signupYN = document.getElementById('div_signupYN');
 var div_signup = document.getElementById('div_signup');
 var div_signin = document.getElementById('div_signin');
 var div_inputRecord = document.getElementById('div_inputRecord');
+var div_table = document.getElementById('div_table');
 var ib_nickname = document.getElementById('ib_nickname');
 var ib_squat = document.getElementById('ib_squat');
 var ib_benchpress = document.getElementById('ib_benchpress');
@@ -39,14 +40,14 @@ function signupY(){
     div_signupYN.setAttribute("style","display:none"); 
     div_signup.setAttribute("style","display:block"); 
     div_inputRecord.setAttribute("style","display:block"); 
-    tb_record.setAttribute("style","display:none"); 
+    div_table.setAttribute("style","display:none"); 
 }
 function signupN(){
     div_signin.setAttribute("style","display:none"); 
     div_signupYN.setAttribute("style","display:none"); 
     div_signup.setAttribute("style","display:none"); 
     div_inputRecord.setAttribute("style","display:none"); 
-    tb_record.setAttribute("style","display:none"); 
+    div_table.setAttribute("style","display:none"); 
 }
 
 //Ajax 함수
@@ -72,7 +73,7 @@ function callAjax(op) {
                 div_signin.setAttribute("style","display:block"); 
                 div_signup.setAttribute("style","display:none"); 
                 div_inputRecord.setAttribute("style","display:block"); 
-                tb_record.setAttribute("style","display:block"); 
+                div_table.setAttribute("style","display:block"); 
                 //최근값을 인풋박스에
                 ib_squat.value = result['personalData'][0].squat;
                 ib_benchpress.value = result['personalData'][0].benchpress;
@@ -127,7 +128,7 @@ function callAjax(op) {
                 div_signupYN.setAttribute("style","display:block"); 
                 div_signup.setAttribute("style","display:none"); 
                 div_inputRecord.setAttribute("style","display:none"); 
-                tb_record.setAttribute("style","display:none"); 
+                div_table.setAttribute("style","display:none"); 
                 ib_nickname.value=""
                 ib_squat.value="";
                 ib_benchpress.value="";

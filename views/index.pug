@@ -7,7 +7,9 @@ html
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
     body
     center
-        h2 점진적 과부하 개발 중
+        P
+        | 3대 중량 공유 어플
+        h1 너의 3대는
         p 
         h3 인스타그램 아이디를 입력하세요.
         p
@@ -46,7 +48,7 @@ html
             | 3대 중량에 변동사항이 있나요?
             p
             p
-        #div_inputRecord(style="display:none;")
+        #div_inputRecord(style="display:none; text-align:right")
             | 스쿼트 
             input(type="text" id="ib_squat" style="width:50;text-align:right")
             br
@@ -59,9 +61,8 @@ html
             button(id="btn_save" onclick="save()" class="ui primary button") 저장
             P
             P
-        table#tb_record(class="ui celled table")
-        //- P
-        //- button(id="btn_competition" onclick="gotoCompetition()") competition→
+        #div_table
+            table#tb_record
         P
         P 
         div(id="btn_getRank" onclick="getRank()" class="ui animated button")
