@@ -14,11 +14,11 @@ var span_name = document.getElementById('span_name');
 var img_profile = document.getElementById('img_profile');
 var btn_save = document.getElementById('btn_save');
 var tb_record = document.getElementById('tb_record');
+var rb_sex = document.getElementsByName('radioButton');
 //#endregion
 
 //페이지 시작 시 수행되는 함수
 window.onload = function(){
-    //document.getElementById('testValue').innerHTML="<script>var list=[1,2,3]</script>";
 };
 
 //비교 페이지로 이동
@@ -39,15 +39,15 @@ function signupY(){
     div_signupYN.setAttribute("style","display:none"); 
     div_signup.setAttribute("style","display:block"); 
     div_inputRecord.setAttribute("style","display:block"); 
+    tb_record.setAttribute("style","display:none"); 
 }
 function signupN(){
     div_signin.setAttribute("style","display:none"); 
     div_signupYN.setAttribute("style","display:none"); 
     div_signup.setAttribute("style","display:none"); 
     div_inputRecord.setAttribute("style","display:none"); 
+    tb_record.setAttribute("style","display:none"); 
 }
-
-function test() { list = [1,2,3,4,5]; }
 
 //Ajax 함수
 function callAjax(op) {
@@ -61,6 +61,7 @@ function callAjax(op) {
             , col : "3record"
             , userID : ib_instaID.value
             , nickName : ib_nickname.value
+            , sex : getGender()
             , squat : ib_squat.value
             , benchpress : ib_benchpress.value
             , deadlift : ib_deadlift.value
@@ -71,6 +72,7 @@ function callAjax(op) {
                 div_signin.setAttribute("style","display:block"); 
                 div_signup.setAttribute("style","display:none"); 
                 div_inputRecord.setAttribute("style","display:block"); 
+                tb_record.setAttribute("style","display:block"); 
                 //최근값을 인풋박스에
                 ib_squat.value = result['personalData'][0].squat;
                 ib_benchpress.value = result['personalData'][0].benchpress;
@@ -123,6 +125,9 @@ function callAjax(op) {
             }else if ( result['result'] == "signUp" ) { //첫 방문자일 경우
                 div_signin.setAttribute("style","display:none"); 
                 div_signupYN.setAttribute("style","display:block"); 
+                div_signup.setAttribute("style","display:none"); 
+                div_inputRecord.setAttribute("style","display:none"); 
+                tb_record.setAttribute("style","display:none"); 
                 ib_nickname.value=""
                 ib_squat.value="";
                 ib_benchpress.value="";
@@ -153,3 +158,11 @@ function getFontColor(value){ //+-에 따른 폰트 색 지정
     else if(value==0) color = "black";
     return color;
 }
+
+function getGender() { //라디오버튼에서 성별 선택
+    var gender=""
+    rb_sex.forEach((node)=>{
+        if(node.checked) gender=node.value;
+    });
+    return gender;
+  }

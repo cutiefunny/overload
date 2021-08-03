@@ -35,6 +35,9 @@ html
                         td= user.benchpress
                         td= user.deadlift
                         td= user.total
+                        if sessionID==="sleeping.nyanya"
+                            td
+                                button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
         P
         h3 WOMEN
         P
@@ -64,6 +67,9 @@ html
                         td= user.benchpress
                         td= user.deadlift
                         td= user.total
+                        if sessionID==="sleeping.nyanya"
+                            td
+                                button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
 
         script(src="/script/ranking.js")
         script(src="//code.jquery.com/jquery-1.11.0.min.js")

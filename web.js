@@ -1,7 +1,7 @@
 //#region 초반 선언부
 const express = require('express');
 const port = 8001;
-const log = console.log;
+const session = require('express-session')
 
 const bodyparser= require('body-parser');
 const app = express();
@@ -12,11 +12,20 @@ app.use(bodyparser.json())
 //app.set('view engine', 'ejs');
 app.set('view engine', 'pug');
 app.set('views', __dirname + '/views');
+app.set('trust proxy', 1) // trust first proxy
 //app.engine('html', require('ejs').renderFile);
 
 app.use('/script',express.static(__dirname + "/script"));
 app.use('/views',express.static(__dirname + "/views"));
 app.use('/images',express.static(__dirname + "/images"));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+
+var sessionID="";
 
 const { MongoClient } = require("mongodb");
 const { response } = require('express');
@@ -28,32 +37,37 @@ const uri =
 const client = new MongoClient(uri);
 client.connect();
 
+//리스닝
 app.listen(port, ()=>{
     console.log('8001번 포트에 대기중!')
 })
 console.log("server started");
 
+//경쟁 페이지(close)
 app.get('/competition', function (req, res) {
     res.render('competition', { title: 'progressive overload'
                         //, list : [1,2,3,4,5]
                     });
   });
 
+//랭킹 페이지
 app.get('/ranking', function (req, res) {
   searchData("getRank","ranking").then((msg) => {
     console.log(msg);
     res.render('ranking', { title: 'ranking'
                         , rankData : msg
+                        , sessionID : sessionID
                     });
-  })
-    
-  });
+    })    
+});
 
-  app.get('/', function (req, res) {
+//인덱스 페이지
+app.get('/', function (req, res) {
+    sessionID = "";
     res.render('index', { title: 'progressive overload'
-                        , list : [1]
+                        , sessionID : sessionID
                     });
-  });
+});
 //#endregion
 
 //ajax 컨트롤러
@@ -82,17 +96,24 @@ app.post('/ajax', function(req, res, next) {
   else if(req.body.op=="login")
   searchData(req.body.op,req.body.col,req.body.userID).then((msg) => {
                         console.log(msg);
+                        sessionID = req.body.userID;
                         if(msg=="signUp") res.send({result:msg});
                         else res.send({result:"signIn", personalData : msg });
   });
   else if(req.body.op=="save"){
-    var record = [req.body.squat,req.body.benchpress,req.body.deadlift,req.body.nickName];
+    var record = [req.body.squat,req.body.benchpress,req.body.deadlift,req.body.nickName,req.body.sex];
     insertData(req.body.op,req.body.col,req.body.userID,record).then((msg) => {
                           console.log(msg);
                           if(msg=="save") res.send({result:msg});
     
     });
   }
+  else if(req.body.op=="delUser")
+  delData(req.body.op,req.body.col,req.body.userID).then((msg) => {
+                          console.log(msg);
+                          res.send({result:msg});
+    
+    });
   else if(req.body.op=="getAllData")
   searchData("getAllData","3record").then((msg) => {
                           console.log(msg);
@@ -161,7 +182,7 @@ async function insertData(op,col,userID,record){
   if(op=="save"){
     filter = { instaID : userID, time : getDate() };
     filter_rank = { instaID : userID };
-    doc = { $set: { instaID : userID, time : getDate(), squat : squat, benchpress : benchpress, deadlift : deadlift, nickName : record[3], total : total } };
+    doc = { $set: { instaID : userID, time : getDate(), squat : squat, benchpress : benchpress, deadlift : deadlift, nickName : record[3], sex :record[4] , total : total } };
   }
   userList.updateOne(filter,doc,{upsert:true});
   rank.updateOne(filter_rank,doc,{upsert:true});
@@ -170,18 +191,15 @@ async function insertData(op,col,userID,record){
   return op;
 }
 
-async function delData(req,col,userID){
+async function delData(op,col,userID){
 
   var database = client.db("overload");
   var userList = database.collection(col);
-  var doc;
-  if(col=="whiteList") doc = { name : req };
-  else if(col=="userList") doc = { user : req };
-  else if(col=="tags") doc = { tag : req, user : userID };
-  else if(col=="filterWord") doc = { filterWord : req };
-  userList.deleteOne(doc);
+  var record = database.collection("3record");
+  userList.deleteOne({ instaID : userID });
+  record.deleteMany({ instaID : userID });
 
-  return req;
+  return op;
 }
 
 /* CRUD 함수 끝 */ 

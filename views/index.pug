@@ -27,8 +27,14 @@ html
             br
             | 본인의 닉네임과 3대 중량을 입력하세요.
             p
+            input#rb_sex(type='radio' value="male" name="radioButton" checked)
+            | 남자
+            input#rb_sex(type='radio' value="female" name="radioButton")
+            | 여자
+            P
             | 닉네임 
             input(type="text" id="ib_nickname" style="width:82;text-align:right")
+            P
             P
         #div_signin(style="display:none")
             br
@@ -53,7 +59,7 @@ html
             button(id="btn_save" onclick="save()" class="ui primary button") 저장
             P
             P
-        table#tb_record
+        table#tb_record(class="ui celled table")
         //- P
         //- button(id="btn_competition" onclick="gotoCompetition()") competition→
         P
