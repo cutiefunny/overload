@@ -6,14 +6,20 @@ var div_women = document.getElementById('div_women');
 //#endregion
 
 //men 버튼 클릭
-function selectMen(){
-    div_men.setAttribute("style","display:block"); 
-    div_women.setAttribute("style","display:none"); 
-}
+function selectMen(){ toggleMW(btn_men,div_men); }
+
 //women 버튼 클릭
-function selectWomen(){
-    div_men.setAttribute("style","display:none"); 
-    div_women.setAttribute("style","display:block"); 
+function selectWomen(){ { toggleMW(btn_women,div_women); } }
+
+//men women toggle
+function toggleMW(btn,div){
+    if(btn.getAttribute("class")=="positive ui button") {
+        btn.setAttribute("class","ui button");
+        div.setAttribute("style","display:none");
+    }else if(btn.getAttribute("class")=="ui button") {
+        btn.setAttribute("class","positive ui button");
+        div.setAttribute("style","display:block");
+    }
 }
 
 //유저 삭제 : 관리자 기능
