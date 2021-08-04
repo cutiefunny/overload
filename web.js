@@ -18,6 +18,7 @@ app.set('trust proxy', 1) // trust first proxy
 app.use('/script',express.static(__dirname + "/script"));
 app.use('/views',express.static(__dirname + "/views"));
 app.use('/images',express.static(__dirname + "/images"));
+app.use('/apk',express.static(__dirname + "/apk"));
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
