@@ -17,18 +17,18 @@ html
             input(type="text" id="ib_instaID" name="instaID" style="height:35px;" onKeypress="javascript:if(event.keyCode==13) {confirm()}")
             button#btn_confirm(class="ui button" onclick="confirm()") 확인
             P 
-            div#selectID(class="ui search dropdown")
-                i(class="instagram icon")
-                span(class="text")  select instagram ID
-                .menu
-                    each user in userList
-                        .item= user
-            P 
-            P
-            select#search-select(class="ui search selection dropdown")
-                each user in userList
-                    option= user
-            P
+            //- div#selectID(class="ui search dropdown")
+            //-     i(class="instagram icon")
+            //-     span(class="text")  select instagram ID
+            //-     .menu
+            //-         each user in userList
+            //-             .item= user
+            //- P 
+            //- P
+            //- select#search-select(class="ui search selection dropdown")
+            //-     each user in userList
+            //-         option= user
+            //- P
         #div_signupYN(style="display:none")
             | 등록되지 않은 아이디입니다.
             br
