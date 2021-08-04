@@ -16,7 +16,17 @@ html
         #field
             input(type="text" id="ib_instaID" name="instaID" style="height:35px;" onKeypress="javascript:if(event.keyCode==13) {confirm()}")
             button#btn_confirm(class="ui button" onclick="confirm()") 확인
-        P 
+        //- P 
+        //-     div#selectID(class="ui floating dropdown labeled search icon button")
+        //-         i(class="world icon")
+        //-         span(class="text")  select instagram ID
+        //-         .menu
+        //-             .item Afghan
+        //-             .item Aland Islands
+        //-         //-each user in userList
+        //-         //-    .item= user
+        //- P 
+
         #div_signupYN(style="display:none")
             | 등록되지 않은 아이디입니다.
             br

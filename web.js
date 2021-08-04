@@ -64,10 +64,14 @@ app.get('/ranking', function (req, res) {
 
 //인덱스 페이지
 app.get('/', function (req, res) {
+  searchData("getUserList","ranking").then((msg) => {
+    console.log(msg);
     sessionID = "";
     res.render('index', { title: 'progressive overload'
                         , sessionID : sessionID
+                        , userList : msg
                     });
+    })
 });
 //#endregion
 
