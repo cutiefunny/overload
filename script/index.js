@@ -20,9 +20,15 @@ var btn_getRecord = document.getElementById('btn_getRecord');
 var selectID = document.getElementById('selectID'); 
 //#endregion
 
+$(document).ready(function () { 
+    $('.dropdown').dropdown({
+        allowAdditions: true
+      })
+});
+
 //페이지 시작 시 수행되는 함수
 window.onload = function(){
-    btn_getRecord.hidden();
+    // btn_getRecord.hidden();
 };
 
 //비교 페이지로 이동
@@ -56,7 +62,7 @@ function signupN(){
 //Ajax 함수
 function callAjax(op) {
 
-    if(!validation()) op="fail";
+//    if(!validation()) op="fail";
 
     $.ajax({
         url: '/ajax',
@@ -65,7 +71,7 @@ function callAjax(op) {
         data: { msg : ""
             , op : op
             , col : "3record"
-            , userID : ib_instaID.value
+            , userID : ib_instaID.textContent
             , nickName : ib_nickname.value
             , sex : getGender()
             , squat : ib_squat.value
@@ -125,7 +131,7 @@ function callAjax(op) {
                 tb_record.innerHTML = data;
                 span_name.innerText=result['personalData'][0].nickName;
                 ib_nickname.value=result['personalData'][0].nickName;
-                img_profile.setAttribute("src","/images/profile/"+ib_instaID.value+".jpg");
+                img_profile.setAttribute("src","/images/profile/"+ib_instaID.textContent+".jpg");
                 img_profile.setAttribute("width","150px");
                 img_profile.setAttribute("height","150px");
                 //alert( result['squat']+","+result['deadlift']+","+result['benchpress'] );
