@@ -22,7 +22,9 @@ var selectID = document.getElementById('selectID');
 
 $(document).ready(function () { 
     $('.dropdown').dropdown({
-        allowAdditions: true
+        allowAdditions: true,
+        clearable : true,
+        placeholder : 'enter your instagram ID'
       })
 });
 
@@ -30,10 +32,6 @@ $(document).ready(function () {
 window.onload = function(){
     // btn_getRecord.hidden();
 };
-
-function init(){
-    ib_instaID.textContent = "enter your instagram ID";
-}
 
 //비교 페이지로 이동
 function gotoCompetition(){ location.href="/competition"; }
