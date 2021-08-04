@@ -15,7 +15,7 @@ html
         p
         #field
             //-input(type="text" id="ib_instaID" name="instaID" style="height:35px;" onKeypress="javascript:if(event.keyCode==13) {confirm()}")
-            div#selectID(class="ui search selection dropdown")
+            div#selectID(class="ui search selection dropdown" onclick="init()")
                 span#ib_instaID(class="text") 
                     font(color="lightgray") enter your instagram ID
                 .menu
