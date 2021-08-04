@@ -9,68 +9,71 @@ html
       center
         - var cnt=1
         P
-        h3 MEN
+        button#btn_men(class="ui left attached button" onclick="selectMen()") MEN
+        button#btn_women(class="right attached ui button" onclick="selectWomen()") WOMEN
         P
-        table#tb_rank_male(width="420px")
-            tr 
-                th(width="30px")  
-                th(width="50px") 
-                th(width="150px") 인스타ID
-                //th 닉네임
-                th S
-                th B
-                th D
-                th Total
-            ul
-                each user in rankData 
-                  if user.sex==="male"
-                    tr
-                        td= cnt++
-                        td(style="padding:0px;" width="50px") 
-                            img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                        td
-                            a(href="http://www.instagram.com/"+user.instaID)
-                                =user.instaID
-                        //td= user.nickName
-                        td= user.squat
-                        td= user.benchpress
-                        td= user.deadlift
-                        td= user.total
-                        if sessionID==="sleeping.nyanya"
-                            td
-                                button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
-        P
-        h3 WOMEN
-        P
+        #div_men
+            table#tb_rank_male(width="417px")
+                tr 
+                    th(width="30px")  
+                    th(width="50px") 
+                    th(width="150px") 인스타ID
+                    //th 닉네임
+                    th S
+                    th B
+                    th D
+                    th Total
+                ul
+                    each user in rankData 
+                        if user.sex==="male"
+                            tr
+                                td= cnt++
+                                td(style="padding:0px;" width="50px") 
+                                    img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
+                                td
+                                    a(href="http://www.instagram.com/"+user.instaID)
+                                        =user.instaID
+                                //td= user.nickName
+                                td= user.squat
+                                td= user.benchpress
+                                td= user.deadlift
+                                td= user.total
+                                if sessionID==="sleeping.nyanya"
+                                    td
+                                        button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
+                                    
         - cnt=1
-        table#tb_rank_female(width="420px")
-            tr
-                th(width="30px")    
-                th(width="50px") 
-                th(width="150px")  인스타ID
-                //th 닉네임
-                th S
-                th B
-                th D
-                th Total
-            ul
-                each user in rankData 
-                  if user.sex==="female"
-                    tr
-                        td= cnt++
-                        td(style="padding:0px;" width="50px") 
-                            img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                        td
-                            a(href="http://www.instagram.com/"+user.instaID)
-                                =user.instaID
-                        //td= user.nickName
-                        td= user.squat
-                        td= user.benchpress
-                        td= user.deadlift
-                        td= user.total
-                        if sessionID==="sleeping.nyanya"
-                            td
-                                button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
+        #div_women(style="display:none;")
+            table#tb_rank_female(width="417px")
+                tr
+                    th(width="30px")    
+                    th(width="50px") 
+                    th(width="150px")  인스타ID
+                    //th 닉네임
+                    th S
+                    th B
+                    th D
+                    th Total
+                ul
+                    each user in rankData 
+                        if user.sex==="female"
+                            tr
+                                td= cnt++
+                                td(style="padding:0px;" width="50px") 
+                                    img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
+                                td
+                                    a(href="http://www.instagram.com/"+user.instaID)
+                                        =user.instaID
+                                //td= user.nickName
+                                td= user.squat
+                                td= user.benchpress
+                                td= user.deadlift
+                                td= user.total
+                                if sessionID==="sleeping.nyanya"
+                                    td
+                                        button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
+        p
+        li 인스타ID를 터치하면 인스타그램으로 연결됩니다.
 
         script(src="/script/ranking.js")
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
