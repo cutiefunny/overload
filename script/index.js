@@ -23,10 +23,6 @@ var selectID = document.getElementById('selectID');
 //페이지 시작 시 수행되는 함수
 window.onload = function(){
     btn_getRecord.hidden();
-    selectID
-        .dropdown({
-            clearable: true
-        });
 };
 
 //비교 페이지로 이동
