@@ -131,7 +131,7 @@ function callAjax(op) {
                     cnt++;
                 });
                 data += "</tbody>";
-                tb_record.innerHTML = data;
+                //tb_record.innerHTML = data;
                 span_name.textContent = ib_instaID.textContent;
                 img_profile.setAttribute("src","/images/profile/"+ib_instaID.textContent+".jpg");
                 setGender(result['personalData'][0].sex);
