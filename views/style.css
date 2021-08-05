@@ -16,3 +16,7 @@ table {
     padding: 5px;
     white-space: nowrap;
   }
+
+.inline{
+  display:inline;
+}

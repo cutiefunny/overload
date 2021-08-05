@@ -3,13 +3,31 @@ html
         title=title 
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        //-link(rel='stylesheet', href='/views/style.css')
+        link(rel='stylesheet', href='/views/style.css')
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
     body 
-        each data in record 
-            li= data.squat
+        center
+            input#ib_instaID(style="display:block;" value=sessionID)
+            h1= sessionID
+            //- table#tb_record(width="416px")
+            //-     tr 
+            //-         th date
+            //-         th squat 
+            //-         th benchpress 
+            //-         th deadlift 
+            //-         th total
+            //-     ul    
+            //-         each data in record 
+            //-             tr 
+            //-                 td= data.time 
+            //-                 td= data.squat
+            //-                     font(size=1)
+            //-                         #div_squat.inline
+            //-                 td= data.benchpress
+            //-                 td= data.deadlift
+            //-                 td= data.total
+                    
 
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
         script(src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js")
-        script(src="/script/dropdown.js")
-        script(src="/script/record.js")
+        script(src="/script/index.js")
