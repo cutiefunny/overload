@@ -42,7 +42,7 @@ function confirm(){ callAjax( "login" ); }
 function save(){ callAjax( "save" ); }
 
 //get Rank 버튼 클릭
-function getRank(){ location.href="/ranking"; }
+function getRank(){ location.href="/total"; }
 
 //등록하시겠습니까? 예/아니오
 function signupY(){

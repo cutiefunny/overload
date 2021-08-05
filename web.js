@@ -52,8 +52,38 @@ app.get('/competition', function (req, res) {
   });
 
 //랭킹 페이지
-app.get('/ranking', function (req, res) {
+app.get('/total', function (req, res) {
   searchData("getRank","ranking").then((msg) => {
+    console.log(msg);
+    res.render('ranking', { title: 'ranking'
+                        , rankData : msg
+                        , sessionID : sessionID
+                    });
+    })    
+});
+
+app.get('/squat', function (req, res) {
+  searchData("getSquatRank","ranking").then((msg) => {
+    console.log(msg);
+    res.render('ranking', { title: 'ranking'
+                        , rankData : msg
+                        , sessionID : sessionID
+                    });
+    })    
+});
+
+app.get('/bench', function (req, res) {
+  searchData("getBenchRank","ranking").then((msg) => {
+    console.log(msg);
+    res.render('ranking', { title: 'ranking'
+                        , rankData : msg
+                        , sessionID : sessionID
+                    });
+    })    
+});
+
+app.get('/dead', function (req, res) {
+  searchData("getDeadRank","ranking").then((msg) => {
     console.log(msg);
     res.render('ranking', { title: 'ranking'
                         , rankData : msg
@@ -167,7 +197,15 @@ async function searchData(op,col,userID){
     else if(op=="getRank") {
       list = await collection.find({ instaID: {$regex:""} }).sort({ total : -1 }) .toArray();
     }
-
+    else if(op=="getSquatRank") {
+      list = await collection.find({ instaID: {$regex:""} }).sort({ squat : -1 }) .toArray();
+    }
+    else if(op=="getBenchRank") {
+      list = await collection.find({ instaID: {$regex:""} }).sort({ benchpress : -1 }) .toArray();
+    }
+    else if(op=="getDeadRank") {
+      list = await collection.find({ instaID: {$regex:""} }).sort({ deadlift : -1 }) .toArray();
+    }
     return list;
 }
 

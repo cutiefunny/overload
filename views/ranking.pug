@@ -19,16 +19,13 @@ html
                     th(width="50px") 
                     th(width="150px") 인스타ID
                     //th 닉네임
-                    th 
-                        button#btn_squat_m
-                            font(size="1px") Squat
-                    th 
-                        button#btn_bench_m
-                            font(size="1px") Bench
-                    th 
-                        button#btn_dead_m
-                            font(size="1px") Dead
-                    th Total
+                    th(id="squat" onClick="arrange(this.id)")
+                        font(size="2px") Squat
+                    th(id="bench" onClick="arrange(this.id)") 
+                        font(size="2px") Bench
+                    th(id="dead" onClick="arrange(this.id)") 
+                        font(size="2px") Dead
+                    th(id="total" onClick="arrange(this.id)")  Total
                 ul
                     each user in rankData 
                         if user.sex==="male"
@@ -39,7 +36,6 @@ html
                                 td
                                     a(href="http://www.instagram.com/"+user.instaID)
                                         =user.instaID
-                                //td= user.nickName
                                 td= user.squat
                                 td= user.benchpress
                                 td= user.deadlift
@@ -56,16 +52,13 @@ html
                     th(width="50px") 
                     th(width="150px")  인스타ID
                     //th 닉네임
-                    th 
-                        button#btn_squat_w
-                            font(size="1px") Squat
-                    th 
-                        button#btn_bench_w
-                            font(size="1px") Bench
-                    th 
-                        button#btn_dead_w
-                            font(size="1px") Dead
-                    th Total
+                    th(id="squat" onClick="arrange(this.id)")
+                        font(size="2px") Squat
+                    th(id="bench" onClick="arrange(this.id)") 
+                        font(size="2px") Bench
+                    th(id="dead" onClick="arrange(this.id)") 
+                        font(size="2px") Dead
+                    th(id="total" onClick="arrange(this.id)") Total
                 ul
                     each user in rankData 
                         if user.sex==="female"
@@ -76,7 +69,6 @@ html
                                 td
                                     a(href="http://www.instagram.com/"+user.instaID)
                                         =user.instaID
-                                //td= user.nickName
                                 td= user.squat
                                 td= user.benchpress
                                 td= user.deadlift

@@ -22,6 +22,8 @@ function toggleMW(btn,div){
     }
 }
 
+function arrange(value){ location.href="/"+value; };
+
 //유저 삭제 : 관리자 기능
 function delUser(userID){
     if(confirm(userID+" 삭제하시겠습니까?")){
