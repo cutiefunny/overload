@@ -45,11 +45,11 @@ app.listen(port, ()=>{
 console.log("server started");
 
 //경쟁 페이지(close)
-app.get('/competition', function (req, res) {
-    res.render('competition', { title: 'progressive overload'
-                        //, list : [1,2,3,4,5]
-                    });
-  });
+// app.get('/competition', function (req, res) {
+//     res.render('competition', { title: 'progressive overload'
+//                         //, list : [1,2,3,4,5]
+//                     });
+//   });
 
 //랭킹 페이지
 app.get('/total', function (req, res) {
@@ -92,12 +92,24 @@ app.get('/dead', function (req, res) {
     })    
 });
 
+//개인기록 페이지
+app.get('/record', function (req, res) {
+  searchData("getRecord","3record",sessionID).then((msg) => {
+    console.log(msg);
+    sessionID = "";
+    res.render('record', { title: 'your record'
+                        , sessionID : sessionID
+                        , record : msg
+                    });
+    })
+});
+
 //인덱스 페이지
 app.get('/', function (req, res) {
   searchData("getUserList","ranking").then((msg) => {
     console.log(msg);
     sessionID = "";
-    res.render('index', { title: 'progressive overload'
+    res.render('index', { title: 'your strength'
                         , sessionID : sessionID
                         , userList : msg
                     });
@@ -205,6 +217,9 @@ async function searchData(op,col,userID){
     }
     else if(op=="getDeadRank") {
       list = await collection.find({ instaID: {$regex:""} }).sort({ deadlift : -1 }) .toArray();
+    }
+    else if(op=="getRecord") {
+      list = await collection.find({ instaID: userID }).sort({ time : -1 }) .toArray();
     }
     return list;
 }

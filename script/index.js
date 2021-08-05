@@ -41,8 +41,11 @@ function confirm(){ callAjax( "login" ); }
 //저장 버튼 클릭
 function save(){ callAjax( "save" ); }
 
-//get Rank 버튼 클릭
+//랭크 버튼 클릭
 function getRank(){ location.href="/total"; }
+
+//개인기록 버튼 클릭
+function getRecord(){ location.href="/record"; }
 
 //등록하시겠습니까? 예/아니오
 function signupY(){
