@@ -96,7 +96,6 @@ app.get('/dead', function (req, res) {
 app.get('/record', function (req, res) {
   searchData("getRecord","3record",sessionID).then((msg) => {
     console.log(msg);
-    sessionID = "";
     res.render('record', { title: 'your record'
                         , sessionID : sessionID
                         , record : msg
@@ -170,6 +169,11 @@ app.post('/ajax', function(req, res, next) {
   searchData("getRank","ranking").then((msg) => {
                           console.log(msg);
                           res.send({result:"getRank", rankData:msg});
+    });
+  else if(req.body.op=="getRecord")
+  searchData("getRecord","3record",req.body.userID).then((msg) => {
+                          console.log(msg);
+                          res.send({result:"getRecord", record:msg});
     });
 });
 
