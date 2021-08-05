@@ -106,7 +106,7 @@ app.post('/ajax', function(req, res, next) {
                         else res.send({result:"signIn", personalData : msg });
   });
   else if(req.body.op=="save"){
-    var record = [req.body.squat,req.body.benchpress,req.body.deadlift,req.body.nickName,req.body.sex];
+    var record = [req.body.squat,req.body.benchpress,req.body.deadlift,req.body.sex];
     insertData(req.body.op,req.body.col,req.body.userID,record).then((msg) => {
                           console.log(msg);
                           if(msg=="save") res.send({result:msg});
@@ -140,12 +140,10 @@ async function searchData(op,col,userID){
     var list = [];
 
     if(op=="I") {
-      res = await collection.find({ nickName: {$regex:""} }).toArray();
-      res.forEach(element => { list.push(element.nickName); });
     }
     else if(op=="R") {
       console.log(userID);
-      res = await collection.findOne({ nickName: userID });
+      res = await collection.findOne({ instaID: userID });
       list[0] = res.squat;
       list[1] = res.deadlift;
       list[2] = res.benchpress;
@@ -187,7 +185,7 @@ async function insertData(op,col,userID,record){
   if(op=="save"){
     filter = { instaID : userID, time : getDate() };
     filter_rank = { instaID : userID };
-    doc = { $set: { instaID : userID, time : getDate(), squat : squat, benchpress : benchpress, deadlift : deadlift, nickName : record[3], sex :record[4] , total : total } };
+    doc = { $set: { instaID : userID, time : getDate(), squat : squat, benchpress : benchpress, deadlift : deadlift, sex :record[3] , total : total } };
   }
   userList.updateOne(filter,doc,{upsert:true});
   rank.updateOne(filter_rank,doc,{upsert:true});

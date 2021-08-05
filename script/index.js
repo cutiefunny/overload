@@ -7,7 +7,6 @@ var div_signup = document.getElementById('div_signup');
 var div_signin = document.getElementById('div_signin');
 var div_inputRecord = document.getElementById('div_inputRecord');
 var div_table = document.getElementById('div_table');
-var ib_nickname = document.getElementById('ib_nickname');
 var ib_squat = document.getElementById('ib_squat');
 var ib_benchpress = document.getElementById('ib_benchpress');
 var ib_deadlift = document.getElementById('ib_deadlift');
@@ -74,7 +73,6 @@ function callAjax(op) {
             , op : op
             , col : "3record"
             , userID : ib_instaID.textContent
-            , nickName : ib_nickname.value
             , sex : getGender()
             , squat : ib_squat.value
             , benchpress : ib_benchpress.value
@@ -131,19 +129,17 @@ function callAjax(op) {
                 });
                 data += "</tbody>";
                 tb_record.innerHTML = data;
-                span_name.innerText=result['personalData'][0].nickName;
-                ib_nickname.value=result['personalData'][0].nickName;
+                span_name.textContent = ib_instaID.textContent;
                 img_profile.setAttribute("src","/images/profile/"+ib_instaID.textContent+".jpg");
+                setGender(result['personalData'][0].sex);
                 img_profile.setAttribute("width","150px");
                 img_profile.setAttribute("height","150px");
-                //alert( result['squat']+","+result['deadlift']+","+result['benchpress'] );
             }else if ( result['result'] == "signUp" ) { //첫 방문자일 경우
                 div_signin.setAttribute("style","display:none"); 
                 div_signupYN.setAttribute("style","display:block"); 
                 div_signup.setAttribute("style","display:none"); 
                 div_inputRecord.setAttribute("style","display:none"); 
                 div_table.setAttribute("style","display:none"); 
-                ib_nickname.value=""
                 ib_squat.value="";
                 ib_benchpress.value="";
                 ib_deadlift.value="";
@@ -182,6 +178,12 @@ function getGender() { //라디오버튼에서 성별 선택
     });
     return gender;
   }
+
+function setGender(value) {
+        rb_sex.forEach((node)=>{
+            if(node.value==value) node.checked=true;
+        });
+}
 
 function validation() {
     if(ib_instaID.value.length < 2 ) {

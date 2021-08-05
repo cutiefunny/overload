@@ -19,9 +19,15 @@ html
                     th(width="50px") 
                     th(width="150px") 인스타ID
                     //th 닉네임
-                    th S
-                    th B
-                    th D
+                    th 
+                        button#btn_squat_m
+                            font(size="1px") Squat
+                    th 
+                        button#btn_bench_m
+                            font(size="1px") Bench
+                    th 
+                        button#btn_dead_m
+                            font(size="1px") Dead
                     th Total
                 ul
                     each user in rankData 
@@ -50,9 +56,15 @@ html
                     th(width="50px") 
                     th(width="150px")  인스타ID
                     //th 닉네임
-                    th S
-                    th B
-                    th D
+                    th 
+                        button#btn_squat_w
+                            font(size="1px") Squat
+                    th 
+                        button#btn_bench_w
+                            font(size="1px") Bench
+                    th 
+                        button#btn_dead_w
+                            font(size="1px") Dead
                     th Total
                 ul
                     each user in rankData 
