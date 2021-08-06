@@ -179,7 +179,18 @@ app.post('/ajax', function(req, res, next) {
   else if(req.body.op=="imgDownload"){
     InstaClient.getProfile(req.body.userID)
     .then(profile => imgDownload(profile.pic,req.body.userID));
-  //imgDownload(req.body.msg,req.body.instaID);
+  }
+  else if(req.body.op=="getPost"){
+    console.log("test");
+    InstaClient.getProfile("sleeping.nyanya")
+    .then(posts => { 
+      var data = [];
+      posts.lastPosts.forEach(element => {
+        console.log(element.thumbnail);
+        data.push(element.thumbnail);
+      });
+      res.send({result:"getPost", posts:data });
+    });
   }
 });
 

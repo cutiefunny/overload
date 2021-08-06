@@ -17,6 +17,7 @@ var tb_record = document.getElementById('tb_record');
 var rb_sex = document.getElementsByName('radioButton');
 var btn_getRecord = document.getElementById('btn_getRecord'); 
 var selectID = document.getElementById('selectID'); 
+var img_post = document.getElementById('img_post'); 
 //#endregion
 
 $(document).ready(function () { 
@@ -31,6 +32,11 @@ $(document).ready(function () {
 window.onload = function(){
     // btn_getRecord.hidden();
 };
+
+//테스트
+function test(){
+    callAjax("getPost");
+}
 
 //비교 페이지로 이동
 function gotoCompetition(){ location.href="/competition"; }
@@ -154,6 +160,13 @@ function callAjax(op) {
                 callAjax( "login" );
             }else if ( result['result'] == "getAllData" ) {  //모든 데이터 획득
                 alert(result['allData']);
+            }else if ( result['result'] == "getPost" ) {  //게시물 획득
+                var data;
+                alert(result['posts']);
+                result['posts'].forEach( item => {
+                    data+="<img src=\""+item+".jpg\">";
+                })
+                img_post.innerHTML = data;
             }
             
         } //function끝
