@@ -6,6 +6,8 @@ const fs = require('fs');
 const http = require('https'); 
 const axios = require('axios');
 const cheerio = require('cheerio');
+const Insta = require('scraper-instagram');
+const InstaClient = new Insta();
 
 const bodyparser= require('body-parser');
 const app = express();
@@ -45,10 +47,11 @@ client.connect();
 //리스닝
 app.listen(port, ()=>{
     console.log('8001번 포트에 대기중!')
+    InstaClient.authBySessionId("1482101603%3AD2BTsOktWQuPj9%3A15")
+	.then(account => console.log(account.username))
+  
 })
 console.log("server started");
-
-var requestOptions = { method: "GET" ,uri: "https://newsimg.hankookilbo.com/cms/articlerelease/2019/04/29/201904291390027161_3.jpg", encoding: null };
 
 //랭킹 페이지
 app.get('/total', function (req, res) {
@@ -114,13 +117,6 @@ app.get('/', function (req, res) {
     })
 });
 
-//파일 다운로드 테스트
-app.get('/download', function (req, res) {
-    var filename = req.params.id;
-    res.download("https://newsimg.hankookilbo.com/cms/articlerelease/2019/04/29/201904291390027161_3.jpg");
-});
-//#endregion
-
 //ajax 컨트롤러
 app.post('/ajax', function(req, res, next) {
 
@@ -179,12 +175,11 @@ app.post('/ajax', function(req, res, next) {
                           console.log(msg);
                           res.send({result:"getRecord", record:msg});
     });
-  else if(req.body.op=="imgDownload")
-  imgDownload("https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-19/s150x150/232076864_985357605367525_488509565921707075_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_ohc=1plCL8hOuPMAX_nQNME&edm=ABfd0MgBAAAA&ccb=7-4&oh=f5367d1d1f3579935841579ea654fdef&oe=611318C7&_nc_sid=7bff83","cucumber_o2");
+  else if(req.body.op=="imgDownload"){
+    InstaClient.getProfile(req.body.userID)
+    .then(profile => imgDownload(profile.pic,req.body.userID));
   //imgDownload(req.body.msg,req.body.instaID);
-  else if(req.body.op=="getImgUrl")
-  getImgUrl("cucumber_o2");
-  //getImgUrl(req.body.instaID);
+  }
 });
 
 /* CRUD 함수 시작 */
@@ -308,19 +303,4 @@ function imgDownload(url,instaID){
           console.log("download to "+savepath);
       });
   });
-}
-
-//프로필 사진 url 획득
-function getImgUrl(instaID){
-  let $href= [];
-  axios.get(`https://www.instagram.com/`+instaID)
-    .then(dataa => {
-        var $ = cheerio.load(dataa.data);
-        $('meta').each((index, item)=>{
-          //if(item.attribs.content.toString().includes(".jpg")) 
-          $href.push(item.attribs.content)
-          //console.log(++cnt + " ===> " + item.attribs.content);
-        });
-        console.log($href);
-    });
 }

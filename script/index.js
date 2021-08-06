@@ -32,9 +32,6 @@ window.onload = function(){
     // btn_getRecord.hidden();
 };
 
-function imgDownload(){ callAjax( "imgDownload" ); }
-function getImgUrl(){ callAjax( "getImgUrl" ); }
-
 //비교 페이지로 이동
 function gotoCompetition(){ location.href="/competition"; }
 
@@ -57,6 +54,7 @@ function signupY(){
     div_signup.setAttribute("style","display:block"); 
     div_inputRecord.setAttribute("style","display:block"); 
     div_table.setAttribute("style","display:none"); 
+    callAjax("imgDownload");
 }
 function signupN(){
     div_signin.setAttribute("style","display:none"); 
