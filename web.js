@@ -57,7 +57,7 @@ console.log("server started");
 app.get('/total', function (req, res) {
   searchData("getRank","ranking").then((msg) => {
     console.log(msg);
-    res.render('ranking', { title: 'ranking'
+    res.render('ranking', { title: 'total ranking'
                         , rankData : msg
                         , sessionID : sessionID
                     });
@@ -67,7 +67,7 @@ app.get('/total', function (req, res) {
 app.get('/squat', function (req, res) {
   searchData("getSquatRank","ranking").then((msg) => {
     console.log(msg);
-    res.render('ranking', { title: 'ranking'
+    res.render('ranking', { title: 'squat ranking'
                         , rankData : msg
                         , sessionID : sessionID
                     });
@@ -77,7 +77,7 @@ app.get('/squat', function (req, res) {
 app.get('/bench', function (req, res) {
   searchData("getBenchRank","ranking").then((msg) => {
     console.log(msg);
-    res.render('ranking', { title: 'ranking'
+    res.render('ranking', { title: 'benchpress ranking'
                         , rankData : msg
                         , sessionID : sessionID
                     });
@@ -87,7 +87,7 @@ app.get('/bench', function (req, res) {
 app.get('/dead', function (req, res) {
   searchData("getDeadRank","ranking").then((msg) => {
     console.log(msg);
-    res.render('ranking', { title: 'ranking'
+    res.render('ranking', { title: 'deadlift ranking'
                         , rankData : msg
                         , sessionID : sessionID
                     });

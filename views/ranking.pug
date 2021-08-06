@@ -3,6 +3,14 @@ html
         title=title 
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        if(title==="total ranking")
+            link(rel='stylesheet', href='/views/totalRanking.css')
+        if(title==="squat ranking")
+            link(rel='stylesheet', href='/views/squatRanking.css')
+        if(title==="benchpress ranking")
+            link(rel='stylesheet', href='/views/benchpressRanking.css')
+        if(title==="deadlift ranking")
+            link(rel='stylesheet', href='/views/deadliftRanking.css')
         link(rel='stylesheet', href='/views/style.css')
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
     body
@@ -19,13 +27,10 @@ html
                     th(width="50px") 
                     th(width="150px") 인스타ID
                     //th 닉네임
-                    th(id="squat" onClick="arrange(this.id)")
-                        font(size="2px") Squat
-                    th(id="bench" onClick="arrange(this.id)") 
-                        font(size="2px") Bench
-                    th(id="dead" onClick="arrange(this.id)") 
-                        font(size="2px") Dead
-                    th(id="total" onClick="arrange(this.id)")  Total
+                    th.squat(id="squat" onClick="arrange(this.id)") Squat
+                    th.bench(id="bench" onClick="arrange(this.id)")  Bench
+                    th.dead(id="dead" onClick="arrange(this.id)")  Dead
+                    th.total(id="total" onClick="arrange(this.id)")  Total
                 ul
                     each user in rankData 
                         if user.sex==="male"
@@ -36,10 +41,10 @@ html
                                 td
                                     a(href="http://www.instagram.com/"+user.instaID)
                                         =user.instaID
-                                td= user.squat
-                                td= user.benchpress
-                                td= user.deadlift
-                                td= user.total
+                                td.squat_td= user.squat
+                                td.bench_td= user.benchpress
+                                td.dead_td= user.deadlift
+                                td.total_td= user.total
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
@@ -52,13 +57,10 @@ html
                     th(width="50px") 
                     th(width="150px")  인스타ID
                     //th 닉네임
-                    th(id="squat" onClick="arrange(this.id)")
-                        font(size="2px") Squat
-                    th(id="bench" onClick="arrange(this.id)") 
-                        font(size="2px") Bench
-                    th(id="dead" onClick="arrange(this.id)") 
-                        font(size="2px") Dead
-                    th(id="total" onClick="arrange(this.id)") Total
+                    th.squat(id="squat" onClick="arrange(this.id)") Squat
+                    th.bench(id="bench" onClick="arrange(this.id)")  Bench
+                    th.dead(id="dead" onClick="arrange(this.id)")  Dead
+                    th.total(id="total" onClick="arrange(this.id)")  Total
                 ul
                     each user in rankData 
                         if user.sex==="female"
@@ -69,10 +71,10 @@ html
                                 td
                                     a(href="http://www.instagram.com/"+user.instaID)
                                         =user.instaID
-                                td= user.squat
-                                td= user.benchpress
-                                td= user.deadlift
-                                td= user.total
+                                td.squat_td= user.squat
+                                td.bench_td= user.benchpress
+                                td.dead_td= user.deadlift
+                                td.total_td= user.total
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del

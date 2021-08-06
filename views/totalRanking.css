@@ -1,0 +1,28 @@
+.squat{
+    background-color: lightgray;
+    font-size: 15px;
+}
+.bench{
+    background-color: lightgray;
+    font-size: 15px;
+}
+.dead{
+    background-color: lightgray;
+    font-size: 15px;
+}
+.total{
+    background-color: gray;
+}
+.squat_td{
+    
+}
+.bench_td{
+    
+}
+.dead_td{
+    
+}
+.total_td{
+    background-color: rgba(211, 211, 211, 0.685);
+    font-weight: bold;  
+}
