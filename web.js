@@ -116,6 +116,7 @@ app.get('/', function (req, res) {
                     });
     })
 });
+//#endregion
 
 //ajax 컨트롤러
 app.post('/ajax', function(req, res, next) {
@@ -263,6 +264,9 @@ async function delData(op,col,userID){
   var record = database.collection("3record");
   userList.deleteOne({ instaID : userID });
   record.deleteMany({ instaID : userID });
+  var filePath = "./images/profile/"+userID+".jpg";
+  console.log(filePath);
+  fs.unlink(filePath, (err) => err ? console.log(err) : console.log(filePath+"파일이 삭제됨"));
 
   return op;
 }
