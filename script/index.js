@@ -48,7 +48,7 @@ function confirm(){ callAjax( "login" ); }
 function save(){ callAjax( "save" ); }
 
 //랭크 버튼 클릭
-function getRank(){ location.href="/total"; }
+function getRank(){ location.href="/total?mw=mw"; }
 
 //개인기록 버튼 클릭
 function getRecord(){ location.href="/record"; }

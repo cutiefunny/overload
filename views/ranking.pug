@@ -17,10 +17,20 @@ html
       center
         - var cnt=1
         P
-        button#btn_men(class="positive ui button" onclick="selectMen()") MEN
-        button#btn_women(class="positive ui button" onclick="selectWomen()") WOMEN
+        if(mw==="mw")
+            button#btn_men(class="positive ui button" onclick="selectMen()") MEN
+            button#btn_women(class="positive ui button" onclick="selectWomen()") WOMEN
+        if(mw==="m")
+            button#btn_men(class="positive ui button" onclick="selectMen()") MEN
+            button#btn_women(class="ui button" onclick="selectWomen()") WOMEN
+        if(mw==="w")
+            button#btn_men(class="ui button" onclick="selectMen()") MEN
+            button#btn_women(class="positive ui button" onclick="selectWomen()") WOMEN
         P
-        #div_men
+        if(mw==="w")
+          #div_men(style="display:none")
+        else 
+          #div_men
             table#tb_rank_male(width="416px")
                 tr 
                     th(width="30px")  
@@ -50,7 +60,10 @@ html
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
                                     
         - cnt=1
-        #div_women
+        if(mw==="m")
+          #div_women(style="display:none")
+        else 
+          #div_women
             table#tb_rank_female(width="416px")
                 tr
                     th(width="30px")    

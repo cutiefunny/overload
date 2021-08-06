@@ -60,6 +60,7 @@ app.get('/total', function (req, res) {
     res.render('ranking', { title: 'total ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , mw : req.query.mw
                     });
     })    
 });
@@ -70,6 +71,7 @@ app.get('/squat', function (req, res) {
     res.render('ranking', { title: 'squat ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , mw : req.query.mw
                     });
     })    
 });
@@ -80,6 +82,7 @@ app.get('/bench', function (req, res) {
     res.render('ranking', { title: 'benchpress ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , mw : req.query.mw
                     });
     })    
 });
@@ -90,6 +93,7 @@ app.get('/dead', function (req, res) {
     res.render('ranking', { title: 'deadlift ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , mw : req.query.mw
                     });
     })    
 });

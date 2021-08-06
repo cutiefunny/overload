@@ -22,7 +22,12 @@ function toggleMW(btn,div){
     }
 }
 
-function arrange(value){ location.href="/"+value; };
+function arrange(value){ 
+    var mw="";
+    if(btn_men.getAttribute("class")=="positive ui button") mw+="m";
+    if(btn_women.getAttribute("class")=="positive ui button") mw+="w";
+    location.href="/"+value+"?mw="+mw; 
+}
 
 //유저 삭제 : 관리자 기능
 function delUser(userID){
