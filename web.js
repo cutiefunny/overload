@@ -46,9 +46,9 @@ client.connect();
 
 //리스닝
 app.listen(port, ()=>{
-    console.log('8001번 포트에 대기중!')
-    InstaClient.authBySessionId("1482101603%3AD2BTsOktWQuPj9%3A15")
-	.then(account => console.log(account.username))
+    console.log('8001번 포트에 대기중!');
+    InstaClient.authBySessionId("48763774309%3AbKPkXcNXea8TBe%3A0")
+	.then(account => console.log(account.username));
   
 })
 console.log("server started");
