@@ -3,7 +3,9 @@ const express = require('express');
 const port = 8001;
 const session = require('express-session')
 const fs = require('fs');
-//https://newsimg.hankookilbo.com/cms/articlerelease/2019/04/29/201904291390027161_3.jpg
+const http = require('https'); 
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 const bodyparser= require('body-parser');
 const app = express();
@@ -154,7 +156,6 @@ app.post('/ajax', function(req, res, next) {
     insertData(req.body.op,req.body.col,req.body.userID,record).then((msg) => {
                           console.log(msg);
                           if(msg=="save") res.send({result:msg});
-    
     });
   }
   else if(req.body.op=="delUser")
@@ -178,6 +179,12 @@ app.post('/ajax', function(req, res, next) {
                           console.log(msg);
                           res.send({result:"getRecord", record:msg});
     });
+  else if(req.body.op=="imgDownload")
+  imgDownload("https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-19/s150x150/232076864_985357605367525_488509565921707075_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_ohc=1plCL8hOuPMAX_nQNME&edm=ABfd0MgBAAAA&ccb=7-4&oh=f5367d1d1f3579935841579ea654fdef&oe=611318C7&_nc_sid=7bff83","cucumber_o2");
+  //imgDownload(req.body.msg,req.body.instaID);
+  else if(req.body.op=="getImgUrl")
+  getImgUrl("cucumber_o2");
+  //getImgUrl(req.body.instaID);
 });
 
 /* CRUD 함수 시작 */
@@ -285,25 +292,35 @@ function getDate(){
 
 //테스트 부분
 
-// url에 있는 파일을 savepath에 다운로드 한다.
+// 파일 다운로드 함수
+function imgDownload(url,instaID){
+  // 저장할 위치를 지정
+  var savepath = __dirname + "/images/profile/" +instaID + ".jpg" ;
 
-// 다운로드 URL을 지정
-// var url = "https://wickedmagic.tistory.com/565";
+  // 출력 지정
+  var outfile = fs.createWriteStream(savepath);
 
-// // 저장할 위치를 지정
-// var savepath = "test.html";
+  // 비동기로 URL의 파일 다운로드
+  http.get(url, function(res) {
+      res.pipe(outfile);
+      res.on('end', function() {
+          outfile.close();
+          console.log("download to "+savepath);
+      });
+  });
+}
 
-// // 사용 모듈 정의
-// var http = require('http');    // HTTP 모듈
-
-// // 출력 지정
-// var outfile = fs.createWriteStream(savepath);
-
-// // 비동기로 URL의 파일 다운로드
-// http.get(url, function(res) {
-//     res.pipe(outfile);
-//     res.on('end', function() {
-//         outfile.close();
-//         console.log("ok");
-//     });
-// });
+//프로필 사진 url 획득
+function getImgUrl(instaID){
+  let $href= [];
+  axios.get(`https://www.instagram.com/`+instaID)
+    .then(dataa => {
+        var $ = cheerio.load(dataa.data);
+        $('meta').each((index, item)=>{
+          //if(item.attribs.content.toString().includes(".jpg")) 
+          $href.push(item.attribs.content)
+          //console.log(++cnt + " ===> " + item.attribs.content);
+        });
+        console.log($href);
+    });
+}

@@ -32,6 +32,9 @@ window.onload = function(){
     // btn_getRecord.hidden();
 };
 
+function imgDownload(){ callAjax( "imgDownload" ); }
+function getImgUrl(){ callAjax( "getImgUrl" ); }
+
 //비교 페이지로 이동
 function gotoCompetition(){ location.href="/competition"; }
 

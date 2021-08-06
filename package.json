@@ -10,6 +10,8 @@
   "author": "nyanya.kim",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "*",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "mongodb": "^4.0.1",
