@@ -27,10 +27,7 @@ html
             button#btn_men(class="ui button" onclick="selectMen()") MEN
             button#btn_women(class="positive ui button" onclick="selectWomen()") WOMEN
         P
-        if(mw==="w")
-          #div_men(style="display:none")
-        else 
-          #div_men
+        #div_men(class=mw === "w" ? "hidden" : "")
             table#tb_rank_male(width="416px")
                 tr 
                     th(width="30px")  
@@ -60,10 +57,8 @@ html
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
                                     
         - cnt=1
-        if(mw==="m")
-          #div_women(style="display:none")
-        else 
-          #div_women
+
+        #div_women(class=mw === "m" ? "hidden" : "")
             table#tb_rank_female(width="416px")
                 tr
                     th(width="30px")    
