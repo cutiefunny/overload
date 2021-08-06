@@ -2,6 +2,8 @@
 const express = require('express');
 const port = 8001;
 const session = require('express-session')
+const fs = require('fs');
+//https://newsimg.hankookilbo.com/cms/articlerelease/2019/04/29/201904291390027161_3.jpg
 
 const bodyparser= require('body-parser');
 const app = express();
@@ -29,7 +31,7 @@ app.use(session({
 var sessionID="";
 
 const { MongoClient } = require("mongodb");
-const { response } = require('express');
+const { response, request } = require('express');
 //#endregion
 
 //#region DB연결 및 라우팅
@@ -44,12 +46,7 @@ app.listen(port, ()=>{
 })
 console.log("server started");
 
-//경쟁 페이지(close)
-// app.get('/competition', function (req, res) {
-//     res.render('competition', { title: 'progressive overload'
-//                         //, list : [1,2,3,4,5]
-//                     });
-//   });
+var requestOptions = { method: "GET" ,uri: "https://newsimg.hankookilbo.com/cms/articlerelease/2019/04/29/201904291390027161_3.jpg", encoding: null };
 
 //랭킹 페이지
 app.get('/total', function (req, res) {
@@ -113,6 +110,12 @@ app.get('/', function (req, res) {
                         , userList : msg
                     });
     })
+});
+
+//파일 다운로드 테스트
+app.get('/download', function (req, res) {
+    var filename = req.params.id;
+    res.download("https://newsimg.hankookilbo.com/cms/articlerelease/2019/04/29/201904291390027161_3.jpg");
 });
 //#endregion
 
@@ -278,3 +281,29 @@ function getDate(){
 }
 
 //#endregion
+
+
+//테스트 부분
+
+// url에 있는 파일을 savepath에 다운로드 한다.
+
+// 다운로드 URL을 지정
+// var url = "https://wickedmagic.tistory.com/565";
+
+// // 저장할 위치를 지정
+// var savepath = "test.html";
+
+// // 사용 모듈 정의
+// var http = require('http');    // HTTP 모듈
+
+// // 출력 지정
+// var outfile = fs.createWriteStream(savepath);
+
+// // 비동기로 URL의 파일 다운로드
+// http.get(url, function(res) {
+//     res.pipe(outfile);
+//     res.on('end', function() {
+//         outfile.close();
+//         console.log("ok");
+//     });
+// });
