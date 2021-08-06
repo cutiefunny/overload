@@ -7,10 +7,6 @@ var div_women = document.getElementById('div_women');
 
 //페이지 시작 시 수행되는 함수
 window.onload = function(){
-    if(btn_men.getAttribute("class")=="positive ui button") div_men.setAttribute("style","display:block");
-    else if(btn_men.getAttribute("class")=="ui button") div_men.setAttribute("style","display:none");
-    if(btn_women.getAttribute("class")=="positive ui button") div_women.setAttribute("style","display:block");
-    else if(btn_women.getAttribute("class")=="ui button") div_women.setAttribute("style","display:none");
 };
 
 //men 버튼 클릭
