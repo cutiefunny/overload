@@ -23,7 +23,10 @@ function goInsta(instaID) { location.href="http://www.instagram.com/"+instaID.sp
 
 function goPersonalRecord(instaID) { location.href="/record?instaID="+instaID.split('record_')[1]; }
 
-function findMe(instaID) { document.getElementById('me_'+instaID).focus({preventScroll:false}); }
+function findMe(instaID) { 
+    tdClick(instaID);
+    document.getElementById('me_'+instaID).scrollIntoView();
+}
 
 function toggleRival(instaID){
     var btn=document.getElementById('btn_rival_'+instaID);

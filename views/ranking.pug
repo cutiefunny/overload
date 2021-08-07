@@ -11,8 +11,8 @@ html
             link(rel='stylesheet', href='/views/benchpressRanking.css')
         if(title==="deadlift ranking")
             link(rel='stylesheet', href='/views/deadliftRanking.css')
-        link(rel='stylesheet', href='/views/style.css')
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
+        link(rel='stylesheet', href='/views/style.css')
     body
       center
         - var cnt=1
@@ -26,7 +26,8 @@ html
         if(mw==="w")
             button#btn_men(class="ui button" onclick="selectMen()") MEN
             button#btn_women(class="positive ui button" onclick="selectWomen()") WOMEN
-        button#btn_me.mini.ui.button(onclick="findMe(this.value)" value=sessionID) me
+        if(sessionID!="")
+            button#btn_me.mini.ui.button(onclick="findMe(this.value)" value=sessionID) me
         P
         #div_men(class=mw === "w" ? "hidden" : "")
             table#tb_rank_male(width="416px")
@@ -113,6 +114,6 @@ html
                                     button.ui.button(id="btn_rival_"+user.instaID value=user.instaID onclick="toggleRival(this.value)") rival
         p
 
-        script(src="/script/ranking.js")
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
         script(src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js")
+        script(src="/script/ranking.js")
