@@ -26,6 +26,7 @@ html
         if(mw==="w")
             button#btn_men(class="ui button" onclick="selectMen()") MEN
             button#btn_women(class="positive ui button" onclick="selectWomen()") WOMEN
+        button#btn_me.mini.ui.button(onclick="findMe(this.value)" value=sessionID) me
         P
         #div_men(class=mw === "w" ? "hidden" : "")
             table#tb_rank_male(width="416px")
@@ -41,13 +42,14 @@ html
                 ul
                     each user in rankData 
                         if user.sex==="male"
-                            tr
+                            tr(id="me_"+user.instaID)
                                 td= cnt++
                                 td(style="padding:0px;" width="50px") 
                                     img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                                td.instaID(onclick="tdClick(this.textContent)")= user.instaID
-                                    //- a(href="http://www.instagram.com/"+user.instaID)
-                                    //-     =user.instaID
+                                if(sessionID===user.instaID)
+                                    td.instaID_me(onclick="tdClick(this.textContent)")= user.instaID
+                                else
+                                    td.instaID(onclick="tdClick(this.textContent)")= user.instaID
                                 td.squat_td= user.squat
                                 td.bench_td= user.benchpress
                                 td.dead_td= user.deadlift
@@ -57,8 +59,6 @@ html
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
                             tr.hidden(id="tr_"+user.instaID)
                                 td(id="td_"+user.instaID colspan=7 align="center")
-                                    //-button.ui.button(id="btn_insta_"+user.instaID) instagram
-                                    //-button.ui.button(id="btn_record_"+user.instaID) personal record
                                     div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
                                         div(class="visible content") instagram
                                         div(class="hidden content")
@@ -89,9 +89,10 @@ html
                                 td= cnt++
                                 td(style="padding:0px;" width="50px") 
                                     img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                                td.instaID(onclick="tdClick(this.textContent)")= user.instaID
-                                    //- a(href="http://www.instagram.com/"+user.instaID)
-                                    //-     =user.instaID
+                                if(sessionID===user.instaID)
+                                    td.instaID_me(onclick="tdClick(this.textContent)" id="me_"+user.instaID)= user.instaID
+                                else
+                                    td.instaID(onclick="tdClick(this.textContent)" id="me_"+user.instaID)= user.instaID
                                 td.squat_td= user.squat
                                 td.bench_td= user.benchpress
                                 td.dead_td= user.deadlift
@@ -101,8 +102,6 @@ html
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
                             tr.hidden(id="tr_"+user.instaID)
                                 td(id="td_"+user.instaID colspan=7 align="center")
-                                    //-button.ui.button(id="btn_insta_"+user.instaID) instagram
-                                    //-button.ui.button(id="btn_record_"+user.instaID) personal record
                                     div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
                                         div(class="visible content") instagram
                                         div(class="hidden content")

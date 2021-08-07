@@ -28,3 +28,8 @@ table {
 .instaID{
   color: #4183c4;
 }
+
+.instaID_me{
+  color: #21ba45;
+  font-weight: bold;
+}

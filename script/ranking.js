@@ -23,6 +23,8 @@ function goInsta(instaID) { location.href="http://www.instagram.com/"+instaID.sp
 
 function goPersonalRecord(instaID) { location.href="/record?instaID="+instaID.split('record_')[1]; }
 
+function findMe(instaID) { document.getElementById('me_'+instaID).focus({preventScroll:false}); }
+
 function toggleRival(instaID){
     var btn=document.getElementById('btn_rival_'+instaID);
     if(btn.getAttribute("class")=="ui button") btn.setAttribute("class","positive ui button");
@@ -30,7 +32,7 @@ function toggleRival(instaID){
 }
 
 //men 버튼 클릭
-function selectMen(){ toggleMW(btn_men,div_men); }
+function selectMen() { toggleMW(btn_men,div_men); }
 
 //women 버튼 클릭
 function selectWomen(){ { toggleMW(btn_women,div_women); } }
