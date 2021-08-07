@@ -32,7 +32,7 @@ html
                 tr 
                     th(width="30px")   
                     th(width="50px") 
-                    th(width="150px") 인스타ID
+                    th(width="150px") instagram ID
                     //th 닉네임
                     th.squat(id="squat" onClick="arrange(this.id)") Squat
                     th.bench(id="bench" onClick="arrange(this.id)")  Bench
@@ -45,9 +45,9 @@ html
                                 td= cnt++
                                 td(style="padding:0px;" width="50px") 
                                     img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                                td
-                                    a(href="http://www.instagram.com/"+user.instaID)
-                                        =user.instaID
+                                td.instaID(onclick="tdClick(this.textContent)")= user.instaID
+                                    //- a(href="http://www.instagram.com/"+user.instaID)
+                                    //-     =user.instaID
                                 td.squat_td= user.squat
                                 td.bench_td= user.benchpress
                                 td.dead_td= user.deadlift
@@ -55,6 +55,19 @@ html
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
+                            tr.hidden(id="tr_"+user.instaID)
+                                td(id="td_"+user.instaID colspan=7 align="center")
+                                    //-button.ui.button(id="btn_insta_"+user.instaID) instagram
+                                    //-button.ui.button(id="btn_record_"+user.instaID) personal record
+                                    div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
+                                        div(class="visible content") instagram
+                                        div(class="hidden content")
+                                            i(class="right arrow icon")
+                                    div(id="btn_record_"+user.instaID onclick="goPersonalRecord(this.id)" class="ui animated button")
+                                        div(class="visible content") personal record
+                                        div(class="hidden content")
+                                            i(class="right arrow icon")
+                                    button.ui.button(id="btn_rival_"+user.instaID value=user.instaID onclick="toggleRival(this.value)") rival
                                     
         - cnt=1
 
@@ -63,7 +76,7 @@ html
                 tr
                     th(width="30px")    
                     th(width="50px") 
-                    th(width="150px")  인스타ID
+                    th(width="150px")  instagram ID
                     //th 닉네임
                     th.squat(id="squat" onClick="arrange(this.id)") Squat
                     th.bench(id="bench" onClick="arrange(this.id)")  Bench
@@ -76,9 +89,9 @@ html
                                 td= cnt++
                                 td(style="padding:0px;" width="50px") 
                                     img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
-                                td
-                                    a(href="http://www.instagram.com/"+user.instaID)
-                                        =user.instaID
+                                td.instaID(onclick="tdClick(this.textContent)")= user.instaID
+                                    //- a(href="http://www.instagram.com/"+user.instaID)
+                                    //-     =user.instaID
                                 td.squat_td= user.squat
                                 td.bench_td= user.benchpress
                                 td.dead_td= user.deadlift
@@ -86,6 +99,19 @@ html
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
+                            tr.hidden(id="tr_"+user.instaID)
+                                td(id="td_"+user.instaID colspan=7 align="center")
+                                    //-button.ui.button(id="btn_insta_"+user.instaID) instagram
+                                    //-button.ui.button(id="btn_record_"+user.instaID) personal record
+                                    div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
+                                        div(class="visible content") instagram
+                                        div(class="hidden content")
+                                            i(class="right arrow icon")
+                                    div(id="btn_record_"+user.instaID onclick="goPersonalRecord(this.id)" class="ui animated button")
+                                        div(class="visible content") personal record
+                                        div(class="hidden content")
+                                            i(class="right arrow icon")
+                                    button.ui.button(id="btn_rival_"+user.instaID value=user.instaID onclick="toggleRival(this.value)") rival
         p
 
         script(src="/script/ranking.js")

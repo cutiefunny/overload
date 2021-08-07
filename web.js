@@ -100,11 +100,12 @@ app.get('/dead', function (req, res) {
 
 //개인기록 페이지
 app.get('/record', function (req, res) {
-  searchData("getRecord","3record",sessionID).then((msg) => {
+  searchData("getRecord","3record",req.query.instaID).then((msg) => {
     console.log(msg);
     res.render('record', { title: 'your record'
                         , sessionID : sessionID
                         , record : msg
+                        , instaID : req.query.instaID
                     });
     })
 });
@@ -184,16 +185,18 @@ app.post('/ajax', function(req, res, next) {
     InstaClient.getProfile(req.body.userID)
     .then(profile => imgDownload(profile.pic,req.body.userID));
   }
-  else if(req.body.op=="getPost"){
-    console.log("test");
-    InstaClient.getProfile("sleeping.nyanya")
+  else if(req.body.op=="getInstaInfo"){
+    InstaClient.getProfile(req.body.userID)
     .then(posts => { 
       var data = [];
-      posts.lastPosts.forEach(element => {
-        console.log(element.thumbnail);
-        data.push(element.thumbnail);
-      });
-      res.send({result:"getPost", posts:data });
+      var tempString = [];
+      for(i=0;i<3;i++){
+        console.log(posts.lastPosts[i].thumbnail);
+        tempString = posts.lastPosts[i].thumbnail.split('.jpg')[0].split('/');
+        data.push(tempString[6]);
+        imgDownload(posts.lastPosts[i].thumbnail,tempString[6]);
+      }
+      res.send({result:"getInstaInfo", info:data});
     });
   }
 });
@@ -309,7 +312,10 @@ function getDate(){
 // 파일 다운로드 함수
 function imgDownload(url,instaID){
   // 저장할 위치를 지정
-  var savepath = __dirname + "/images/profile/" +instaID + ".jpg" ;
+  var dir=""
+  if(instaID.length>20) dir="/images/temp/";
+  else dir = "/images/profile/";
+  var savepath = __dirname + dir +instaID + ".jpg" ;
 
   // 출력 지정
   var outfile = fs.createWriteStream(savepath);
@@ -322,4 +328,32 @@ function imgDownload(url,instaID){
           console.log("download to "+savepath);
       });
   });
+}
+
+// 여러 파일 다운로드 함수
+function instaInfoDownload(instaID){
+  console.log("test");
+    InstaClient.getProfile(instaID)
+    .then(posts => { 
+      var data = [];
+      for(i=0;i<3;i++){
+        console.log(posts.lastPosts[i].thumbnail);
+        data.push(posts.lastPosts[i].thumbnail);;
+      }
+      return data;
+    });
+  // // 저장할 위치를 지정
+  // var savepath = __dirname + "/images/temp/" +instaID + ".jpg" ;
+
+  // // 출력 지정
+  // var outfile = fs.createWriteStream(savepath);
+
+  // // 비동기로 URL의 파일 다운로드
+  // http.get(url, function(res) {
+  //     res.pipe(outfile);
+  //     res.on('end', function() {
+  //         outfile.close();
+  //         console.log("download to "+savepath);
+  //     });
+  // });
 }

@@ -51,7 +51,7 @@ function save(){ callAjax( "save" ); }
 function getRank(){ location.href="/total?mw=mw"; }
 
 //개인기록 버튼 클릭
-function getRecord(){ location.href="/record"; }
+function getRecord(){ location.href="/record?instaID="+ib_instaID.textContent; }
 
 //등록하시겠습니까? 예/아니오
 function signupY(){

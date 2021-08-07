@@ -24,3 +24,7 @@ table {
 .hidden{
   display:none;
 }
+
+.instaID{
+  color: #4183c4;
+}

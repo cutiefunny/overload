@@ -9,6 +9,26 @@ var div_women = document.getElementById('div_women');
 window.onload = function(){
 };
 
+function tdClick(instaID){ 
+    var tr = document.getElementById('tr_'+instaID);
+    if(tr.getAttribute("class")=="hidden"){
+        //callAjax("getInstaInfo",instaID); 
+        tr.setAttribute("class","");
+    }else{
+        tr.setAttribute("class","hidden");
+    }
+}
+
+function goInsta(instaID) { location.href="http://www.instagram.com/"+instaID.split('insta_')[1]; }
+
+function goPersonalRecord(instaID) { location.href="/record?instaID="+instaID.split('record_')[1]; }
+
+function toggleRival(instaID){
+    var btn=document.getElementById('btn_rival_'+instaID);
+    if(btn.getAttribute("class")=="ui button") btn.setAttribute("class","positive ui button");
+    else btn.setAttribute("class","ui button");
+}
+
 //men 버튼 클릭
 function selectMen(){ toggleMW(btn_men,div_men); }
 
@@ -57,6 +77,11 @@ function callAjax(op,userID) {
             if ( result['result'] == "delUser" ) {  //삭제 동작 callback
                 alert("삭제되었습니다.");
                 window.location.reload();
+            }else if ( result['result'] == "getInstaInfo" ) {  //삭제 동작 callback
+                //alert( result['info'] );
+                var td=document.getElementById('tr_'+userID);
+                var data = "<img src=\"/images/temp/" +result['info'][0] + ".jpg\" width=\"50px\">";
+                td.innerHTML = data;
             }
             
         } //function끝
