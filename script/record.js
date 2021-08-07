@@ -23,7 +23,7 @@ function callAjax(op) {
             success: function(result) {
     
                 if ( result['result'] == "getRecord" ) {  
-                    var data = "<thead><tr><th width='100'>날짜</th><th>Squat</th><th>Bench</th><th>Dead</th><th>Total</th></tr></thead><tbody>";
+                    var data = "<thead><tr><th width='100'>Date</th><th>Squat</th><th>Bench</th><th>Dead</th><th>Total</th></tr></thead><tbody>";
                     var cnt=0;
                     var diff_s=0;
                     var diff_b=0;

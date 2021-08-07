@@ -43,14 +43,14 @@ html
                 ul
                     each user in rankData 
                         if user.sex==="male"
-                            tr(id="me_"+user.instaID)
+                            tr(id=user.instaID onclick="tdClick(this.id)")
                                 td= cnt++
                                 td(style="padding:0px;" width="50px") 
                                     img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
                                 if(sessionID===user.instaID)
-                                    td.instaID_me(onclick="tdClick(this.textContent)")= user.instaID
+                                    td.instaID_me= user.instaID
                                 else
-                                    td.instaID(onclick="tdClick(this.textContent)")= user.instaID
+                                    td.instaID= user.instaID
                                 td.squat_td= user.squat
                                 td.bench_td= user.benchpress
                                 td.dead_td= user.deadlift
@@ -68,7 +68,8 @@ html
                                         div(class="visible content") personal record
                                         div(class="hidden content")
                                             i(class="right arrow icon")
-                                    button.ui.button(id="btn_rival_"+user.instaID value=user.instaID onclick="toggleRival(this.value)") rival
+                                    if(sessionID!="")
+                                        button.ui.button(id="btn_rival_"+user.instaID value=user.instaID onclick="toggleRival(this.value)") rival
                                     
         - cnt=1
 
@@ -86,14 +87,14 @@ html
                 ul
                     each user in rankData 
                         if user.sex==="female"
-                            tr
+                            tr(id=user.instaID onclick="tdClick(this.id)")
                                 td= cnt++
                                 td(style="padding:0px;" width="50px") 
                                     img(src="/images/profile/"+ user.instaID +".jpg" width="50px" height="50px")
                                 if(sessionID===user.instaID)
-                                    td.instaID_me(onclick="tdClick(this.textContent)" id="me_"+user.instaID)= user.instaID
+                                    td.instaID_me= user.instaID
                                 else
-                                    td.instaID(onclick="tdClick(this.textContent)" id="me_"+user.instaID)= user.instaID
+                                    td.instaID= user.instaID
                                 td.squat_td= user.squat
                                 td.bench_td= user.benchpress
                                 td.dead_td= user.deadlift
