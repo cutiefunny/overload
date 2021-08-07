@@ -96,6 +96,7 @@ function callAjax(op) {
                 div_inputRecord.setAttribute("style","display:block"); 
                 div_table.setAttribute("style","display:block"); 
                 btn_getRecord.setAttribute("style","visibility:show"); 
+                callAjax("imgDownload");
                 //최근값을 인풋박스에
                 ib_squat.value = result['personalData'][0].squat;
                 ib_benchpress.value = result['personalData'][0].benchpress;
