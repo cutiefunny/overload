@@ -8,6 +8,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const Insta = require('scraper-instagram');
 const InstaClient = new Insta();
+const download = require('image-downloader');
 
 const bodyparser= require('body-parser');
 const app = express();
@@ -52,6 +53,37 @@ app.listen(port, ()=>{
   
 })
 console.log("server started");
+
+//인스타 테스터
+app.get('/insta', function (req, res) {
+
+  var filenames = [];
+  var cnt=0;
+
+  InstaClient.getProfile("inmaview")
+    .then(profile => {
+      profile.lastPosts.forEach(post => {
+        console.log(post.thumbnail);
+
+        var option = {
+          url :  post.thumbnail,
+          dest : __dirname +'/images/temp/'
+        }
+
+        download.image(option).then(({filename}) => {
+          console.log('saved to ', filename);
+          filenames[cnt++]=filename;
+        })
+        // .catch((err) => console.error(err))
+      });
+
+      console.log("filenames = "+filenames);
+      res.render('insta', { title: 'insta tester'
+                        , filenames : filenames
+                        , sessionID : sessionID
+                    });  
+    });
+});
 
 //랭킹 페이지
 app.get('/total', function (req, res) {
@@ -331,29 +363,30 @@ function imgDownload(url,instaID){
 }
 
 // 여러 파일 다운로드 함수
-function instaInfoDownload(instaID){
+function instaInfoDownload(list){
   console.log("test");
-    InstaClient.getProfile(instaID)
-    .then(posts => { 
-      var data = [];
-      for(i=0;i<3;i++){
-        console.log(posts.lastPosts[i].thumbnail);
-        data.push(posts.lastPosts[i].thumbnail);;
-      }
-      return data;
-    });
+
+    // InstaClient.getProfile(instaID)
+    // .then(posts => { 
+    //   var data = [];
+    //   for(i=0;i<3;i++){
+    //     console.log(posts.lastPosts[i].thumbnail);
+    //     data.push(posts.lastPosts[i].thumbnail);;
+    //   }
+    //   return data;
+    // });
   // // 저장할 위치를 지정
   // var savepath = __dirname + "/images/temp/" +instaID + ".jpg" ;
 
   // // 출력 지정
   // var outfile = fs.createWriteStream(savepath);
 
-  // // 비동기로 URL의 파일 다운로드
-  // http.get(url, function(res) {
-  //     res.pipe(outfile);
-  //     res.on('end', function() {
-  //         outfile.close();
-  //         console.log("download to "+savepath);
-  //     });
-  // });
+  // 비동기로 URL의 파일 다운로드
+  http.get(url, function(res) {
+      res.pipe(outfile);
+      res.on('end', function() {
+          outfile.close();
+          console.log("download to "+savepath);
+      });
+  });
 }

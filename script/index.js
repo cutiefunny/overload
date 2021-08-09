@@ -35,7 +35,7 @@ window.onload = function(){
 
 //테스트
 function test(){
-    callAjax("getPost");
+    callAjax(location.href="/insta");
 }
 
 //비교 페이지로 이동
