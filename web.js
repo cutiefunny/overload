@@ -85,6 +85,16 @@ app.get('/insta', function (req, res) {
     });
 });
 
+//매크로 매니저
+app.get('/macroManager', function (req, res) {
+  searchMacroDBData("getUserList","userList").then((msg) => {
+    console.log(msg);
+    res.render('macroManager', { title: 'macro manager'
+                        , userList : msg
+                    });
+    })    
+});
+
 //랭킹 페이지
 app.get('/total', function (req, res) {
   searchData("getRank","ranking").then((msg) => {
@@ -319,6 +329,19 @@ async function delData(op,col,userID){
   fs.unlink(filePath, (err) => err ? console.log(err) : console.log(filePath+"파일이 삭제됨"));
 
   return op;
+}
+
+async function searchMacroDBData(op,col){
+  var database = client.db("macroDB");
+  var collection = database.collection(col);
+  var list = [];
+
+  if(op=="getUserList") {
+    userList = await collection.distinct("user");
+    list=userList;
+  }
+
+  return list;
 }
 
 /* CRUD 함수 끝 */ 
