@@ -60,7 +60,7 @@ app.get('/insta', function (req, res) {
   var filenames = [];
   var cnt=0;
 
-  InstaClient.getProfile("inmaview")
+  InstaClient.getProfile("sleeping.nyanya")
     .then(profile => {
       profile.lastPosts.forEach(post => {
         console.log(post.thumbnail);
