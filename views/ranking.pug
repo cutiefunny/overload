@@ -16,6 +16,7 @@ html
     body
       center
         - var cnt=1
+        - var rival=""
         P
         if(mw==="mw")
             button#btn_men(class="positive ui button" onclick="selectMen()") MEN
@@ -42,6 +43,8 @@ html
                     th.total(id="total" onClick="arrange(this.id)")  Total
                 ul
                     each user in rankData 
+                        if sessionID===user.instaID
+                            - rival= user.rival
                         if user.sex==="male"
                             tr(id=user.instaID onclick="tdClick(this.id)")
                                 td= cnt++
@@ -58,7 +61,7 @@ html
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
-                            tr.hidden(id="tr_"+user.instaID)
+                            tr.hidden(id="tr_"+user.instaID name="tr_")
                                 td(id="td_"+user.instaID colspan=7 align="center")
                                     div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
                                         div(class="visible content") instagram
@@ -68,8 +71,11 @@ html
                                         div(class="visible content") personal record
                                         div(class="hidden content")
                                             i(class="right arrow icon")
-                                    if(sessionID!="")
-                                        button.ui.button(id="btn_rival_"+user.instaID value=user.instaID onclick="toggleRival(this.value)") rival
+                                    if(sessionID!="" && sessionID!=user.instaID)
+                                        if rival===user.instaID
+                                            button.positive.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
+                                        else 
+                                            button.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
                                     
         - cnt=1
 
@@ -86,6 +92,8 @@ html
                     th.total(id="total" onClick="arrange(this.id)")  Total
                 ul
                     each user in rankData 
+                        if sessionID===user.instaID
+                            - rival= user.rival
                         if user.sex==="female"
                             tr(id=user.instaID onclick="tdClick(this.id)")
                                 td= cnt++
@@ -102,7 +110,7 @@ html
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
-                            tr.hidden(id="tr_"+user.instaID)
+                            tr.hidden(id="tr_"+user.instaID name="tr_")
                                 td(id="td_"+user.instaID colspan=7 align="center")
                                     div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
                                         div(class="visible content") instagram
@@ -112,7 +120,11 @@ html
                                         div(class="visible content") personal record
                                         div(class="hidden content")
                                             i(class="right arrow icon")
-                                    button.ui.button(id="btn_rival_"+user.instaID value=user.instaID onclick="toggleRival(this.value)") rival
+                                    if(sessionID!="" && sessionID!=user.instaID)
+                                        if rival===user.instaID
+                                            button.positive.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
+                                        else 
+                                            button.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
         p
 
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
