@@ -4,8 +4,6 @@ const port = 8001;
 const session = require('express-session')
 const fs = require('fs');
 const http = require('https'); 
-const axios = require('axios');
-const cheerio = require('cheerio');
 const Insta = require('scraper-instagram');
 const InstaClient = new Insta();
 
