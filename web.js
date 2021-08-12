@@ -380,6 +380,8 @@ function getDate(){
 
 // 파일 다운로드 함수
 function imgDownload(url,instaID){
+  console.log(url);
+  console.log(instaID);
   // 저장할 위치를 지정
   var dir = "/images/profile/";
   var savepath = __dirname + dir +instaID + ".jpg" ;
