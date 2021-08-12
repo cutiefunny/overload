@@ -67,6 +67,7 @@ function getRecord(){ location.href="/record?instaID="+ib_instaID.textContent; }
 
 //등록하시겠습니까? 예/아니오
 function signupY(){
+    a_download.setAttribute("class","");
     div_signin.setAttribute("style","display:none"); 
     div_signupYN.setAttribute("style","display:none"); 
     div_signup.setAttribute("style","display:block"); 
@@ -119,12 +120,12 @@ function callAjax(op,userID) {
                 setGender(result['personalData'].sex);
                 img_profile.setAttribute("width","150px");
                 img_profile.setAttribute("height","150px");
+                a_download.setAttribute("class","");
                 if(result['personalData'].rival!=null) {
                     div_rival.setAttribute("style","display:block;"); 
                     span_rivalName.textContent = result['personalData'].rival;
                     span_rivalImg.innerHTML = "<img width=\"50px\" src=\"/images/profile/"+result['personalData'].rival+".jpg\">";
                     callAjax("getRivalTotal",result['personalData'].rival);
-                    a_download.setAttribute("class","");
                 }
                 btn_save.setAttribute("style","display:block"); 
             }else if ( result['result'] == "signUp" ) { //첫 방문자일 경우
@@ -201,10 +202,11 @@ function allClear(){
     div_inputRecord.setAttribute("style","display:none"); 
     div_rival.setAttribute("style","display:none"); 
     a_download.setAttribute("class","downloadAPK");
-    ib_squat.value = "";
-    ib_benchpress.value = "";
-    ib_deadlift.value = "";
+    ib_squat.value = "0";
+    ib_benchpress.value = "0";
+    ib_deadlift.value = "0";
     span_name.innerText = "";
+    span_total.innerText = "0";
     //img_profile = temp;
     //btn_save.setAttribute("style","display:none"); 
     btn_getRecord.setAttribute("style","visibility:hidden"); 
