@@ -35,6 +35,7 @@ app.use(session({
 }))
 
 var sessionID="";
+var sessionRival="";
 
 const { MongoClient } = require("mongodb");
 const { response, request } = require('express');
@@ -113,6 +114,7 @@ app.get('/total', function (req, res) {
     res.render('ranking', { title: 'total ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -124,6 +126,7 @@ app.get('/squat', function (req, res) {
     res.render('ranking', { title: 'squat ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -135,6 +138,7 @@ app.get('/bench', function (req, res) {
     res.render('ranking', { title: 'benchpress ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -146,6 +150,7 @@ app.get('/dead', function (req, res) {
     res.render('ranking', { title: 'deadlift ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -204,6 +209,7 @@ app.post('/ajax', function(req, res, next) {
   searchData(req.body.op,"ranking",req.body.userID).then((msg) => {
                         console.log(msg);
                         sessionID = req.body.userID;
+                        sessionRival = msg.rival;
                         if(msg=="signUp") res.send({result:msg});
                         else res.send({result:"signIn", personalData : msg });
   });
@@ -327,6 +333,7 @@ async function insertData(op,col,userID,record){
   }else if(op=="setRival"){
     filter_rank = { instaID : sessionID };
     doc = { $set: { rival : userID } };
+    sessionRival = userID;
   }
   rank.updateOne(filter_rank,doc,{upsert:true});
   //userList.insertOne(doc);

@@ -16,7 +16,6 @@ html
     body
       center
         - var cnt=1
-        - var rival=""
         P
         if(mw==="mw")
             button#btn_men(class="positive ui button" onclick="selectMen()") MEN
@@ -43,8 +42,6 @@ html
                     th.total(id="total" onClick="arrange(this.id)")  Total
                 ul
                     each user in rankData 
-                        if sessionID===user.instaID
-                            - rival= user.rival
                         if user.sex==="male"
                             tr(id=user.instaID onclick="tdClick(this.id)")
                                 td= cnt++
@@ -92,8 +89,6 @@ html
                     th.total(id="total" onClick="arrange(this.id)")  Total
                 ul
                     each user in rankData 
-                        if sessionID===user.instaID
-                            - rival= user.rival
                         if user.sex==="female"
                             tr(id=user.instaID onclick="tdClick(this.id)")
                                 td= cnt++
