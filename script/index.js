@@ -50,7 +50,10 @@ function changeTotal(){
 function gotoCompetition(){ location.href="/competition"; }
 
 //로그인 버튼 클릭
-function confirm(){ callAjax( "login",ib_instaID.textContent); }
+function confirm(){ 
+    allClear();
+    callAjax( "login",ib_instaID.textContent); 
+}
 
 //저장 버튼 클릭
 function save(){ callAjax( "save",ib_instaID.textContent); }
@@ -68,7 +71,7 @@ function signupY(){
     div_signup.setAttribute("style","display:block"); 
     div_inputRecord.setAttribute("style","display:block"); 
     div_table.setAttribute("style","display:none"); 
-    callAjax("imgDownload");
+    callAjax("imgDownload",ib_instaID.textContent);
 }
 function signupN(){
     div_signin.setAttribute("style","display:none"); 
@@ -104,7 +107,7 @@ function callAjax(op,userID) {
                 div_inputRecord.setAttribute("style","display:block"); 
                 span_name.innerText=result['personalData'].instaID;
                 btn_getRecord.setAttribute("style","visibility:show"); 
-                callAjax("imgDownload");
+                callAjax("imgDownload",result['personalData'].instaID);
                 //최근값을 인풋박스에
                 ib_squat.value = result['personalData'].squat;
                 ib_benchpress.value = result['personalData'].benchpress;
@@ -133,7 +136,7 @@ function callAjax(op,userID) {
                 alert(result["msg"]);
             }else if ( result['result'] == "save" ) {  //기록 저장
                 alert("저장되었습니다.");
-                callAjax( "login" );
+                callAjax( "login",ib_instaID.textContent );
             }else if ( result['result'] == "getAllData" ) {  //모든 데이터 획득
                 alert(result['allData']);
             }else if ( result['result'] == "getPost" ) {  //게시물 획득
@@ -185,4 +188,19 @@ function validation() {
         return false;
     }
     return true;
+}
+
+function allClear(){
+    div_signupYN.setAttribute("style","display:none"); 
+    div_signup.setAttribute("style","display:none"); 
+    div_signin.setAttribute("style","display:none"); 
+    div_inputRecord.setAttribute("style","display:none"); 
+    div_rival.setAttribute("style","display:none"); 
+    ib_squat.value = "";
+    ib_benchpress.value = "";
+    ib_deadlift.value = "";
+    span_name.innerText = "";
+    //img_profile = temp;
+    btn_save.setAttribute("style","display:none"); 
+    btn_getRecord.setAttribute("style","visibility:hidden"); 
 }
