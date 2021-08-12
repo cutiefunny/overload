@@ -39,7 +39,7 @@ window.onload = function(){
 
 //테스트
 function test(){
-    callAjax(location.href="/insta");
+    callAjax("dateTest");
 }
 
 function changeTotal(){
@@ -119,7 +119,7 @@ function callAjax(op,userID) {
                 img_profile.setAttribute("width","150px");
                 img_profile.setAttribute("height","150px");
                 if(result['personalData'].rival!=null) {
-                    div_rival.setAttribute("style","display:block"); 
+                    div_rival.setAttribute("style","display:block;"); 
                     span_rivalName.textContent = result['personalData'].rival;
                     span_rivalImg.innerHTML = "<img width=\"50px\" src=\"/images/profile/"+result['personalData'].rival+".jpg\">";
                     callAjax("getRivalTotal",result['personalData'].rival);

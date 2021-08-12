@@ -33,3 +33,9 @@ table {
   color: #21ba45;
   font-weight: bold;
 }
+
+.box{
+  border-width: 6px;
+  border-style: solid;
+  border-color: red;
+}

@@ -10,7 +10,7 @@ const Insta = require('scraper-instagram');
 const InstaClient = new Insta();
 const download = require('image-downloader');
 const path = require('path');
-
+const moment = require('moment');
 const bodyparser= require('body-parser');
 const app = express();
 
@@ -326,9 +326,9 @@ async function insertData(op,col,userID,record){
     var benchpress = parseInt(record[1]);
     var deadlift = parseInt(record[2]);
     var total = squat+benchpress+deadlift;
-    filter = { instaID : userID, time : getDate() };
+    filter = { instaID : userID, time : moment().format("YYYYMMDD") };
     filter_rank = { instaID : userID };
-    doc = { $set: { instaID : userID, time : getDate(), squat : squat, benchpress : benchpress, deadlift : deadlift, sex :record[3] , total : total } };    
+    doc = { $set: { instaID : userID, time : moment().format("YYYYMMDD"), squat : squat, benchpress : benchpress, deadlift : deadlift, sex :record[3] , total : total } };    
     userList.updateOne(filter,doc,{upsert:true});
   }else if(op=="setRival"){
     filter_rank = { instaID : sessionID };
@@ -373,7 +373,7 @@ async function searchMacroDBData(op,col){
 
 //#region 편의성 함수
 
-//YYMMDD 가져오기
+//YYMMDD 가져오기 폐기 예정
 function getDate(){
   var date = new Date();
   var month;
