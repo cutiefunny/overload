@@ -6,7 +6,11 @@ var div_signupYN = document.getElementById('div_signupYN');
 var div_signup = document.getElementById('div_signup');
 var div_signin = document.getElementById('div_signin');
 var div_inputRecord = document.getElementById('div_inputRecord');
-var div_table = document.getElementById('div_table');
+var div_rival = document.getElementById('div_rival');
+var span_rivalImg = document.getElementById('span_rivalImg');
+var span_rivalName = document.getElementById('span_rivalName');
+var span_rivalTotal = document.getElementById('span_rivalTotal');
+var span_total = document.getElementById('span_total');
 var ib_squat = document.getElementById('ib_squat');
 var ib_benchpress = document.getElementById('ib_benchpress');
 var ib_deadlift = document.getElementById('ib_deadlift');
@@ -35,17 +39,24 @@ window.onload = function(){
 
 //테스트
 function test(){
-    callAjax("getPost");
+    callAjax("dateTest");
+}
+
+function changeTotal(){
+    span_total.innerText = parseInt(ib_squat.value) + parseInt(ib_benchpress.value) + parseInt(ib_deadlift.value);
 }
 
 //비교 페이지로 이동
 function gotoCompetition(){ location.href="/competition"; }
 
 //로그인 버튼 클릭
-function confirm(){ callAjax( "login" ); }
+function confirm(){ 
+    allClear();
+    callAjax( "login",ib_instaID.textContent); 
+}
 
 //저장 버튼 클릭
-function save(){ callAjax( "save" ); }
+function save(){ callAjax( "save",ib_instaID.textContent); }
 
 //랭크 버튼 클릭
 function getRank(){ location.href="/total?mw=mw"; }
@@ -60,7 +71,8 @@ function signupY(){
     div_signup.setAttribute("style","display:block"); 
     div_inputRecord.setAttribute("style","display:block"); 
     div_table.setAttribute("style","display:none"); 
-    callAjax("imgDownload");
+    callAjax("imgDownload",ib_instaID.textContent);
+    btn_save.setAttribute("style","display:block"); 
 }
 function signupN(){
     div_signin.setAttribute("style","display:none"); 
@@ -71,7 +83,7 @@ function signupN(){
 }
 
 //Ajax 함수
-function callAjax(op) {
+function callAjax(op,userID) {
 
 //    if(!validation()) op="fail";
 
@@ -82,7 +94,7 @@ function callAjax(op) {
         data: { msg : ""
             , op : op
             , col : "3record"
-            , userID : ib_instaID.textContent
+            , userID : userID
             , sex : getGender()
             , squat : ib_squat.value
             , benchpress : ib_benchpress.value
@@ -94,57 +106,25 @@ function callAjax(op) {
                 div_signin.setAttribute("style","display:block"); 
                 div_signup.setAttribute("style","display:none"); 
                 div_inputRecord.setAttribute("style","display:block"); 
-                div_table.setAttribute("style","display:block"); 
+                span_name.innerText=result['personalData'].instaID;
                 btn_getRecord.setAttribute("style","visibility:show"); 
-                callAjax("imgDownload");
+                callAjax("imgDownload",result['personalData'].instaID);
                 //최근값을 인풋박스에
-                ib_squat.value = result['personalData'][0].squat;
-                ib_benchpress.value = result['personalData'][0].benchpress;
-                ib_deadlift.value = result['personalData'][0].deadlift;
-                var data = "<thead><tr><th>날짜</th><th>S</th><th>B</th><th>D</th><th>Total</th></tr></thead><tbody>";
-                var cnt=0;
-                var diff_s=0;
-                var diff_b=0;
-                var diff_d=0;
-                var fontColor_s = "black";
-                var fontColor_b = "black";
-                var fontColor_d = "black";
-                var fontColor_total = "black";
-                //표에 기록을 뿌려줌
-                result['personalData'].forEach(item => {
-                    if(cnt<result['personalData'].length-1) {
-                        diff_s=(result['personalData'][cnt].squat-result['personalData'][cnt+1].squat);
-                        diff_b=(result['personalData'][cnt].benchpress-result['personalData'][cnt+1].benchpress);
-                        diff_d=(result['personalData'][cnt].deadlift-result['personalData'][cnt+1].deadlift);
-                        fontColor_s = getFontColor(diff_s);
-                        fontColor_b = getFontColor(diff_b);
-                        fontColor_d = getFontColor(diff_d);
-                        fontColor_total = getFontColor(parseInt(diff_s+diff_b+diff_d));
-                    }else{
-                        diff_s=0;
-                        diff_b=0;
-                        diff_d=0;
-                        fontColor_s = "black";
-                        fontColor_b = "black";
-                        fontColor_d = "black";
-                        fontColor_total = "black";
-                    }
-                    data += "<tr>"
-                    + "<td data-label=\"날짜\">"+item.time+"</td>"
-                    + "<td data-label=\"S\">"+item.squat+"<font size=1 color="+fontColor_s+">("+ diff_s +")</font>"+"</td>"
-                    + "<td data-label=\"B\">"+item.benchpress+"<font size=1 color="+fontColor_b+">("+ diff_b +")</font>"+"</td>"
-                    + "<td data-label=\"D\">"+item.deadlift+"<font size=1 color="+fontColor_d+">("+ diff_d +")</font>"+"</td>"
-                    + "<td data-label=\"Total\">"+(item.squat+item.benchpress+item.deadlift)+"<font size=1 color="+fontColor_total+">("+ (diff_s+diff_b+diff_d) +")</font>"+"</td>"
-                    + "</tr>";
-                    cnt++;
-                });
-                data += "</tbody>";
-                //tb_record.innerHTML = data;
-                span_name.textContent = ib_instaID.textContent;
+                ib_squat.value = result['personalData'].squat;
+                ib_benchpress.value = result['personalData'].benchpress;
+                ib_deadlift.value = result['personalData'].deadlift;
+                span_total.innerText = parseInt(ib_squat.value) + parseInt(ib_benchpress.value) + parseInt(ib_deadlift.value);
                 img_profile.setAttribute("src","/images/profile/"+ib_instaID.textContent+".jpg");
-                setGender(result['personalData'][0].sex);
+                setGender(result['personalData'].sex);
                 img_profile.setAttribute("width","150px");
                 img_profile.setAttribute("height","150px");
+                if(result['personalData'].rival!=null) {
+                    div_rival.setAttribute("style","display:block;"); 
+                    span_rivalName.textContent = result['personalData'].rival;
+                    span_rivalImg.innerHTML = "<img width=\"50px\" src=\"/images/profile/"+result['personalData'].rival+".jpg\">";
+                    callAjax("getRivalTotal",result['personalData'].rival);
+                }
+                btn_save.setAttribute("style","display:block"); 
             }else if ( result['result'] == "signUp" ) { //첫 방문자일 경우
                 div_signin.setAttribute("style","display:none"); 
                 div_signupYN.setAttribute("style","display:block"); 
@@ -158,7 +138,7 @@ function callAjax(op) {
                 alert(result["msg"]);
             }else if ( result['result'] == "save" ) {  //기록 저장
                 alert("저장되었습니다.");
-                callAjax( "login" );
+                callAjax( "login",ib_instaID.textContent );
             }else if ( result['result'] == "getAllData" ) {  //모든 데이터 획득
                 alert(result['allData']);
             }else if ( result['result'] == "getPost" ) {  //게시물 획득
@@ -168,8 +148,9 @@ function callAjax(op) {
                     data+="<img src=\""+item+".jpg\">";
                 })
                 img_post.innerHTML = data;
+            }else if ( result['result'] == "getRivalTotal" ) {  //라이벌의 토탈 획득
+                span_rivalTotal.innerHTML = "Total " + result['total'].total + " <font size=1 color="+ getFontColor((result['total'].total-parseInt(span_total.innerText))) +">(" + (result['total'].total-parseInt(span_total.innerText))+")";
             }
-            
         } //function끝
     }).done(function(response) {
         //alert("success");
@@ -209,4 +190,27 @@ function validation() {
         return false;
     }
     return true;
+}
+
+function allClear(){
+    div_signupYN.setAttribute("style","display:none"); 
+    div_signup.setAttribute("style","display:none"); 
+    div_signin.setAttribute("style","display:none"); 
+    div_inputRecord.setAttribute("style","display:none"); 
+    div_rival.setAttribute("style","display:none"); 
+    ib_squat.value = "";
+    ib_benchpress.value = "";
+    ib_deadlift.value = "";
+    span_name.innerText = "";
+    //img_profile = temp;
+    //btn_save.setAttribute("style","display:none"); 
+    btn_getRecord.setAttribute("style","visibility:hidden"); 
+}
+
+function getFontColor(value){ //+-에 따른 폰트 색 지정
+    var color;
+    if(value<0) color = "blue";
+    else if(value>0) color = "red";
+    else if(value==0) color = "black";
+    return color;
 }

@@ -6,7 +6,9 @@ const fs = require('fs');
 const http = require('https'); 
 const Insta = require('scraper-instagram');
 const InstaClient = new Insta();
-
+const download = require('image-downloader');
+const path = require('path');
+const moment = require('moment');
 const bodyparser= require('body-parser');
 const app = express();
 
@@ -31,6 +33,7 @@ app.use(session({
 }))
 
 var sessionID="";
+var sessionRival="";
 
 const { MongoClient } = require("mongodb");
 const { response, request } = require('express');
@@ -51,6 +54,57 @@ app.listen(port, ()=>{
 })
 console.log("server started");
 
+//인스타 테스터
+app.get('/insta', function (req, res) {
+
+  var filenames = [];
+  var cnt=0;
+
+  InstaClient.getProfile("inmaview")
+    .then(profile => {
+      profile.lastPosts.forEach(post => {
+        console.log(post.thumbnail);
+
+        var option = {
+          url :  post.thumbnail,
+          dest : __dirname +'/images/temp/'
+        }
+
+        download.image(option).then(({filename}) => {
+          console.log('saved to ', filename);
+          filenames[cnt++]="/images/temp/"+filename.split('\\')[6];
+        }).then((filename)=>{
+                  if(cnt==profile.lastPosts.length) {
+                      console.log("filenames = "+filenames);
+                      res.render('insta', { title: 'insta tester'
+                                        , filenames : filenames
+                                        , sessionID : sessionID
+                                    });  
+                  }
+            });
+          }
+        )
+        // .catch((err) => console.error(err))
+      });
+
+    //   console.log("filenames = "+filenames);
+    //   res.render('insta', { title: 'insta tester'
+    //                     , filenames : filenames
+    //                     , sessionID : sessionID
+    //                 });  
+    // });
+});
+
+//매크로 매니저
+app.get('/macroManager', function (req, res) {
+  searchMacroDBData("getUserList","userList").then((msg) => {
+    console.log(msg);
+    res.render('macroManager', { title: 'macro manager'
+                        , userList : msg
+                    });
+    })    
+});
+
 //랭킹 페이지
 app.get('/total', function (req, res) {
   searchData("getRank","ranking").then((msg) => {
@@ -58,6 +112,7 @@ app.get('/total', function (req, res) {
     res.render('ranking', { title: 'total ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -69,6 +124,7 @@ app.get('/squat', function (req, res) {
     res.render('ranking', { title: 'squat ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -80,6 +136,7 @@ app.get('/bench', function (req, res) {
     res.render('ranking', { title: 'benchpress ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -91,6 +148,7 @@ app.get('/dead', function (req, res) {
     res.render('ranking', { title: 'deadlift ranking'
                         , rankData : msg
                         , sessionID : sessionID
+                        , rival : sessionRival
                         , mw : req.query.mw
                     });
     })    
@@ -145,9 +203,10 @@ app.post('/ajax', function(req, res, next) {
                         res.send({result:"I", msg:msg});
   });
   else if(req.body.op=="login")
-  searchData(req.body.op,req.body.col,req.body.userID).then((msg) => {
+  searchData(req.body.op,"ranking",req.body.userID).then((msg) => {
                         console.log(msg);
                         sessionID = req.body.userID;
+                        sessionRival = msg.rival;
                         if(msg=="signUp") res.send({result:msg});
                         else res.send({result:"signIn", personalData : msg });
   });
@@ -183,22 +242,21 @@ app.post('/ajax', function(req, res, next) {
     InstaClient.getProfile(req.body.userID)
     .then(profile => imgDownload(profile.pic,req.body.userID));
   }
-  else if(req.body.op=="getInstaInfo"){
-    InstaClient.getProfile(req.body.userID)
-    .then(posts => { 
-      var data = [];
-      var tempString = [];
-      for(i=0;i<3;i++){
-        console.log(posts.lastPosts[i].thumbnail);
-        tempString = posts.lastPosts[i].thumbnail.split('.jpg')[0].split('/');
-        data.push(tempString[6]);
-        imgDownload(posts.lastPosts[i].thumbnail,tempString[6]);
-      }
-      res.send({result:"getInstaInfo", info:data});
+  else if(req.body.op=="setRival"){
+    insertData(req.body.op,req.body.col,req.body.userID).then((msg) => {
+      console.log(msg);
+      if(msg=="setRival") res.send({result:msg});
+    });
+  }
+  else if(req.body.op=="getRivalTotal"){
+    searchData(req.body.op,"ranking",req.body.userID).then((msg) => {
+      console.log(msg);
+      res.send({result:"getRivalTotal",total:msg});
     });
   }
 });
 
+//#region CRUD
 /* CRUD 함수 시작 */
 
 async function searchData(op,col,userID){
@@ -218,7 +276,7 @@ async function searchData(op,col,userID){
       list[3] = res.instaID;
     }
     else if(op=="login") {
-      res = await collection.find({ instaID: userID }).sort({ time : -1 }).toArray();
+      res = await collection.findOne({ instaID: userID });
       if(res == null || res == "" ) return "signUp";
       else{
         console.log(res);
@@ -247,6 +305,9 @@ async function searchData(op,col,userID){
     else if(op=="getRecord") {
       list = await collection.find({ instaID: userID }).sort({ time : -1 }) .toArray();
     }
+    else if(op=="getRivalTotal") {
+      list = await collection.findOne({ instaID: userID });
+    }
     return list;
 }
 
@@ -256,17 +317,21 @@ async function insertData(op,col,userID,record){
   var rank = database.collection("ranking");
   var filter;
   var doc;
-  var squat = parseInt(record[0]);
-  var benchpress = parseInt(record[1]);
-  var deadlift = parseInt(record[2]);
-  var total = squat+benchpress+deadlift;
-  console.log(record);
+  //console.log(record);
   if(op=="save"){
-    filter = { instaID : userID, time : getDate() };
+    var squat = parseInt(record[0]);
+    var benchpress = parseInt(record[1]);
+    var deadlift = parseInt(record[2]);
+    var total = squat+benchpress+deadlift;
+    filter = { instaID : userID, time : moment().format("YYYYMMDD") };
     filter_rank = { instaID : userID };
-    doc = { $set: { instaID : userID, time : getDate(), squat : squat, benchpress : benchpress, deadlift : deadlift, sex :record[3] , total : total } };
+    doc = { $set: { instaID : userID, time : moment().format("YYYYMMDD"), squat : squat, benchpress : benchpress, deadlift : deadlift, sex :record[3] , total : total } };    
+    userList.updateOne(filter,doc,{upsert:true});
+  }else if(op=="setRival"){
+    filter_rank = { instaID : sessionID };
+    doc = { $set: { rival : userID } };
+    sessionRival = userID;
   }
-  userList.updateOne(filter,doc,{upsert:true});
   rank.updateOne(filter_rank,doc,{upsert:true});
   //userList.insertOne(doc);
 
@@ -287,11 +352,25 @@ async function delData(op,col,userID){
   return op;
 }
 
+async function searchMacroDBData(op,col){
+  var database = client.db("macroDB");
+  var collection = database.collection(col);
+  var list = [];
+
+  if(op=="getUserList") {
+    userList = await collection.distinct("user");
+    list=userList;
+  }
+
+  return list;
+}
+
 /* CRUD 함수 끝 */ 
+//#endregion
 
 //#region 편의성 함수
 
-//YYMMDD 가져오기
+//YYMMDD 가져오기 폐기 예정
 function getDate(){
   var date = new Date();
   var month;
@@ -302,17 +381,13 @@ function getDate(){
   return date.getFullYear().toString() + month + day;
 }
 
-//#endregion
-
-
-//테스트 부분
 
 // 파일 다운로드 함수
 function imgDownload(url,instaID){
+  console.log(url);
+  console.log(instaID);
   // 저장할 위치를 지정
-  var dir=""
-  if(instaID.length>20) dir="/images/temp/";
-  else dir = "/images/profile/";
+  var dir = "/images/profile/";
   var savepath = __dirname + dir +instaID + ".jpg" ;
 
   // 출력 지정
@@ -328,30 +403,8 @@ function imgDownload(url,instaID){
   });
 }
 
-// 여러 파일 다운로드 함수
-function instaInfoDownload(instaID){
-  console.log("test");
-    InstaClient.getProfile(instaID)
-    .then(posts => { 
-      var data = [];
-      for(i=0;i<3;i++){
-        console.log(posts.lastPosts[i].thumbnail);
-        data.push(posts.lastPosts[i].thumbnail);;
-      }
-      return data;
-    });
-  // // 저장할 위치를 지정
-  // var savepath = __dirname + "/images/temp/" +instaID + ".jpg" ;
 
-  // // 출력 지정
-  // var outfile = fs.createWriteStream(savepath);
+//#endregion
 
-  // // 비동기로 URL의 파일 다운로드
-  // http.get(url, function(res) {
-  //     res.pipe(outfile);
-  //     res.on('end', function() {
-  //         outfile.close();
-  //         console.log("download to "+savepath);
-  //     });
-  // });
-}
+
+//테스트 부분

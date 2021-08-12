@@ -4,7 +4,7 @@ body {
 table {
     border: 1px solid #444444;
     border-collapse: collapse;
-    table-layout:fixed
+    table-layout:fixed;
   }
   th{
     border: 1px solid #444444;
@@ -14,7 +14,7 @@ table {
     border: 1px solid #444444;
     text-align: center;
     padding: 5px;
-    white-space: nowrap;
+    overflow: hidden;
   }
 
 .inline{
@@ -32,4 +32,10 @@ table {
 .instaID_me{
   color: #21ba45;
   font-weight: bold;
+}
+
+.box{
+  border-width: 6px;
+  border-style: solid;
+  border-color: red;
 }

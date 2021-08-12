@@ -1,6 +1,7 @@
 html 
     head 
         title=title 
+        //-meta(name="viewport" content="width=416, user-scalable=yes")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         //-link(rel='stylesheet', href='/views/style.css')
@@ -58,21 +59,30 @@ html
                 tr
                     td 스쿼트 
                     td    
-                        input(type="number" id="ib_squat" style="width:50;text-align:right")
+                        input(type="number" id="ib_squat" style="width:50;text-align:right" onchange="changeTotal()")
                 tr
                     td 벤치프레스 
                     td
-                        input(type="number" id="ib_benchpress" style="width:50;text-align:right")
+                        input(type="number" id="ib_benchpress" style="width:50;text-align:right" onchange="changeTotal()")
                 tr
                     td 데드리프트 
                     td 
-                        input(type="number" id="ib_deadlift" style="width:50;text-align:right")
+                        input(type="number" id="ib_deadlift" style="width:50;text-align:right" onchange="changeTotal()")
+                tr(style="font-weight:bold;text-align:center;")
+                    td Total
+                    td 
+                        span#span_total(style="font-weight:bold;")
             P 
             button(id="btn_save" onclick="save()" class="ui primary button") 저장
             P
             P
-        #div_table 
-            table#tb_record
+        #div_rival.box(style="display:none;")
+            H4 당신의 라이벌 : 
+                span#span_rivalName
+            P 
+                span#span_rivalImg
+                P
+                span#span_rivalTotal(style="font-weight:bold;")
         P
         P 
         div(id="btn_getRank" onclick="getRank()" class="ui animated button")
@@ -85,6 +95,9 @@ html
             div(class="hidden content")
                 i(class="right arrow icon")
         P
+        a(href="/apk/yourStrength.apk")
+            i.download.icon
+            | download for Android
         //-input(type="button" onclick="test()")
         //-input( type="button" onclick="getImgUrl()" )
         P 

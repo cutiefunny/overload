@@ -9,14 +9,18 @@ var div_women = document.getElementById('div_women');
 window.onload = function(){
 };
 
+//테이블 열 클릭 시
 function tdClick(instaID){ 
+    var open=false;
     var tr = document.getElementById('tr_'+instaID);
-    if(tr.getAttribute("class")=="hidden"){
-        //callAjax("getInstaInfo",instaID); 
-        tr.setAttribute("class","");
-    }else{
-        tr.setAttribute("class","hidden");
-    }
+    if(tr.getAttribute("class")=="hidden") open=false;
+    else open=true;
+    var trs = document.getElementsByName('tr_');
+    trs.forEach(element => {
+        element.setAttribute("class","hidden");
+    });
+    //if(tr.getAttribute("class")=="hidden") tr.setAttribute("class","");
+    if(!open) tr.setAttribute("class","");
 }
 
 function goInsta(instaID) { location.href="http://www.instagram.com/"+instaID.split('insta_')[1]; }
@@ -25,10 +29,15 @@ function goPersonalRecord(instaID) { location.href="/record?instaID="+instaID.sp
 
 function findMe(instaID) { document.getElementById(instaID).scrollIntoView();}
 
+//라이벌 버튼 클릭 시
 function toggleRival(instaID){
     var btn=document.getElementById('btn_rival_'+instaID);
+    var btns=document.getElementsByName('btn_rival');
+    btns.forEach(element => {
+        element.setAttribute("class","ui button");
+    });
     if(btn.getAttribute("class")=="ui button") btn.setAttribute("class","positive ui button");
-    else btn.setAttribute("class","ui button");
+    callAjax("setRival",instaID);
 }
 
 //men 버튼 클릭
