@@ -72,6 +72,7 @@ function signupY(){
     div_inputRecord.setAttribute("style","display:block"); 
     div_table.setAttribute("style","display:none"); 
     callAjax("imgDownload",ib_instaID.textContent);
+    btn_save.setAttribute("style","display:block"); 
 }
 function signupN(){
     div_signin.setAttribute("style","display:none"); 
@@ -123,6 +124,7 @@ function callAjax(op,userID) {
                     span_rivalImg.innerHTML = "<img width=\"50px\" src=\"/images/profile/"+result['personalData'].rival+".jpg\">";
                     callAjax("getRivalTotal",result['personalData'].rival);
                 }
+                btn_save.setAttribute("style","display:block"); 
             }else if ( result['result'] == "signUp" ) { //첫 방문자일 경우
                 div_signin.setAttribute("style","display:none"); 
                 div_signupYN.setAttribute("style","display:block"); 
@@ -147,7 +149,7 @@ function callAjax(op,userID) {
                 })
                 img_post.innerHTML = data;
             }else if ( result['result'] == "getRivalTotal" ) {  //라이벌의 토탈 획득
-                span_rivalTotal.innerText = "Total " + result['total'].total;
+                span_rivalTotal.innerHTML = "Total " + result['total'].total + " <font size=1 color="+ getFontColor((result['total'].total-parseInt(span_total.innerText))) +">(" + (result['total'].total-parseInt(span_total.innerText))+")";
             }
         } //function끝
     }).done(function(response) {
@@ -201,6 +203,14 @@ function allClear(){
     ib_deadlift.value = "";
     span_name.innerText = "";
     //img_profile = temp;
-    btn_save.setAttribute("style","display:none"); 
+    //btn_save.setAttribute("style","display:none"); 
     btn_getRecord.setAttribute("style","visibility:hidden"); 
+}
+
+function getFontColor(value){ //+-에 따른 폰트 색 지정
+    var color;
+    if(value<0) color = "blue";
+    else if(value>0) color = "red";
+    else if(value==0) color = "black";
+    return color;
 }
