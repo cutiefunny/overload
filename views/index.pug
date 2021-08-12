@@ -95,13 +95,17 @@ html
             div(class="hidden content")
                 i(class="right arrow icon")
         P
+        #div_todayClip 
+            P
+            h5 today's workout clip
+            iframe(width="337" height="189" src="https://www.youtube.com/embed/3l8kZAZTAw4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
+        P
         a#a_download.downloadAPK(href="/apk/yourStrength.apk")
             i.download.icon
             | download App for Android
         //-input(type="button" onclick="test()")
         //-input( type="button" onclick="getImgUrl()" )
-        P 
-        //-#img_post
+        P
         
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
         script(src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js")
