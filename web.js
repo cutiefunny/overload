@@ -173,7 +173,6 @@ app.get('/', function (req, res) {
   searchData("getUserList","ranking").then((msg) => {
     console.log(msg);
     sessionID = "";
-    clearTemp(); //temp 폴더 비우기
     res.render('index', { title: 'your strength'
                         , sessionID : sessionID
                         , userList : msg
@@ -406,20 +405,6 @@ function imgDownload(url,instaID){
   });
 }
 
-//temp폴더 파일 삭제
-function clearTemp(){
-  var directory = __dirname+'/images/temp';
-
-  fs.readdir(directory, (err, files) => {
-    if (err) throw err;
-
-    for (const file of files) {
-      fs.unlink(path.join(directory, file), err => {
-        if (err) throw err;
-      });
-    }
-  })
-}
 
 //#endregion
 
