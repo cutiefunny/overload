@@ -105,12 +105,6 @@ app.get('/macroManager', function (req, res) {
     })    
 });
 
-//APK 다운로드 페이지
-app.get('/download', function (req, res) {
-    res.render('download', { title: 'download APK'
-                    });  
-});
-
 //랭킹 페이지
 app.get('/total', function (req, res) {
   searchData("getRank","ranking").then((msg) => {

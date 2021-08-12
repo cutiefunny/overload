@@ -22,6 +22,7 @@ var rb_sex = document.getElementsByName('radioButton');
 var btn_getRecord = document.getElementById('btn_getRecord'); 
 var selectID = document.getElementById('selectID'); 
 var img_post = document.getElementById('img_post'); 
+var a_download = document.getElementById('a_download');
 //#endregion
 
 $(document).ready(function () { 
@@ -123,6 +124,7 @@ function callAjax(op,userID) {
                     span_rivalName.textContent = result['personalData'].rival;
                     span_rivalImg.innerHTML = "<img width=\"50px\" src=\"/images/profile/"+result['personalData'].rival+".jpg\">";
                     callAjax("getRivalTotal",result['personalData'].rival);
+                    a_download.setAttribute("class","");
                 }
                 btn_save.setAttribute("style","display:block"); 
             }else if ( result['result'] == "signUp" ) { //첫 방문자일 경우
@@ -198,6 +200,7 @@ function allClear(){
     div_signin.setAttribute("style","display:none"); 
     div_inputRecord.setAttribute("style","display:none"); 
     div_rival.setAttribute("style","display:none"); 
+    a_download.setAttribute("class","downloadAPK");
     ib_squat.value = "";
     ib_benchpress.value = "";
     ib_deadlift.value = "";

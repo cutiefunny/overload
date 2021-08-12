@@ -4,7 +4,7 @@ html
         //-meta(name="viewport" content="width=416, user-scalable=yes")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        //-link(rel='stylesheet', href='/views/style.css')
+        link(rel='stylesheet', href='/views/style.css')
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
     body
     center
@@ -95,10 +95,9 @@ html
             div(class="hidden content")
                 i(class="right arrow icon")
         P
-        iframe(src="download", frameborder="0" style="display: scroll; position: fixed; bottom:0px;") 
-        //- a(href="/apk/yourStrength.apk" style="display: scroll; position: fixed; bottom: 30px;")
-        //-     i.download.icon
-        //-     | download App for Android
+        a#a_download.downloadAPK(href="/apk/yourStrength.apk")
+            i.download.icon
+            | download App for Android
         //-input(type="button" onclick="test()")
         //-input( type="button" onclick="getImgUrl()" )
         P 

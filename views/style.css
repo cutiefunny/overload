@@ -35,7 +35,14 @@ table {
 }
 
 .box{
-  border-width: 6px;
+  border-width: 1px;
   border-style: solid;
-  border-color: red;
+  border-color: gray;
+  width : 300px;
+}
+
+.downloadAPK{
+  display: scroll; 
+  position: fixed; 
+  bottom: 10px;
 }
