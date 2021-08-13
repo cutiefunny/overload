@@ -37,9 +37,11 @@ table {
 .box{
   border-width: 1px;
   border-style: solid;
-  border-color: gray;
+  border-color: rgb(245, 245, 245);
+  background-color: rgb(245, 245, 245);
   width : 300px;
   padding: 10px;
+  border-radius: 20px 20px 20px 20px;
 }
 
 .downloadAPK{
