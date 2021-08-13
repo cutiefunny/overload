@@ -3,6 +3,7 @@ var btn_competition = document.getElementById('btn_competition');
 var ib_instaID = document.getElementById('ib_instaID');
 var ib_count = document.getElementById('ib_count');
 var btn_confirm = document.getElementById('btn_confirm');
+var div_mainDiv = document.getElementById('div_mainDiv');
 var div_signupYN = document.getElementById('div_signupYN');
 var div_signup = document.getElementById('div_signup');
 var div_signin = document.getElementById('div_signin');
@@ -75,6 +76,7 @@ function gotoCompetition(){ location.href="/competition"; }
 //로그인 버튼 클릭
 function confirm(){ 
     allClear();
+    div_mainDiv.className="box";
     callAjax( "login",ib_instaID.textContent); 
 }
 
@@ -99,6 +101,7 @@ function signupY(){
     btn_save.setAttribute("style","display:block"); 
 }
 function signupN(){
+    div_mainDiv.setAttribute("class","hidden2");
     div_signin.setAttribute("style","display:none"); 
     div_signupYN.setAttribute("style","display:none"); 
     div_signup.setAttribute("style","display:none"); 

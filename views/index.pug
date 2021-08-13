@@ -49,55 +49,57 @@ html
                         .item= user
             button#btn_confirm(class="ui button" onclick="confirm()") 확인
             P 
-        #div_signupYN(style="display:none")
             P
-            | 등록되지 않은 아이디입니다.
-            br
-            | 이 아이디로 등록하시겠어요?
-            p
-            button(onclick="signupY()") 네
-            button(onclick="signupN()") 아니오
-            P
-        #div_signup(style="display:none")
-            P
-            | 첫 방문을 환영합니다!
-            br
-            | 본인의 성별과 3대 중량을 입력하세요.
-            p
-            input#rb_sex(type='radio' value="male" name="radioButton" checked)
-            | 남자
-            input#rb_sex(type='radio' value="female" name="radioButton")
-            | 여자
-            P
-            P
-        #div_signin(style="display:none")
-            br
-            img#img_profile(src="")
-            P
-            span#span_name.hidden2
-            p
-        #div_inputRecord(style="display:none; text-align:right")
-            table(style="padding:0px;border:0px")
-                tr
-                    td 스쿼트 
-                    td    
-                        input(type="number" id="ib_squat" style="width:50;text-align:right" onchange="changeTotal()" value="0")
-                tr
-                    td 벤치프레스 
-                    td
-                        input(type="number" id="ib_benchpress" style="width:50;text-align:right" onchange="changeTotal()" value="0")
-                tr
-                    td 데드리프트 
-                    td 
-                        input(type="number" id="ib_deadlift" style="width:50;text-align:right" onchange="changeTotal()" value="0")
-                tr(style="font-weight:bold;text-align:center;")
-                    td Total
-                    td 
-                        span#span_total(style="font-weight:bold;")
-            P 
-            button(id="btn_save" onclick="save()" class="ui primary button") 저장
-            P
-            P
+        #div_mainDiv.box.hidden2
+            #div_signupYN(style="display:none")
+                P
+                | 등록되지 않은 아이디입니다.
+                br
+                | 이 아이디로 등록하시겠어요?
+                p
+                button.mini.ui.primary.button(onclick="signupY()") 네
+                button.mini.ui.button(onclick="signupN()") 아니오
+                P
+            #div_signup(style="display:none")
+                P
+                | 첫 방문을 환영합니다!
+                br
+                | 본인의 성별과 3대 중량을 입력하세요.
+                p
+                input#rb_sex(type='radio' value="male" name="radioButton" checked)
+                | 남자
+                input#rb_sex(type='radio' value="female" name="radioButton")
+                | 여자
+                P
+                P
+            #div_signin(style="display:none")
+                P
+                img#img_profile(src="")
+                P
+                span#span_name.hidden2
+                p
+            #div_inputRecord(style="display:none; text-align:right")
+                table(style="padding:0px;border:0px")
+                    tr
+                        td 스쿼트 
+                        td    
+                            input(type="number" id="ib_squat" style="width:50;text-align:right" onchange="changeTotal()" value="0")
+                    tr
+                        td 벤치프레스 
+                        td
+                            input(type="number" id="ib_benchpress" style="width:50;text-align:right" onchange="changeTotal()" value="0")
+                    tr
+                        td 데드리프트 
+                        td 
+                            input(type="number" id="ib_deadlift" style="width:50;text-align:right" onchange="changeTotal()" value="0")
+                    tr(style="font-weight:bold;text-align:center;")
+                        td Total
+                        td 
+                            span#span_total(style="font-weight:bold;")
+                P 
+                button(id="btn_save" onclick="save()" class="ui primary button") 저장
+                P
+        P
         #div_recommend.box(style="display:none;")
             H4 mission of the day : 
             P.redColor 
