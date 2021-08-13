@@ -81,27 +81,27 @@ html
             #div_inputRecord(style="display:none; text-align:right")
                 table(style="padding:0px;border:0px")
                     tr
-                        td 스쿼트 
+                        td Squat
                         td    
                             input(type="number" id="ib_squat" style="width:50;text-align:right" onchange="changeTotal()" value="0")
                     tr
-                        td 벤치프레스 
+                        td Benchpress
                         td
                             input(type="number" id="ib_benchpress" style="width:50;text-align:right" onchange="changeTotal()" value="0")
                     tr
-                        td 데드리프트 
+                        td Deadlift
                         td 
                             input(type="number" id="ib_deadlift" style="width:50;text-align:right" onchange="changeTotal()" value="0")
-                    tr(style="font-weight:bold;text-align:center;")
+                    tr(style="font-weight:bold;text-align:center;background-color:lightgray;")
                         td Total
                         td 
                             span#span_total(style="font-weight:bold;")
                 P 
-                button(id="btn_save" onclick="save()" class="ui primary button") 저장
+                button(id="btn_save" onclick="save()" class="ui primary button") save
                 P
         P
         #div_recommend.box(style="display:none;")
-            H4 mission of the day : 
+            H3 Mission of the day : 
             P.redColor 
                 span#span_movement= mission.move
                 font(color="black")=" : "
@@ -121,11 +121,11 @@ html
             #div_result.hidden2 
         P
         #div_rival.box(style="display:none;")
-            H4 당신의 라이벌
+            H3 Your competitor
             P 
                 span#span_rivalImg
             P
-                span#span_rivalName
+                span#span_rivalName(style="font-weight:bold;")
                 =" : "
                 span#span_rivalTotal(style="font-weight:bold;")
         P
