@@ -1,6 +1,7 @@
 //#region 초반 선언부
 var btn_competition = document.getElementById('btn_competition');
 var ib_instaID = document.getElementById('ib_instaID');
+var ib_count = document.getElementById('ib_count');
 var btn_confirm = document.getElementById('btn_confirm');
 var div_signupYN = document.getElementById('div_signupYN');
 var div_signup = document.getElementById('div_signup');
@@ -9,6 +10,7 @@ var div_inputRecord = document.getElementById('div_inputRecord');
 var div_rival = document.getElementById('div_rival');
 var div_mission = document.getElementById('div_mission');
 var div_result = document.getElementById('div_result');
+var div_setMission = document.getElementById('div_setMission');
 var span_rivalImg = document.getElementById('span_rivalImg');
 var span_rivalName = document.getElementById('span_rivalName');
 var span_rivalTotal = document.getElementById('span_rivalTotal');
@@ -50,6 +52,13 @@ function mission(result){
     if(result) div_result.innerText="수고하셨다냥!";
     else div_result.innerText="실패했다는 것은 도전했다는 것!";
 }
+
+function touchImg(){ 
+    ib_count.value++; 
+    if(ib_count.value>10) div_setMission.setAttribute("class","");
+}
+
+function setMission(){ callAjax("setMission"); }
 
 //테스트
 function test(){
@@ -114,6 +123,10 @@ function callAjax(op,userID) {
             , squat : ib_squat.value
             , benchpress : ib_benchpress.value
             , deadlift : ib_deadlift.value
+            , move : ib_setMove.value
+            , weight : ib_setWeight.value
+            , reps : ib_setReps.value
+            , set : ib_setSet.value
         },
         success: function(result) {
 
@@ -130,7 +143,9 @@ function callAjax(op,userID) {
                 ib_benchpress.value = result['personalData'].benchpress;
                 ib_deadlift.value = result['personalData'].deadlift;
                 span_total.innerText = parseInt(ib_squat.value) + parseInt(ib_benchpress.value) + parseInt(ib_deadlift.value);
-                span_weight.innerText = parseInt(ib_squat.value*0.7)
+                if(ib_setMove.value=="Squat") span_weight.innerText = parseInt(ib_squat.value*(ib_setWeight.value/100));
+                else if(ib_setMove.value=="Deadlift") span_weight.innerText = parseInt(ib_deadlift.value*(ib_setWeight.value/100));
+                else if(ib_setMove.value=="Benchpress") span_weight.innerText = parseInt(ib_benchpress.value*(ib_setWeight.value/100));
                 img_profile.setAttribute("src","/images/profile/"+ib_instaID.textContent+".jpg");
                 setGender(result['personalData'].sex);
                 img_profile.setAttribute("width","150px");
@@ -168,6 +183,9 @@ function callAjax(op,userID) {
                 img_post.innerHTML = data;
             }else if ( result['result'] == "getRivalTotal" ) {  //라이벌의 토탈 획득
                 span_rivalTotal.innerHTML = "Total " + result['total'].total + " <font size=1 color="+ getFontColor((result['total'].total-parseInt(span_total.innerText))) +">(" + (result['total'].total-parseInt(span_total.innerText))+")";
+            }else if ( result['result'] == "setMission" ) {  //미션 저장
+                alert("저장되었습니다.");
+                div_setMission.setAttribute("class","hidden2");
             }
         } //function끝
     }).done(function(response) {
@@ -215,7 +233,8 @@ function allClear(){
     div_signup.setAttribute("style","display:none"); 
     div_signin.setAttribute("style","display:none"); 
     div_inputRecord.setAttribute("style","display:none"); 
-    div_rival.setAttribute("style","display:none"); 
+    div_rival.setAttribute("style","display:none");
+    div_recommend.setAttribute("style","display:none");
     a_download.setAttribute("class","downloadAPK");
     ib_squat.value = "0";
     ib_benchpress.value = "0";

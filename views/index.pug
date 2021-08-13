@@ -9,7 +9,32 @@ html
     body
     center
         P
-        img(src="/images/title.jpg" width=300)
+        img(src="/images/title.jpg" width=300 onclick="touchImg()")
+        br
+        input#ib_count.hidden2(type="number" value=0)
+        #div_setMission.hidden2 
+            P
+            select#ib_setMove
+                if mission.move==="Squat"
+                    option(selected) Squat
+                else
+                    option Squat
+                if mission.move==="Benchpress"
+                    option(selected) Benchpress
+                else
+                    option Benchpress
+                if mission.move==="Deadlift"
+                    option(selected) Deadlift
+                else
+                    option Deadlift
+            br
+            input#ib_setWeight(type="number" value=mission.weight)
+            br
+            input#ib_setReps(type="number" value=mission.reps)
+            br
+            input#ib_setSet(type="number" value=mission.set)
+            br
+            button#btn_setMission(onclick="setMission()") set
         p 
         h3 인스타그램 아이디를 입력하세요.
         p
@@ -47,12 +72,8 @@ html
         #div_signin(style="display:none")
             br
             img#img_profile(src="")
-            br
-            span#span_name
-            | 님 안녕하세요!
-            br
-            | 3대 중량에 변동사항이 있나요?
-            p
+            P
+            span#span_name.hidden2
             p
         #div_inputRecord(style="display:none; text-align:right")
             table(style="padding:0px;border:0px")
@@ -79,13 +100,16 @@ html
         #div_recommend.box(style="display:none;")
             H4 mission of the day : 
             P.redColor 
-                span#span_movement Squat
-                =" "
+                span#span_movement= mission.move
+                font(color="black")=" : "
                 span#span_weight(style="font-weight:bold;")
-                ="kg "
-                span#span_reps(style="font-weight:bold;") 10reps
-                =" "
-                span#span_set(style="font-weight:bold;") 5set
+                font(color="black" size=2)="kg "
+                span#span_reps(style="font-weight:bold;") 
+                    =mission.reps
+                font(color="black" size=2)="reps "
+                span#span_set(style="font-weight:bold;") 
+                    =mission.set
+                font(color="black" size=2) set
             P 
             #div_mission.ui.buttons
                 button.mini.ui.positive.button.active(onclick="mission(true)") complete

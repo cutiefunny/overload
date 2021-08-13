@@ -171,10 +171,14 @@ app.get('/', function (req, res) {
   searchData("getUserList","ranking").then((msg) => {
     console.log(msg);
     sessionID = "";
-    res.render('index', { title: 'your strength'
+      searchData("getMission","mission").then((msg2) => {
+        console.log(msg2);
+        res.render('index', { title: 'your strength'
                         , sessionID : sessionID
                         , userList : msg
+                        , mission : msg2
                     });
+      });
     })
 });
 //#endregion
@@ -254,6 +258,13 @@ app.post('/ajax', function(req, res, next) {
       res.send({result:"getRivalTotal",total:msg});
     });
   }
+  else if(req.body.op=="setMission"){
+    var mission = [req.body.move,req.body.weight,req.body.reps,req.body.set];
+    insertData(req.body.op,"mission","master",mission).then((msg) => {
+      console.log(msg);
+      if(msg=="setMission") res.send({result:msg});
+    });
+  }
 });
 
 //#region CRUD
@@ -308,6 +319,9 @@ async function searchData(op,col,userID){
     else if(op=="getRivalTotal") {
       list = await collection.findOne({ instaID: userID });
     }
+    else if(op=="getMission") {
+      list = await collection.findOne({ instaID: "master" });
+    }
     return list;
 }
 
@@ -327,12 +341,22 @@ async function insertData(op,col,userID,record){
     filter_rank = { instaID : userID };
     doc = { $set: { instaID : userID, time : moment().format("YYYYMMDD"), squat : squat, benchpress : benchpress, deadlift : deadlift, sex :record[3] , total : total } };    
     userList.updateOne(filter,doc,{upsert:true});
+    rank.updateOne(filter_rank,doc,{upsert:true});
   }else if(op=="setRival"){
     filter_rank = { instaID : sessionID };
     doc = { $set: { rival : userID } };
     sessionRival = userID;
+    rank.updateOne(filter_rank,doc,{upsert:true});
+  }else if(op=="setMission"){
+    var move = record[0];
+    var weight = parseInt(record[1]);
+    var reps = parseInt(record[2]);
+    var set = parseInt(record[3]);
+    filter = { instaID : userID };
+    doc = { $set: { move : move, weight : weight , reps : reps, set : set } };
+    userList.updateOne(filter,doc,{upsert:true});
   }
-  rank.updateOne(filter_rank,doc,{upsert:true});
+  //rank.updateOne(filter_rank,doc,{upsert:true});
   //userList.insertOne(doc);
 
   return op;
