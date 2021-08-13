@@ -33,18 +33,19 @@ function findMe(instaID) { document.getElementById(instaID).scrollIntoView();}
 function toggleRival(instaID){
     var btn=document.getElementById('btn_rival_'+instaID);
 
-    if(btn.className="positive ui button") {
-        btn.className="ui button";
-        callAjax("setRival","");
-    }
-    else{
+    // if(btn.className="positive ui button") {
+    //     btn.className="ui button";
+    //     callAjax("setRival","");
+    // }
+    // else if(btn.className="ui button"){
         var btns=document.getElementsByName('btn_rival');
         btns.forEach(element => {
             element.setAttribute("class","ui button");
         });
-        if(btn.getAttribute("class")=="ui button") btn.setAttribute("class","positive ui button");
+        //if(btn.getAttribute("class")=="ui button") 
+        btn.setAttribute("class","positive ui button");
         callAjax("setRival",instaID);
-    }
+    // }
 }
 
 //men 버튼 클릭
