@@ -67,14 +67,20 @@ html
                                         div(class="hidden content") 
                                             i(class="right arrow icon")
                                     div(id="btn_record_"+user.instaID onclick="goPersonalRecord(this.id)" class="ui animated button")
-                                        div(class="visible content") personal record
+                                        div(class="visible content")
+                                            i.chart.line.icon
+                                            | personal record
                                         div(class="hidden content") 
                                             i(class="right arrow icon")
                                     if(sessionID!="" && sessionID!=user.instaID)
                                         if rival===user.instaID
-                                            button.positive.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
+                                            button.positive.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)")
+                                                i.user.icon
+                                                | rival
                                         else 
-                                            button.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
+                                            button.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)")
+                                                i.user.icon
+                                                | rival
                                     
         - cnt=1
 
@@ -116,14 +122,20 @@ html
                                         div(class="hidden content")
                                             i(class="right arrow icon")
                                     div(id="btn_record_"+user.instaID onclick="goPersonalRecord(this.id)" class="ui animated button")
-                                        div(class="visible content") personal record
+                                        div(class="visible content")
+                                            i.chart.line.icon
+                                            | personal record
                                         div(class="hidden content")
                                             i(class="right arrow icon")
                                     if(sessionID!="" && sessionID!=user.instaID)
                                         if rival===user.instaID
-                                            button.positive.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
+                                            button.positive.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") 
+                                                i.user.icon
+                                                | rival
                                         else 
-                                            button.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)") rival
+                                            button.ui.button(id="btn_rival_"+user.instaID name='btn_rival' value=user.instaID onclick="toggleRival(this.value)")
+                                                i.user.icon
+                                                | rival
         p
 
         script(src="//code.jquery.com/jquery-1.11.0.min.js")

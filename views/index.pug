@@ -131,12 +131,16 @@ html
         P
         P 
         div(id="btn_getRank" onclick="getRank()" class="ui animated button")
-            div(class="visible content") rank
+            div(class="visible content")
+                i.chess.queen.icon
+                | rank
             div(class="hidden content")
                 i(class="right arrow icon")
         |
         div(id="btn_getRecord" onclick="getRecord()" class="ui animated button" style="visibility:hidden;")
-            div(class="visible content") personal record
+            div(class="visible content")
+                i.chart.line.icon
+                | personal record
             div(class="hidden content")
                 i(class="right arrow icon")
         P
