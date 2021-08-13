@@ -154,7 +154,7 @@ function callAjax(op,userID) {
                 img_profile.setAttribute("width","150px");
                 img_profile.setAttribute("height","150px");
                 a_download.setAttribute("class","");
-                if(result['personalData'].rival!=null) {
+                if(result['personalData'].rival!=null && result['personalData'].rival!="") {
                     div_rival.setAttribute("style","display:block;"); 
                     span_rivalName.textContent = result['personalData'].rival;
                     span_rivalImg.innerHTML = "<img width=\"50px\" src=\"/images/profile/"+result['personalData'].rival+".jpg\">";

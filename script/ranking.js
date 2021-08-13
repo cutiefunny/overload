@@ -32,12 +32,19 @@ function findMe(instaID) { document.getElementById(instaID).scrollIntoView();}
 //라이벌 버튼 클릭 시
 function toggleRival(instaID){
     var btn=document.getElementById('btn_rival_'+instaID);
-    var btns=document.getElementsByName('btn_rival');
-    btns.forEach(element => {
-        element.setAttribute("class","ui button");
-    });
-    if(btn.getAttribute("class")=="ui button") btn.setAttribute("class","positive ui button");
-    callAjax("setRival",instaID);
+
+    if(btn.className="positive ui button") {
+        btn.className="ui button";
+        callAjax("setRival","");
+    }
+    else{
+        var btns=document.getElementsByName('btn_rival');
+        btns.forEach(element => {
+            element.setAttribute("class","ui button");
+        });
+        if(btn.getAttribute("class")=="ui button") btn.setAttribute("class","positive ui button");
+        callAjax("setRival",instaID);
+    }
 }
 
 //men 버튼 클릭
