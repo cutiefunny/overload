@@ -76,8 +76,18 @@ html
             button(id="btn_save" onclick="save()" class="ui primary button") 저장
             P
             P
+        #div_recommend.box(style="display:none;")
+            H4 오늘의 권장 운동 : 
+            P.redColor 
+                span#span_movement 스쿼트
+                =" "
+                span#span_weight(style="font-weight:bold;")
+                ="kg "
+                span#span_reps(style="font-weight:bold;") 10회
+        P
         #div_rival.box(style="display:none;")
-            H4 당신의 라이벌 : 
+            H4 당신의 라이벌
+            P
                 span#span_rivalName
             P 
                 span#span_rivalImg

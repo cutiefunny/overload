@@ -11,6 +11,9 @@ var span_rivalImg = document.getElementById('span_rivalImg');
 var span_rivalName = document.getElementById('span_rivalName');
 var span_rivalTotal = document.getElementById('span_rivalTotal');
 var span_total = document.getElementById('span_total');
+var span_movement = document.getElementById('span_movement');
+var span_weight = document.getElementById('span_weight');
+var span_reps = document.getElementById('span_reps');
 var ib_squat = document.getElementById('ib_squat');
 var ib_benchpress = document.getElementById('ib_benchpress');
 var ib_deadlift = document.getElementById('ib_deadlift');
@@ -23,6 +26,7 @@ var btn_getRecord = document.getElementById('btn_getRecord');
 var selectID = document.getElementById('selectID'); 
 var img_post = document.getElementById('img_post'); 
 var a_download = document.getElementById('a_download');
+var div_recommend = document.getElementById('div_recommend');
 //#endregion
 
 $(document).ready(function () { 
@@ -110,12 +114,14 @@ function callAjax(op,userID) {
                 div_inputRecord.setAttribute("style","display:block"); 
                 span_name.innerText=result['personalData'].instaID;
                 btn_getRecord.setAttribute("style","visibility:show"); 
+                div_recommend.setAttribute("style","display:block"); 
                 callAjax("imgDownload",result['personalData'].instaID);
                 //최근값을 인풋박스에
                 ib_squat.value = result['personalData'].squat;
                 ib_benchpress.value = result['personalData'].benchpress;
                 ib_deadlift.value = result['personalData'].deadlift;
                 span_total.innerText = parseInt(ib_squat.value) + parseInt(ib_benchpress.value) + parseInt(ib_deadlift.value);
+                span_weight.innerText = parseInt(ib_squat.value*0.7)
                 img_profile.setAttribute("src","/images/profile/"+ib_instaID.textContent+".jpg");
                 setGender(result['personalData'].sex);
                 img_profile.setAttribute("width","150px");

@@ -39,10 +39,19 @@ table {
   border-style: solid;
   border-color: gray;
   width : 300px;
+  padding: 10px;
 }
 
 .downloadAPK{
   display: scroll; 
   position: fixed; 
   bottom: 10px;
+}
+
+.skyColor{
+  color: #4183c4;
+}
+
+.redColor{
+  color: #db2828;
 }
