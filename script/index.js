@@ -7,6 +7,8 @@ var div_signup = document.getElementById('div_signup');
 var div_signin = document.getElementById('div_signin');
 var div_inputRecord = document.getElementById('div_inputRecord');
 var div_rival = document.getElementById('div_rival');
+var div_mission = document.getElementById('div_mission');
+var div_result = document.getElementById('div_result');
 var span_rivalImg = document.getElementById('span_rivalImg');
 var span_rivalName = document.getElementById('span_rivalName');
 var span_rivalTotal = document.getElementById('span_rivalTotal');
@@ -41,6 +43,13 @@ $(document).ready(function () {
 window.onload = function(){
     // btn_getRecord.hidden();
 };
+
+function mission(result){
+    div_mission.setAttribute("class","hidden2");
+    div_result.setAttribute("class","");
+    if(result) div_result.innerText="수고하셨다냥!";
+    else div_result.innerText="실패했다는 것은 도전했다는 것!";
+}
 
 //테스트
 function test(){

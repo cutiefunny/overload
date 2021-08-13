@@ -77,21 +77,29 @@ html
             P
             P
         #div_recommend.box(style="display:none;")
-            H4 오늘의 권장 운동 : 
+            H4 mission of the day : 
             P.redColor 
-                span#span_movement 스쿼트
+                span#span_movement Squat
                 =" "
                 span#span_weight(style="font-weight:bold;")
                 ="kg "
-                span#span_reps(style="font-weight:bold;") 10회
+                span#span_reps(style="font-weight:bold;") 10reps
+                =" "
+                span#span_set(style="font-weight:bold;") 5set
+            P 
+            #div_mission.ui.buttons
+                button.mini.ui.positive.button.active(onclick="mission(true)") complete
+                .or
+                button.mini.ui.button(onclick="mission(false)") complete Fail
+            #div_result.hidden2 
         P
         #div_rival.box(style="display:none;")
             H4 당신의 라이벌
-            P
-                span#span_rivalName
             P 
                 span#span_rivalImg
-                P
+            P
+                span#span_rivalName
+                =" : "
                 span#span_rivalTotal(style="font-weight:bold;")
         P
         P 
