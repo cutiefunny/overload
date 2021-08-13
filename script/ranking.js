@@ -13,13 +13,13 @@ window.onload = function(){
 function tdClick(instaID){ 
     var open=false;
     var tr = document.getElementById('tr_'+instaID);
-    if(tr.getAttribute("class")=="hidden") open=false;
+    if(tr.getAttribute("class")=="hidden2") open=false;
     else open=true;
     var trs = document.getElementsByName('tr_');
     trs.forEach(element => {
-        element.setAttribute("class","hidden");
+        element.setAttribute("class","hidden2");
     });
-    //if(tr.getAttribute("class")=="hidden") tr.setAttribute("class","");
+    //if(tr.getAttribute("class")=="hidden2") tr.setAttribute("class","");
     if(!open) tr.setAttribute("class","");
 }
 

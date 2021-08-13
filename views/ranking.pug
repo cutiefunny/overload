@@ -58,7 +58,7 @@ html
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
-                            tr.hidden(id="tr_"+user.instaID name="tr_")
+                            tr.hidden2(id="tr_"+user.instaID name="tr_")
                                 td(id="td_"+user.instaID colspan=7 align="center")
                                     div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
                                         div(class="visible content") instagram
@@ -105,7 +105,7 @@ html
                                 if sessionID==="sleeping.nyanya"
                                     td
                                         button#btn_delete(value=user.instaID onclick="delUser(this.value)") del
-                            tr.hidden(id="tr_"+user.instaID name="tr_")
+                            tr.hidden2(id="tr_"+user.instaID name="tr_")
                                 td(id="td_"+user.instaID colspan=7 align="center")
                                     div(id="btn_insta_"+user.instaID onclick="goInsta(this.id)" class="ui animated button")
                                         div(class="visible content") instagram
