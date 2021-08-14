@@ -1,5 +1,6 @@
 //#region 초반 선언부
 var btn_competition = document.getElementById('btn_competition');
+var btn_complete = document.getElementById('btn_complete');
 var ib_instaID = document.getElementById('ib_instaID');
 var ib_count = document.getElementById('ib_count');
 var btn_confirm = document.getElementById('btn_confirm');
@@ -47,11 +48,12 @@ window.onload = function(){
     // btn_getRecord.hidden();
 };
 
-function mission(result){
-    div_mission.setAttribute("class","hidden2");
-    div_result.setAttribute("class","");
-    if(result) div_result.innerText="수고하셨다냥!";
-    else div_result.innerText="실패했다는 것은 도전했다는 것!";
+//미션 완료 버튼 클릭
+function mission(){
+    // div_mission.setAttribute("class","hidden2");
+    // div_result.setAttribute("class","");
+    btn_complete.className="positive ui button";
+    if(result) callAjax("missionComplete",ib_instaID.textContent);
 }
 
 function touchImg(){ 
@@ -154,6 +156,7 @@ function callAjax(op,userID) {
                 img_profile.setAttribute("width","150px");
                 img_profile.setAttribute("height","150px");
                 a_download.setAttribute("class","");
+                callAjax("getMission",userID);
                 if(result['personalData'].rival!=null && result['personalData'].rival!="") {
                     div_rival.setAttribute("style","display:block;"); 
                     span_rivalName.textContent = result['personalData'].rival;
@@ -189,6 +192,14 @@ function callAjax(op,userID) {
             }else if ( result['result'] == "setMission" ) {  //미션 저장
                 alert("저장되었습니다.");
                 div_setMission.setAttribute("class","hidden2");
+            }else if ( result['result'] == "getMission" ) {  //미션 완료 여부
+                if(result['yn']){
+                    // div_mission.className="hidden2";
+                    // div_result.className="";
+                    // div_result.innerText="Complete";
+                    btn_complete.className="positive ui button";
+                    btn_complete.setAttribute("disabled","true");
+                }
             }
         } //function끝
     }).done(function(response) {
@@ -239,6 +250,8 @@ function allClear(){
     div_rival.setAttribute("style","display:none");
     div_recommend.setAttribute("style","display:none");
     a_download.setAttribute("class","downloadAPK");
+    div_mission.className="ui buttons";
+    div_result.className="hidden2";
     ib_squat.value = "0";
     ib_benchpress.value = "0";
     ib_deadlift.value = "0";

@@ -171,7 +171,7 @@ app.get('/', function (req, res) {
   searchData("getUserList","ranking").then((msg) => {
     console.log(msg);
     sessionID = "";
-      searchData("getMission","mission").then((msg2) => {
+      searchData("getMission","mission","master").then((msg2) => {
         console.log(msg2);
         res.render('index', { title: 'your strength'
                         , sessionID : sessionID
@@ -265,6 +265,22 @@ app.post('/ajax', function(req, res, next) {
       if(msg=="setMission") res.send({result:msg});
     });
   }
+  else if(req.body.op=="missionComplete"){
+    var mission = [req.body.move, (parseInt(req.body.weight)/100)*parseInt(req.body.squat) ,req.body.reps,req.body.set];
+    insertData("setMission","mission",req.body.userID,mission).then((msg) => {
+      console.log(msg);
+      if(msg=="missionComplete") res.send({result:msg});
+    });
+  }
+  else if(req.body.op=="getMission"){
+    searchData(req.body.op,"mission",req.body.userID).then((msg) => {
+      var result=false;
+      console.log(msg);
+      if(msg.length>0) result=true;
+      else result=false;
+      res.send({result : "getMission", yn : result });
+    });
+  }
 });
 
 //#region CRUD
@@ -320,7 +336,9 @@ async function searchData(op,col,userID){
       list = await collection.findOne({ instaID: userID });
     }
     else if(op=="getMission") {
-      list = await collection.findOne({ instaID: "master" });
+      console.log(userID + " , " + moment().format("YYYYMMDD") );
+      if(userID=="master") list = await collection.findOne({ instaID: userID });
+      else list = await collection.find({ instaID: userID }).toArray(); //time: moment().format("YYYYMMDD")
     }
     return list;
 }
@@ -353,7 +371,12 @@ async function insertData(op,col,userID,record){
     var reps = parseInt(record[2]);
     var set = parseInt(record[3]);
     filter = { instaID : userID };
-    doc = { $set: { move : move, weight : weight , reps : reps, set : set } };
+    if(userID=="master") doc = { $set: { move : move, weight : weight , reps : reps, set : set, instaID : userID } };
+    else {
+      doc = { $set: { move : move, weight : weight , reps : reps, set : set, instaID : userID, time : moment().format("YYYYMMDD") } };
+      console.log("missionComplete : "+doc)
+      op = "missionComplete";
+    }
     userList.updateOne(filter,doc,{upsert:true});
   }
   //rank.updateOne(filter_rank,doc,{upsert:true});
