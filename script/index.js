@@ -53,7 +53,7 @@ function mission(){
     // div_mission.setAttribute("class","hidden2");
     // div_result.setAttribute("class","");
     btn_complete.className="positive ui button";
-    if(result) callAjax("missionComplete",ib_instaID.textContent);
+    callAjax("missionComplete",ib_instaID.textContent);
 }
 
 function touchImg(){ 
@@ -193,13 +193,7 @@ function callAjax(op,userID) {
                 alert("저장되었습니다.");
                 div_setMission.setAttribute("class","hidden2");
             }else if ( result['result'] == "getMission" ) {  //미션 완료 여부
-                if(result['yn']){
-                    // div_mission.className="hidden2";
-                    // div_result.className="";
-                    // div_result.innerText="Complete";
-                    btn_complete.className="positive ui button";
-                    btn_complete.setAttribute("disabled","true");
-                }
+                if(result['yn']) btn_complete.className="positive ui disabled button";
             }
         } //function끝
     }).done(function(response) {
@@ -252,6 +246,8 @@ function allClear(){
     a_download.setAttribute("class","downloadAPK");
     div_mission.className="ui buttons";
     div_result.className="hidden2";
+    btn_complete.className="ui button";
+    //btn_complete.setAttribute("disabled","false");
     ib_squat.value = "0";
     ib_benchpress.value = "0";
     ib_deadlift.value = "0";
