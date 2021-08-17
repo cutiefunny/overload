@@ -48,7 +48,7 @@ client.connect();
 //리스닝
 app.listen(port, ()=>{
     console.log('8001번 포트에 대기중!');
-    InstaClient.authBySessionId("48763774309%3A5APJ9nifdWL3qu%3A0")
+    InstaClient.authBySessionId("31938056985%3AKmomW1cOOM9aQ2%3A26")
 	.then(account => console.log(account.username));
   
 })
@@ -97,12 +97,25 @@ app.get('/insta', function (req, res) {
 
 //매크로 매니저
 app.get('/macroManager', function (req, res) {
-  searchMacroDBData("getUserList","userList").then((msg) => {
-    console.log(msg);
-    res.render('macroManager', { title: 'macro manager'
-                        , userList : msg
-                    });
-    })    
+  var list=[];
+  fs.readdir("c:/images/old/", (err, filelist) => { 
+
+    filelist.forEach(file => {
+        list.push(file.split('.jpg')[0]);
+      })
+        
+      res.render('macroManager', { title: 'macro manager'
+                                , userList : list
+                            });
+    
+  })
+
+  // searchMacroDBData("getUserList","userList").then((msg) => {
+  //   console.log(msg);
+  //   res.render('macroManager', { title: 'macro manager'
+  //                       , userList : msg
+  //                   });
+  //   })    
 });
 
 //랭킹 페이지
@@ -281,6 +294,31 @@ app.post('/ajax', function(req, res, next) {
       res.send({result : "getMission", yn : result });
     });
   }
+  else if(req.body.op=="getProfile"){
+      console.log(req.body.list);
+      //res.send({result : "getMission", yn : result });
+      InstaClient.getProfile(req.body.list[0])
+        .then(profile => {
+
+            console.log(profile);
+            
+          }).catch();
+      // var cnt=0;
+      // req.body.list.forEach(id => {
+      //   InstaClient.getProfile(id)
+      //   .then(profile => {
+
+      //       var option = {
+      //         url :  profile.pic,
+      //         dest : __dirname +'/images/temp/'+id+".jpg"
+      //       }
+    
+      //       download.image(option).then(({filename}) => {
+      //         console.log('saved to ', filename);
+      //       })
+      //     })
+      // });
+  }
 });
 
 //#region CRUD
@@ -455,3 +493,16 @@ function imgDownload(url,instaID){
 
 
 //테스트 부분
+function getFileList(folder){
+  var list = [];
+    fs.readdir(folder, (err, filelist) => { 
+
+      filelist.forEach(file => {
+          list.push(file.split('.jpg')[0]);
+          //console.log(file);
+        })
+        //console.log(list);
+    })
+
+    return list;
+}
