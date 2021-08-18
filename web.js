@@ -58,6 +58,11 @@ app.listen(port, ()=>{
 })
 console.log("server started");
 
+cron.schedule('* * 7 * * ', () => {
+  console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
+  insertWooh();
+});
+
 //인스타 테스터
 app.get('/insta', function (req, res) {
 
@@ -134,17 +139,8 @@ app.get('/wooh', function (req, res) {
        if(cnt>3) cnt=1;
      }
    });
+  //insertWooh();
 
-  //  var database = client.db("wooh");
-  //  var collection = database.collection("main");
-  //  var filter = { time : moment().format("YYYYMMDD") }
-  //  var doc = { $set: { 
-  //                     time : moment().format("YYYYMMDD"),
-  //                     buy : buy,
-  //                     sell : sell
-  //                 }};    
-    
-  // collection.updateOne(filter,doc,{upsert:true});
   searchWooh().then((data) => {
     console.log(data);
     res.render('wooh', { title: '상품권 가격'
@@ -499,6 +495,38 @@ async function searchWooh(){
   var database = client.db("wooh");
   var collection = database.collection("main");
   return await collection.find().toArray();
+}
+
+async function insertWooh(buy,sell){
+  axios.get('https://wooh.co.kr/').then(data=>{
+    const $ = cheerio.load(data.data);
+    var text = $('div.tbl_head05>table>tbody').text().replace(" ","").split('\n');
+    var cnt = 1;
+    var name = [];
+    var buy = [];
+    var sell = [];
+     text.forEach(item => {
+       if(item.trim()!="") {
+         if(cnt==1) name.push(item.trim());
+         else if(cnt==2) buy.push(item.trim().split('원')[0]);
+         else if(cnt==3) sell.push(item.trim().split('원')[0]);
+         cnt++;
+         if(cnt>3) cnt=1;
+       }
+     });
+
+   var database = client.db("wooh");
+   var collection = database.collection("main");
+   var filter = { time : (parseInt(moment().format("YYYYMMDD"))-1).toString(), buy : buy, sell : sell }
+   var doc = { $set: { 
+                      time : moment().format("YYYYMMDD"),
+                      buy : buy,
+                      sell : sell
+                  }};    
+    
+  collection.updateOne(filter,doc,{upsert:true});
+  });
+  console.log("save wooh "+moment().format("YYYYMMDD"));
 }
 
 /* CRUD 함수 끝 */ 

@@ -6,7 +6,8 @@ html
         link(rel='stylesheet', href='/views/style.css')
         //-link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
     body
-        -var cnt=0;
+        -var tdCnt=0;
+        -var trCnt=0;
         center
             P 
             button(onclick="site1()") site1
@@ -23,11 +24,13 @@ html
                 tbody
                     each item in data
                         tr
+                        - trCnt=0;
                             td= item.time
-                            - cnt=0;
-                            each buy in item.buy
-                                td(style="color:red")= buy 
-                                td(style="color:blue")= item.sell[cnt++]
+                            - tdCnt=0;
+                            each buys in item.buy
+                                td(style="color:red")= buys
+                                td(style="color:blue")= item.sell[tdCnt++]
+                        -trCnt++;
                 //-     tr= time
                     //- each item in data["buy"]
                     //-     td(style="color:red")= item
