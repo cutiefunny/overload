@@ -11,6 +11,9 @@ const path = require('path');
 const moment = require('moment');
 const bodyparser= require('body-parser');
 const app = express();
+const cron = require('node-cron');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 app.use(express.static(__dirname + '/public/'))
 app.use(bodyparser.urlencoded({extended:false}))
@@ -37,6 +40,7 @@ var sessionRival="";
 
 const { MongoClient } = require("mongodb");
 const { response, request } = require('express');
+const { createConnection } = require('net');
 //#endregion
 
 //#region DB연결 및 라우팅
@@ -97,25 +101,58 @@ app.get('/insta', function (req, res) {
 
 //매크로 매니저
 app.get('/macroManager', function (req, res) {
-  var list=[];
-  fs.readdir("c:/images/old/", (err, filelist) => { 
 
-    filelist.forEach(file => {
-        list.push(file.split('.jpg')[0]);
-      })
-        
-      res.render('macroManager', { title: 'macro manager'
-                                , userList : list
-                            });
+  searchMacroDBData("getUserList","userList").then((msg) => {
+    console.log(msg);
+    res.render('macroManager', { title: 'macro manager'
+                        , userList : msg
+                    });
+    })    
+});
+
+//상품권
+app.get('/wooh', function (req, res) {
+  axios.get('https://wooh.co.kr/').then(data=>{
+  const $ = cheerio.load(data.data);
+  //section.idx_hit>div>table>tbody
+  //div.sct_txt
+  // var items = [];
+  // $('div.sct_txt').each((index, item) => { items.push(item.text) });
+  //   console.log(items);
+  // })
+  var text = $('div.tbl_head05>table>tbody').text().replace(" ","").split('\n');
+  var cnt = 1;
+  var name = [];
+  var buy = [];
+  var sell = [];
+   text.forEach(item => {
+     if(item.trim()!="") {
+       if(cnt==1) name.push(item.trim());
+       else if(cnt==2) buy.push(item.trim().split('원')[0]);
+       else if(cnt==3) sell.push(item.trim().split('원')[0]);
+       cnt++;
+       if(cnt>3) cnt=1;
+     }
+   });
+
+  //  var database = client.db("wooh");
+  //  var collection = database.collection("main");
+  //  var filter = { time : moment().format("YYYYMMDD") }
+  //  var doc = { $set: { 
+  //                     time : moment().format("YYYYMMDD"),
+  //                     buy : buy,
+  //                     sell : sell
+  //                 }};    
     
-  })
-
-  // searchMacroDBData("getUserList","userList").then((msg) => {
-  //   console.log(msg);
-  //   res.render('macroManager', { title: 'macro manager'
-  //                       , userList : msg
-  //                   });
-  //   })    
+  // collection.updateOne(filter,doc,{upsert:true});
+  searchWooh().then((data) => {
+    console.log(data);
+    res.render('wooh', { title: '상품권 가격'
+                        , name : name
+                        , data : data
+                    });
+    })
+  });
 });
 
 //랭킹 페이지
@@ -296,13 +333,21 @@ app.post('/ajax', function(req, res, next) {
   }
   else if(req.body.op=="getProfile"){
       console.log(req.body.list);
-      //res.send({result : "getMission", yn : result });
-      InstaClient.getProfile(req.body.list[0])
+
+        InstaClient.getProfile(req.body.list[1])
         .then(profile => {
 
-            console.log(profile);
+            var option = {
+              url :  profile.pic,
+              dest : __dirname +"/images/temp/"+req.body.list[1]+".jpg"
+            }
+    
+            download.image(option).then(({filename}) => {
+              console.log('saved to ', filename);
+            })
             
           }).catch();
+
       // var cnt=0;
       // req.body.list.forEach(id => {
       //   InstaClient.getProfile(id)
@@ -448,6 +493,12 @@ async function searchMacroDBData(op,col){
   }
 
   return list;
+}
+
+async function searchWooh(){
+  var database = client.db("wooh");
+  var collection = database.collection("main");
+  return await collection.find().toArray();
 }
 
 /* CRUD 함수 끝 */ 

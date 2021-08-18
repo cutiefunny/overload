@@ -1,0 +1,32 @@
+html 
+    head 
+        title=title 
+        meta(charset="UTF-8")
+        //-meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel='stylesheet', href='/views/style.css')
+        //-link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css")
+    body
+        -var cnt=0;
+        center
+            table
+                tr 
+                    th
+                    each item in name 
+                        th(colspan="2")= item
+                tbody
+                    each item in data
+                        tr
+                            td= item.time
+                            - cnt=0;
+                            each buy in item.buy
+                                td(style="color:red")= buy 
+                                td(style="color:blue")= item.sell[cnt++]
+                //-     tr= time
+                    //- each item in data["buy"]
+                    //-     td(style="color:red")= item
+                        //-td(style="color:blue")= sell[cnt++]
+
+        script(src="//code.jquery.com/jquery-1.11.0.min.js")
+        //-script(src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js")
+        //-script(src="/script/dropdown.js")
+        script(src="/script/wooh.js")

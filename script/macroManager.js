@@ -1,5 +1,15 @@
 var btn_getProfile = document.getElementById("btn_getProfile");
 var div_pic = document.getElementById("div_pic");
+var sbx_userList = document.getElementById("sbx_userList");
+
+$(document).ready(function () { 
+    $('.dropdown').dropdown({
+      })
+});
+
+function getUserData(){
+    //alert( sbx_userList.value );
+}
 
 function getProfile(){
     var list=[];

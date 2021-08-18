@@ -8,20 +8,14 @@ html
     body 
         center
             P
-            button#btn_getProfile.ui.button(onclick="getProfile()") get Profile
-            P
-            table#tb_main
-                tr 
-                    th id
-                    th pic
+            select#sbx_userList.ui.dropdown(onchange="getUserData()")
                 each user in userList 
-                    tr
-                        td(name="td_id")= user
-                        td
-                            #div_pic
-                                img(src="/images/temp/"+user+".jpg")
+                    option(value=user)= user
+            //-button#btn_getData.ui.button get
 
+            
 
         script(src="//code.jquery.com/jquery-1.11.0.min.js")
         script(src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js")
+        script(src="/script/dropdown.js")
         script(src="/script/macroManager.js")
