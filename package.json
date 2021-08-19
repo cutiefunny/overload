@@ -14,11 +14,13 @@
     "cheerio": "*",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "iconv-lite": "^0.4.24",
     "image-downloader": "^4.0.3",
     "moment": "^2.29.1",
     "mongodb": "^4.0.1",
     "node-cron": "^3.0.0",
     "pug": "^3.0.2",
+    "request": "^2.88.2",
     "scraper-instagram": "^1.0.17"
   }
 }

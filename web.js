@@ -1,5 +1,6 @@
 //#region 초반 선언부
 const express = require('express');
+const requests = require('request');
 const port = 8001;
 const session = require('express-session')
 const fs = require('fs');
@@ -14,6 +15,7 @@ const app = express();
 const cron = require('node-cron');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const iconv = require('iconv-lite');
 
 app.use(express.static(__dirname + '/public/'))
 app.use(bodyparser.urlencoded({extended:false}))
@@ -52,16 +54,16 @@ client.connect();
 //리스닝
 app.listen(port, ()=>{
     console.log('8001번 포트에 대기중!');
-    InstaClient.authBySessionId("31938056985%3AKmomW1cOOM9aQ2%3A26")
-	.then(account => console.log(account.username));
+  //   InstaClient.authBySessionId("31938056985%3AKmomW1cOOM9aQ2%3A26")
+	// .then(account => console.log(account.username));
   
 })
 console.log("server started");
 
-cron.schedule('* * 7 * * ', () => {
-  console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
-  insertWooh();
-});
+// cron.schedule('* * * * * ', () => {
+//   console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
+//   insertTicketNo1();
+// });
 
 //인스타 테스터
 app.get('/insta', function (req, res) {
@@ -115,7 +117,7 @@ app.get('/macroManager', function (req, res) {
     })    
 });
 
-//상품권
+//우현 상품권
 app.get('/wooh', function (req, res) {
   axios.get('https://wooh.co.kr/').then(data=>{
   const $ = cheerio.load(data.data);
@@ -128,20 +130,16 @@ app.get('/wooh', function (req, res) {
   var text = $('div.tbl_head05>table>tbody').text().replace(" ","").split('\n');
   var cnt = 1;
   var name = [];
-  var buy = [];
-  var sell = [];
    text.forEach(item => {
      if(item.trim()!="") {
        if(cnt==1) name.push(item.trim());
-       else if(cnt==2) buy.push(item.trim().split('원')[0]);
-       else if(cnt==3) sell.push(item.trim().split('원')[0]);
        cnt++;
        if(cnt>3) cnt=1;
      }
    });
   //insertWooh();
 
-  searchWooh().then((data) => {
+  searchWooh("main").then((data) => {
     console.log(data);
     res.render('wooh', { title: '상품권 가격'
                         , name : name
@@ -149,6 +147,134 @@ app.get('/wooh', function (req, res) {
                     });
     })
   });
+});
+
+//명동 상품권
+app.get('/ticketno1', function (req, res) {
+  axios.get('http://ticketno1.co.kr/popup/popup_2.html?idx=2&type=W&__popupPage=T').then(data=>{
+  const $ = cheerio.load(data.data);
+  
+  var cnt=0;
+  var list = [];
+  var temp;
+  $("td").each(function(key,val){
+    //console.log($("td"));
+    temp = $(val).text().replace(' ','');
+    if(temp.trim() !="" && !temp.includes('*')) {
+      if( temp.includes('%') ) temp = temp.split('(')[0];
+      list.push(temp);
+      cnt++;
+    }
+    
+    if(cnt<6 || temp.includes('투어') || temp=='60,000') list.pop();
+    
+    //console.log(cnt + " : " + $(val).text());
+  });
+  console.log(list);
+
+  var name = [];
+  var buy = [];
+  var sell = [];
+  cnt=1;
+   list.forEach(item => {
+       if(cnt==1) name.push(item.trim());
+       cnt++;
+       if(cnt>3) cnt=1;
+   });
+
+   searchWooh("ticketno1").then((data) => {
+    console.log(data);
+    res.render('wooh', { title: '상품권 가격'
+                        , name : name
+                        , data : data
+                    });
+    })
+
+  });
+});
+
+//우천 상품권
+app.get('/wooticket', function (req, res) {
+
+  var requestOptions = { method: "GET" 
+    ,uri: "http://www.wooticket.com/popup_price.php" 
+    ,encoding: null 
+    };
+// request 모듈을 이용하여 html 요청 
+  requests(requestOptions, function(error, response, body) { // 전달받은 결과를 EUC-KR로 디코딩하여 출력한다. 
+    var strContents = new Buffer(body); 
+    var data = iconv.decode(strContents, 'EUC-KR').toString(); 
+
+    const $ = cheerio.load(data);
+
+      var cnt=0;
+      var list = [];
+      var temp;
+      $("font").each(function(key,val){
+        //console.log($("td"));
+        temp = $(val).text().replace(' ','');
+        if(temp.trim() !="") {
+          if( temp.includes('%') ) temp = temp.split('(')[0];
+          if(cnt>9 && cnt<280) list.push(temp);
+          cnt++;
+        }
+
+        //if(cnt<10 || cnt>279) list.pop();
+        
+        //console.log(cnt + " : " + $(val).text());
+      });
+      console.log(list);
+  });
+
+  // axios.get('http://www.wooticket.com/popup_price.php').then(data=>{
+  //     //{ responseType:"arraybuffer" }
+  //     //const contents = iconv.decode(data,"EUC-KR").toString()
+      
+  //     var str = iconv.decode(Buffer.from(data), 'utf8');
+
+  //     const $ = cheerio.load(data.data);
+
+  //     console.log(str);
+  
+  //     var cnt=0;
+  //     var list = [];
+  //     var temp;
+  //     $("font").each(function(key,val){
+  //       //console.log($("td"));
+  //       temp = $(val).text().replace(' ','');
+  //       if(temp.trim() !="") {
+  //         if( temp.includes('%') ) temp = temp.split('(')[0];
+  //         list.push(temp);
+  //         cnt++;
+  //       }
+        
+  //       console.log(cnt + " : " + $(val).text());
+  //     });
+  //     //console.log(list);
+
+  // // var name = [];
+  // // var buy = [];
+  // // var sell = [];
+  // // cnt=1;
+  // //  list.forEach(item => {
+  // //      if(cnt==1) name.push(item.trim());
+  // //      else if(cnt==2) buy.push(item.trim());
+  // //      else if(cnt==3) sell.push(item.trim());
+  // //      cnt++;
+  // //      if(cnt>3) cnt=1;
+  // //  });
+
+  // //  console.log(name+buy+sell);
+
+  // //  searchWooh("ticketno1").then((data) => {
+  // //   console.log(data);
+  // //   res.render('wooh', { title: '상품권 가격'
+  // //                       , name : name
+  // //                       , data : data
+  // //                   });
+  // //   })
+
+  // });
 });
 
 //랭킹 페이지
@@ -491,10 +617,10 @@ async function searchMacroDBData(op,col){
   return list;
 }
 
-async function searchWooh(){
+async function searchWooh(col){
   var database = client.db("wooh");
-  var collection = database.collection("main");
-  return await collection.find().toArray();
+  var collection = database.collection(col);
+  return await collection.find().sort({time:-1}).toArray();
 }
 
 async function insertWooh(buy,sell){
@@ -527,6 +653,54 @@ async function insertWooh(buy,sell){
   collection.updateOne(filter,doc,{upsert:true});
   });
   console.log("save wooh "+moment().format("YYYYMMDD"));
+}
+
+async function insertTicketNo1(){
+  axios.get('http://www.ticketno1.co.kr/popup/popup_2.html?idx=2&type=W&__popupPage=T').then(data=>{
+      const $ = cheerio.load(data.data);
+      
+      var cnt=0;
+      var list = [];
+      var temp;
+      $("td").each(function(key,val){
+        //console.log($("td"));
+        temp = $(val).text().replace(' ','');
+        if(temp.trim() !="" && !temp.includes('*')) {
+          if( temp.includes('%') ) temp = temp.split('(')[0];
+          list.push(temp);
+          cnt++;
+        }
+        
+        if(cnt<6 || temp.includes('투어') || temp=='60,000') list.pop();
+        
+        //console.log(cnt + " : " + $(val).text());
+      });
+      console.log(list);
+
+      var name = [];
+      var buy = [];
+      var sell = [];
+      cnt=1;
+      list.forEach(item => {
+          if(cnt==1) name.push(item.trim());
+          else if(cnt==2) buy.push(item.trim());
+          else if(cnt==3) sell.push(item.trim());
+          cnt++;
+          if(cnt>3) cnt=1;
+      });
+
+   var database = client.db("wooh");
+   var collection = database.collection("ticketno1");
+   var filter = { time : (parseInt(moment().format("YYYYMMDD"))-1).toString(), buy : buy, sell : sell }
+   var doc = { $set: { 
+                      time : moment().format("YYYYMMDD"),
+                      buy : buy,
+                      sell : sell
+                  }};    
+    
+  collection.updateOne(filter,doc,{upsert:true});
+  });
+  console.log("save ticketno1 "+moment().format("YYYYMMDD"));
 }
 
 /* CRUD 함수 끝 */ 

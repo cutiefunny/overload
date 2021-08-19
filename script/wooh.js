@@ -1,2 +1,3 @@
-function site1(){
-}
+function site1(){ location.href="/wooh";  }
+function site2(){ location.href="/ticketno1";  }
+function site3(){ location.href="/wooh";  }
