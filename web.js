@@ -60,10 +60,13 @@ app.listen(port, ()=>{
 })
 console.log("server started");
 
-// cron.schedule('* * * * * ', () => {
-//   console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
-//   insertTicketNo1();
-// });
+cron.schedule('* * 7 * * ', () => {
+  console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
+  insertWooTicket();
+},{
+  scheduled: true,
+  timezone: "Asia/Seoul"
+});
 
 //인스타 테스터
 app.get('/insta', function (req, res) {
@@ -140,7 +143,7 @@ app.get('/wooh', function (req, res) {
   //insertWooh();
 
   searchWooh("main").then((data) => {
-    console.log(data);
+    //console.log(data);
     res.render('wooh', { title: '상품권 가격'
                         , name : name
                         , data : data
@@ -170,7 +173,7 @@ app.get('/ticketno1', function (req, res) {
     
     //console.log(cnt + " : " + $(val).text());
   });
-  console.log(list);
+  //console.log(list);
 
   var name = [];
   var buy = [];
@@ -183,7 +186,7 @@ app.get('/ticketno1', function (req, res) {
    });
 
    searchWooh("ticketno1").then((data) => {
-    console.log(data);
+    //console.log(data);
     res.render('wooh', { title: '상품권 가격'
                         , name : name
                         , data : data
@@ -215,66 +218,33 @@ app.get('/wooticket', function (req, res) {
         temp = $(val).text().replace(' ','');
         if(temp.trim() !="") {
           if( temp.includes('%') ) temp = temp.split('(')[0];
-          if(cnt>9 && cnt<280) list.push(temp);
+          if(cnt>8 && cnt<279) list.push(temp);
           cnt++;
         }
-
-        //if(cnt<10 || cnt>279) list.pop();
-        
         //console.log(cnt + " : " + $(val).text());
       });
-      console.log(list);
-  });
-
-  // axios.get('http://www.wooticket.com/popup_price.php').then(data=>{
-  //     //{ responseType:"arraybuffer" }
-  //     //const contents = iconv.decode(data,"EUC-KR").toString()
-      
-  //     var str = iconv.decode(Buffer.from(data), 'utf8');
-
-  //     const $ = cheerio.load(data.data);
-
-  //     console.log(str);
+      //console.log(list);
   
-  //     var cnt=0;
-  //     var list = [];
-  //     var temp;
-  //     $("font").each(function(key,val){
-  //       //console.log($("td"));
-  //       temp = $(val).text().replace(' ','');
-  //       if(temp.trim() !="") {
-  //         if( temp.includes('%') ) temp = temp.split('(')[0];
-  //         list.push(temp);
-  //         cnt++;
-  //       }
-        
-  //       console.log(cnt + " : " + $(val).text());
-  //     });
-  //     //console.log(list);
 
-  // // var name = [];
-  // // var buy = [];
-  // // var sell = [];
-  // // cnt=1;
-  // //  list.forEach(item => {
-  // //      if(cnt==1) name.push(item.trim());
-  // //      else if(cnt==2) buy.push(item.trim());
-  // //      else if(cnt==3) sell.push(item.trim());
-  // //      cnt++;
-  // //      if(cnt>3) cnt=1;
-  // //  });
+  var name = [];
+  cnt=1;
+   list.forEach(item => {
+       if(cnt==1) name.push(item.trim());
+       cnt++;
+       if(cnt>3) cnt=1;
+   });
 
   // //  console.log(name+buy+sell);
 
-  // //  searchWooh("ticketno1").then((data) => {
-  // //   console.log(data);
-  // //   res.render('wooh', { title: '상품권 가격'
-  // //                       , name : name
-  // //                       , data : data
-  // //                   });
-  // //   })
+   searchWooh("wooticket").then((data) => {
+    //console.log(data);
+    res.render('wooh', { title: '상품권 가격'
+                        , name : name
+                        , data : data
+                    });
+    })
 
-  // });
+  });
 });
 
 //랭킹 페이지
@@ -701,6 +671,62 @@ async function insertTicketNo1(){
   collection.updateOne(filter,doc,{upsert:true});
   });
   console.log("save ticketno1 "+moment().format("YYYYMMDD"));
+}
+
+async function insertWooTicket(){
+  
+  var requestOptions = { method: "GET" 
+    ,uri: "http://www.wooticket.com/popup_price.php" 
+    ,encoding: null 
+    };
+// request 모듈을 이용하여 html 요청 
+  requests(requestOptions, function(error, response, body) { // 전달받은 결과를 EUC-KR로 디코딩하여 출력한다. 
+    var strContents = new Buffer(body); 
+    var data = iconv.decode(strContents, 'EUC-KR').toString(); 
+
+    const $ = cheerio.load(data);
+
+      var cnt=0;
+      var list = [];
+      var temp;
+      $("font").each(function(key,val){
+        //console.log($("td"));
+        temp = $(val).text().replace(' ','');
+        if(temp.trim() !="") {
+          if( temp.includes('%') ) temp = temp.split('(')[0];
+          if(cnt>8 && cnt<279) list.push(temp);
+          cnt++;
+        }
+        //console.log(cnt + " : " + $(val).text());
+      });
+      console.log(list);
+  
+
+  var name = [];
+  var buy = [];
+  var sell = [];
+  cnt=1;
+   list.forEach(item => {
+       if(cnt==1) name.push(item.trim());
+       else if(cnt==2) buy.push(item.trim());
+       else if(cnt==3) sell.push(item.trim());
+       cnt++;
+       if(cnt>3) cnt=1;
+   });
+
+   var database = client.db("wooh");
+   var collection = database.collection("wooticket");
+   var filter = { time : (parseInt(moment().format("YYYYMMDD"))-1).toString(), buy : buy, sell : sell }
+   var doc = { $set: { 
+                      time : moment().format("YYYYMMDD"),
+                      buy : buy,
+                      sell : sell
+                  }};    
+    
+  collection.updateOne(filter,doc,{upsert:true});
+  });
+
+  console.log("save wooticket "+moment().format("YYYYMMDD"));
 }
 
 /* CRUD 함수 끝 */ 
