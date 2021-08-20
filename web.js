@@ -56,16 +56,26 @@ app.listen(port, ()=>{
     console.log('8001번 포트에 대기중!');
   //   InstaClient.authBySessionId("31938056985%3AKmomW1cOOM9aQ2%3A26")
 	// .then(account => console.log(account.username));
-  
+  // insertWooTicket();
+  // insertWooh();
+  // insertTicketNo1();
 })
 console.log("server started");
 
-cron.schedule('* * 7 * * ', () => {
-  console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
-  insertWooTicket();
-},{
-  scheduled: true,
-  timezone: "Asia/Seoul"
+// cron.schedule('* * * * * ', () => {
+//   console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
+//   insertWooTicket();
+// },{
+//   scheduled: true,
+//   timezone: "Asia/Seoul"
+// });
+
+//빅나인 샘플 페이지
+app.get('/big9', function (req, res) {
+
+    res.render('big9', { title: '빅나인고고클럽'
+                        , userList : ''
+                    });
 });
 
 //인스타 테스터
@@ -593,7 +603,7 @@ async function searchWooh(col){
   return await collection.find().sort({time:-1}).toArray();
 }
 
-async function insertWooh(buy,sell){
+async function insertWooh(){
   axios.get('https://wooh.co.kr/').then(data=>{
     const $ = cheerio.load(data.data);
     var text = $('div.tbl_head05>table>tbody').text().replace(" ","").split('\n');
