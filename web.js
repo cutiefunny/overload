@@ -632,7 +632,7 @@ async function insertWooh(){
 
    var database = client.db("wooh");
    var collection = database.collection("main");
-   var filter = { time : (parseInt(moment().format("YYYYMMDD"))-1).toString(), buy : buy, sell : sell }
+   var filter = { time : moment().format("YYYYMMDD") }
    var doc = { $set: { 
                       time : moment().format("YYYYMMDD"),
                       buy : buy,
@@ -680,7 +680,7 @@ async function insertTicketNo1(){
 
    var database = client.db("wooh");
    var collection = database.collection("ticketno1");
-   var filter = { time : (parseInt(moment().format("YYYYMMDD"))-1).toString(), buy : buy, sell : sell }
+   var filter = { time : moment().format("YYYYMMDD") }
    var doc = { $set: { 
                       time : moment().format("YYYYMMDD"),
                       buy : buy,
@@ -735,7 +735,7 @@ async function insertWooTicket(){
 
    var database = client.db("wooh");
    var collection = database.collection("wooticket");
-   var filter = { time : (parseInt(moment().format("YYYYMMDD"))-1).toString(), buy : buy, sell : sell }
+   var filter = { time : moment().format("YYYYMMDD") }
    var doc = { $set: { 
                       time : moment().format("YYYYMMDD"),
                       buy : buy,
