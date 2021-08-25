@@ -62,13 +62,15 @@ app.listen(port, ()=>{
 })
 console.log("server started");
 
-// cron.schedule('* * * * * ', () => {
-//   console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
-//   insertWooTicket();
-// },{
-//   scheduled: true,
-//   timezone: "Asia/Seoul"
-// });
+cron.schedule('* 7 * * * ', () => {
+  console.log("cron task run at "+moment().format("YYYYMMDDHHmmSS"));
+  insertWooTicket();
+  insertWooh();
+  insertTicketNo1();
+},{
+  scheduled: true,
+  timezone: "Asia/Seoul"
+});
 
 //빅나인 샘플 페이지
 app.get('/big9', function (req, res) {
@@ -255,6 +257,13 @@ app.get('/wooticket', function (req, res) {
     })
 
   });
+});
+
+//상품권 data get
+app.get('/woohGet', function (req, res) {
+  insertWooTicket();
+  insertWooh();
+  insertTicketNo1();
 });
 
 //랭킹 페이지
